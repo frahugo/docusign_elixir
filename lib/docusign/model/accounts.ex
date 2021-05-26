@@ -11,6 +11,7 @@ defmodule DocuSign.Model.Accounts do
   defstruct [
     :accountIdGuid,
     :accountName,
+    :accountSettings,
     :allowTransactionRooms,
     :billingPeriodDaysRemaining,
     :billingPeriodEndDate,
@@ -18,14 +19,16 @@ defmodule DocuSign.Model.Accounts do
     :billingPeriodEnvelopesSent,
     :billingPeriodStartDate,
     :billingProfile,
-    :canCancelRenewal,
     :canUpgrade,
     :connectPermission,
     :createdDate,
     :currencyCode,
     :currentPlanId,
+    :displayApplianceStartUrl,
+    :displayApplianceUrl,
     :distributorCode,
     :docuSignLandingUrl,
+    :dssValues,
     :envelopeSendingBlocked,
     :envelopeUnitPrice,
     :externalAccountId,
@@ -36,16 +39,19 @@ defmodule DocuSign.Model.Accounts do
     :planEndDate,
     :planName,
     :planStartDate,
+    :recipientDomains,
     :seatsAllowed,
     :seatsInUse,
     :status21CFRPart11,
     :suspensionDate,
-    :suspensionStatus
+    :suspensionStatus,
+    :useDisplayAppliance
   ]
 
   @type t :: %__MODULE__{
           :accountIdGuid => String.t(),
           :accountName => String.t(),
+          :accountSettings => AccountSettingsInformation,
           :allowTransactionRooms => String.t(),
           :billingPeriodDaysRemaining => String.t(),
           :billingPeriodEndDate => String.t(),
@@ -53,14 +59,16 @@ defmodule DocuSign.Model.Accounts do
           :billingPeriodEnvelopesSent => String.t(),
           :billingPeriodStartDate => String.t(),
           :billingProfile => String.t(),
-          :canCancelRenewal => String.t(),
           :canUpgrade => String.t(),
           :connectPermission => String.t(),
           :createdDate => String.t(),
           :currencyCode => String.t(),
           :currentPlanId => String.t(),
+          :displayApplianceStartUrl => String.t(),
+          :displayApplianceUrl => String.t(),
           :distributorCode => String.t(),
           :docuSignLandingUrl => String.t(),
+          :dssValues => %{optional(String.t()) => String.t()},
           :envelopeSendingBlocked => String.t(),
           :envelopeUnitPrice => String.t(),
           :externalAccountId => String.t(),
@@ -71,16 +79,27 @@ defmodule DocuSign.Model.Accounts do
           :planEndDate => String.t(),
           :planName => String.t(),
           :planStartDate => String.t(),
+          :recipientDomains => [RecipientDomain],
           :seatsAllowed => String.t(),
           :seatsInUse => String.t(),
           :status21CFRPart11 => String.t(),
           :suspensionDate => String.t(),
-          :suspensionStatus => String.t()
+          :suspensionStatus => String.t(),
+          :useDisplayAppliance => boolean()
         }
 end
 
 defimpl Poison.Decoder, for: DocuSign.Model.Accounts do
-  def decode(value, _options) do
+  import DocuSign.Deserializer
+
+  def decode(value, options) do
     value
+    |> deserialize(
+      :accountSettings,
+      :struct,
+      DocuSign.Model.AccountSettingsInformation,
+      options
+    )
+    |> deserialize(:recipientDomains, :list, DocuSign.Model.RecipientDomain, options)
   end
 end

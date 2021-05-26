@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.AccountSignatureProviderOption do
   @moduledoc """
-
+  Reserved for DocuSign.
   """
 
   @derive [Poison.Encoder]

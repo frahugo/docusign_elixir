@@ -10,23 +10,61 @@ defmodule DocuSign.Model.MergeField do
   @derive [Poison.Encoder]
   defstruct [
     :allowSenderToEdit,
+    :allowSenderToEditMetadata,
     :configurationType,
+    :configurationTypeMetadata,
     :path,
+    :pathExtended,
+    :pathExtendedMetadata,
+    :pathMetadata,
     :row,
-    :writeBack
+    :rowMetadata,
+    :writeBack,
+    :writeBackMetadata
   ]
 
   @type t :: %__MODULE__{
           :allowSenderToEdit => String.t(),
+          :allowSenderToEditMetadata => PropertyMetadata,
           :configurationType => String.t(),
+          :configurationTypeMetadata => PropertyMetadata,
           :path => String.t(),
+          :pathExtended => [PathExtendedElement],
+          :pathExtendedMetadata => PropertyMetadata,
+          :pathMetadata => PropertyMetadata,
           :row => String.t(),
-          :writeBack => String.t()
+          :rowMetadata => PropertyMetadata,
+          :writeBack => String.t(),
+          :writeBackMetadata => PropertyMetadata
         }
 end
 
 defimpl Poison.Decoder, for: DocuSign.Model.MergeField do
-  def decode(value, _options) do
+  import DocuSign.Deserializer
+
+  def decode(value, options) do
     value
+    |> deserialize(
+      :allowSenderToEditMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
+    |> deserialize(
+      :configurationTypeMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
+    |> deserialize(:pathExtended, :list, DocuSign.Model.PathExtendedElement, options)
+    |> deserialize(
+      :pathExtendedMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
+    |> deserialize(:pathMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:rowMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:writeBackMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
   end
 end

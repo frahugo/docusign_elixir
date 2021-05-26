@@ -17,9 +17,9 @@ defmodule DocuSign.Api.TemplateBulkRecipients do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - recipient_id (String.t): The &#x60;recipientId&#x60; used when the envelope or template was created.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - recipient_id (String.t): A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each &#x60;recipientId&#x60; must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a &#x60;recipientId&#x60; of &#x60;1&#x60;.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -33,7 +33,8 @@ defmodule DocuSign.Api.TemplateBulkRecipients do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.BulkRecipientsUpdateResponse.t()} | {:error, Tesla.Env.t()}
+        ) ::
+          {:ok, DocuSign.Model.BulkRecipientsUpdateResponse.t()} | {:error, Tesla.Env.t()}
   def recipients_delete_template_bulk_recipients_file(
         connection,
         account_id,
@@ -44,7 +45,7 @@ defmodule DocuSign.Api.TemplateBulkRecipients do
     %{}
     |> method(:delete)
     |> url(
-      "/v2/accounts/#{account_id}/templates/#{template_id}/recipients/#{recipient_id}/bulk_recipients"
+      "/v2.1/accounts/#{account_id}/templates/#{template_id}/recipients/#{recipient_id}/bulk_recipients"
     )
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -58,16 +59,16 @@ defmodule DocuSign.Api.TemplateBulkRecipients do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - recipient_id (String.t): The &#x60;recipientId&#x60; used when the envelope or template was created.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - recipient_id (String.t): A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each &#x60;recipientId&#x60; must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a &#x60;recipientId&#x60; of &#x60;1&#x60;.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :include_tabs (String.t): When set to **true**, the tab information associated with the recipient is included in the response.
-    - :start_position (String.t): Reserved for DocuSign. 
+    - :include_tabs (String.t): When set to **true**, the tab information associated with the recipient is included in the response. If you do not specify this parameter, the effect is the default behavior (**false**).
+    - :start_position (String.t): The starting position of the results set.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.TemplateBulkRecipients{}} on success
+  {:ok, %DocuSign.Model.BulkRecipientsResponse{}} on success
   {:error, info} on failure
   """
   @spec recipients_get_template_bulk_recipients(
@@ -76,7 +77,7 @@ defmodule DocuSign.Api.TemplateBulkRecipients do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.TemplateBulkRecipients.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.BulkRecipientsResponse.t()} | {:error, Tesla.Env.t()}
   def recipients_get_template_bulk_recipients(
         connection,
         account_id,
@@ -85,19 +86,19 @@ defmodule DocuSign.Api.TemplateBulkRecipients do
         opts \\ []
       ) do
     optional_params = %{
-      include_tabs: :query,
-      start_position: :query
+      :include_tabs => :query,
+      :start_position => :query
     }
 
     %{}
     |> method(:get)
     |> url(
-      "/v2/accounts/#{account_id}/templates/#{template_id}/recipients/#{recipient_id}/bulk_recipients"
+      "/v2.1/accounts/#{account_id}/templates/#{template_id}/recipients/#{recipient_id}/bulk_recipients"
     )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.TemplateBulkRecipients{})
+    |> decode(%DocuSign.Model.BulkRecipientsResponse{})
   end
 
   @doc """
@@ -107,11 +108,11 @@ defmodule DocuSign.Api.TemplateBulkRecipients do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - recipient_id (String.t): The &#x60;recipientId&#x60; used when the envelope or template was created.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - recipient_id (String.t): A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each &#x60;recipientId&#x60; must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a &#x60;recipientId&#x60; of &#x60;1&#x60;.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :bulk_recipients_request (BulkRecipientsRequest): 
+    - :bulk_recipients_request (BulkRecipientsRequest):
 
   ## Returns
 
@@ -124,7 +125,8 @@ defmodule DocuSign.Api.TemplateBulkRecipients do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.BulkRecipientsSummaryResponse.t()} | {:error, Tesla.Env.t()}
+        ) ::
+          {:ok, DocuSign.Model.BulkRecipientsSummaryResponse.t()} | {:error, Tesla.Env.t()}
   def recipients_put_template_bulk_recipients(
         connection,
         account_id,
@@ -133,13 +135,13 @@ defmodule DocuSign.Api.TemplateBulkRecipients do
         opts \\ []
       ) do
     optional_params = %{
-      bulkRecipientsRequest: :body
+      :bulkRecipientsRequest => :body
     }
 
     %{}
     |> method(:put)
     |> url(
-      "/v2/accounts/#{account_id}/templates/#{template_id}/recipients/#{recipient_id}/bulk_recipients"
+      "/v2.1/accounts/#{account_id}/templates/#{template_id}/recipients/#{recipient_id}/bulk_recipients"
     )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])

@@ -17,11 +17,11 @@ defmodule DocuSign.Api.EnvelopeDocumentFields do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :envelope_document_fields (EnvelopeDocumentFields): 
+    - :envelope_document_fields (EnvelopeDocumentFields):
 
   ## Returns
 
@@ -43,12 +43,14 @@ defmodule DocuSign.Api.EnvelopeDocumentFields do
         opts \\ []
       ) do
     optional_params = %{
-      EnvelopeDocumentFields: :body
+      :EnvelopeDocumentFields => :body
     }
 
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/fields")
+    |> url(
+      "/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/fields"
+    )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -62,9 +64,9 @@ defmodule DocuSign.Api.EnvelopeDocumentFields do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -88,7 +90,9 @@ defmodule DocuSign.Api.EnvelopeDocumentFields do
       ) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/fields")
+    |> url(
+      "/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/fields"
+    )
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.EnvelopeDocumentFields{})
@@ -101,11 +105,11 @@ defmodule DocuSign.Api.EnvelopeDocumentFields do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :envelope_document_fields (EnvelopeDocumentFields): 
+    - :envelope_document_fields (EnvelopeDocumentFields):
 
   ## Returns
 
@@ -127,12 +131,14 @@ defmodule DocuSign.Api.EnvelopeDocumentFields do
         opts \\ []
       ) do
     optional_params = %{
-      EnvelopeDocumentFields: :body
+      :EnvelopeDocumentFields => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/fields")
+    |> url(
+      "/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/fields"
+    )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -146,11 +152,11 @@ defmodule DocuSign.Api.EnvelopeDocumentFields do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :envelope_document_fields (EnvelopeDocumentFields): 
+    - :envelope_document_fields (EnvelopeDocumentFields):
 
   ## Returns
 
@@ -172,12 +178,14 @@ defmodule DocuSign.Api.EnvelopeDocumentFields do
         opts \\ []
       ) do
     optional_params = %{
-      EnvelopeDocumentFields: :body
+      :EnvelopeDocumentFields => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/fields")
+    |> url(
+      "/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/fields"
+    )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()

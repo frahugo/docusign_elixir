@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.EnvelopeIdsRequest do
   @moduledoc """
-
+  Lists of envelope and transaction IDs to use in the results.
   """
 
   @derive [Poison.Encoder]

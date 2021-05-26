@@ -17,15 +17,15 @@ defmodule DocuSign.Api.TemplateRecipients do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - recipient_id (String.t): The &#x60;recipientId&#x60; used when the envelope or template was created.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - recipient_id (String.t): A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each &#x60;recipientId&#x60; must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a &#x60;recipientId&#x60; of &#x60;1&#x60;.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :template_recipients (TemplateRecipients): 
+    - :template_recipients (TemplateRecipients):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.TemplateRecipients{}} on success
+  {:ok, %DocuSign.Model.Recipients{}} on success
   {:error, info} on failure
   """
   @spec recipients_delete_template_recipient(
@@ -34,7 +34,7 @@ defmodule DocuSign.Api.TemplateRecipients do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.TemplateRecipients.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.Recipients.t()} | {:error, Tesla.Env.t()}
   def recipients_delete_template_recipient(
         connection,
         account_id,
@@ -43,16 +43,16 @@ defmodule DocuSign.Api.TemplateRecipients do
         opts \\ []
       ) do
     optional_params = %{
-      templateRecipients: :body
+      :templateRecipients => :body
     }
 
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/recipients/#{recipient_id}")
+    |> url("/v2.1/accounts/#{account_id}/templates/#{template_id}/recipients/#{recipient_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.TemplateRecipients{})
+    |> decode(%DocuSign.Model.Recipients{})
   end
 
   @doc """
@@ -62,14 +62,14 @@ defmodule DocuSign.Api.TemplateRecipients do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :template_recipients (TemplateRecipients): 
+    - :template_recipients (TemplateRecipients):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.TemplateRecipients{}} on success
+  {:ok, %DocuSign.Model.Recipients{}} on success
   {:error, info} on failure
   """
   @spec recipients_delete_template_recipients(
@@ -77,19 +77,19 @@ defmodule DocuSign.Api.TemplateRecipients do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.TemplateRecipients.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.Recipients.t()} | {:error, Tesla.Env.t()}
   def recipients_delete_template_recipients(connection, account_id, template_id, opts \\ []) do
     optional_params = %{
-      templateRecipients: :body
+      :templateRecipients => :body
     }
 
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/recipients")
+    |> url("/v2.1/accounts/#{account_id}/templates/#{template_id}/recipients")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.TemplateRecipients{})
+    |> decode(%DocuSign.Model.Recipients{})
   end
 
   @doc """
@@ -99,34 +99,34 @@ defmodule DocuSign.Api.TemplateRecipients do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :include_anchor_tab_locations (String.t):  When set to **true** and &#x60;include_tabs&#x60; is set to **true**, all tabs with anchor tab properties are included in the response. 
-    - :include_extended (String.t):  When set to **true**, the extended properties are included in the response. 
+    - :include_anchor_tab_locations (String.t):  When set to **true** and &#x60;include_tabs&#x60; is set to **true**, all tabs with anchor tab properties are included in the response.
+    - :include_extended (String.t):  When set to **true**, the extended properties are included in the response.
     - :include_tabs (String.t): When set to **true**, the tab information associated with the recipient is included in the response.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.TemplateRecipients{}} on success
+  {:ok, %DocuSign.Model.Recipients{}} on success
   {:error, info} on failure
   """
   @spec recipients_get_template_recipients(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.TemplateRecipients.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.Recipients.t()} | {:error, Tesla.Env.t()}
   def recipients_get_template_recipients(connection, account_id, template_id, opts \\ []) do
     optional_params = %{
-      include_anchor_tab_locations: :query,
-      include_extended: :query,
-      include_tabs: :query
+      :include_anchor_tab_locations => :query,
+      :include_extended => :query,
+      :include_tabs => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/recipients")
+    |> url("/v2.1/accounts/#{account_id}/templates/#{template_id}/recipients")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.TemplateRecipients{})
+    |> decode(%DocuSign.Model.Recipients{})
   end
 
   @doc """
@@ -136,32 +136,32 @@ defmodule DocuSign.Api.TemplateRecipients do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :resend_envelope (String.t): When set to **true**, resends the   envelope if the new recipient&#39;s routing order is before or the same as the envelope&#39;s next recipient.
-    - :template_recipients (TemplateRecipients): 
+    - :resend_envelope (String.t): When set to **true**, resends the envelope to the recipients that you specify in the request body. You use this parameter to resend the envelope to a recipient who deleted the original email notification.  **Note**: Correcting an envelope is a different process. DocuSign always resends an envelope when you correct it, regardless of the value that you enter here.
+    - :template_recipients (TemplateRecipients):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.TemplateRecipients{}} on success
+  {:ok, %DocuSign.Model.Recipients{}} on success
   {:error, info} on failure
   """
   @spec recipients_post_template_recipients(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.TemplateRecipients.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.Recipients.t()} | {:error, Tesla.Env.t()}
   def recipients_post_template_recipients(connection, account_id, template_id, opts \\ []) do
     optional_params = %{
-      resend_envelope: :query,
-      templateRecipients: :body
+      :resend_envelope => :query,
+      :templateRecipients => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/recipients")
+    |> url("/v2.1/accounts/#{account_id}/templates/#{template_id}/recipients")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.TemplateRecipients{})
+    |> decode(%DocuSign.Model.Recipients{})
   end
 
   @doc """
@@ -171,11 +171,11 @@ defmodule DocuSign.Api.TemplateRecipients do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :resend_envelope (String.t): When set to **true**, resends the   envelope if the new recipient&#39;s routing order is before or the same as the envelope&#39;s next recipient.
-    - :template_recipients (TemplateRecipients): 
+    - :resend_envelope (String.t): When set to **true**, resends the envelope to the recipients that you specify in the request body. You use this parameter to resend the envelope to a recipient who deleted the original email notification.  **Note**: Correcting an envelope is a different process. DocuSign always resends an envelope when you correct it, regardless of the value that you enter here.
+    - :template_recipients (TemplateRecipients):
 
   ## Returns
 
@@ -186,16 +186,53 @@ defmodule DocuSign.Api.TemplateRecipients do
           {:ok, DocuSign.Model.RecipientsUpdateSummary.t()} | {:error, Tesla.Env.t()}
   def recipients_put_template_recipients(connection, account_id, template_id, opts \\ []) do
     optional_params = %{
-      resend_envelope: :query,
-      templateRecipients: :body
+      :resend_envelope => :query,
+      :templateRecipients => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/recipients")
+    |> url("/v2.1/accounts/#{account_id}/templates/#{template_id}/recipients")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.RecipientsUpdateSummary{})
+  end
+
+  @doc """
+  Creates a template recipient preview.
+  This method returns a URL for a template recipient preview  in the DocuSign UI that you can embed in your application. You use this method to enable the sender to preview the recipients&#39; experience.  For more information, see [Preview and Send](https://support.docusign.com/en/guides/ndse-user-guide-send-your-documents).
+
+  ## Parameters
+
+  - connection (DocuSign.Connection): Connection to server
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - template_id (String.t): The id of the template.
+  - opts (KeywordList): [optional] Optional parameters
+    - :recipient_preview_request (RecipientPreviewRequest):
+
+  ## Returns
+
+  {:ok, %DocuSign.Model.ViewUrl{}} on success
+  {:error, info} on failure
+  """
+  @spec views_post_template_recipient_preview(
+          Tesla.Env.client(),
+          String.t(),
+          String.t(),
+          keyword()
+        ) :: {:ok, DocuSign.Model.ViewUrl.t()} | {:error, Tesla.Env.t()}
+  def views_post_template_recipient_preview(connection, account_id, template_id, opts \\ []) do
+    optional_params = %{
+      :recipientPreviewRequest => :body
+    }
+
+    %{}
+    |> method(:post)
+    |> url("/v2.1/accounts/#{account_id}/templates/#{template_id}/views/recipient_preview")
+    |> add_optional_params(optional_params, opts)
+    |> Enum.into([])
+    |> (&Connection.request(connection, &1)).()
+    |> decode(%DocuSign.Model.ViewUrl{})
   end
 end

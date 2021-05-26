@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.SupportedLanguages do
   @moduledoc """
-
+  A list of supported languages.
   """
 
   @derive [Poison.Encoder]

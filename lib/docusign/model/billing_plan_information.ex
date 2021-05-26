@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.BillingPlanInformation do
   @moduledoc """
-
+  This object contains details about a billing plan.
   """
 
   @derive [Poison.Encoder]
@@ -12,10 +12,12 @@ defmodule DocuSign.Model.BillingPlanInformation do
     :appStoreReceipt,
     :billingAddress,
     :creditCardInformation,
+    :directDebitProcessorInformation,
     :downgradeReason,
     :enableSupport,
     :includedSeats,
     :incrementalSeats,
+    :paymentMethod,
     :paymentProcessorInformation,
     :planInformation,
     :referralInformation,
@@ -31,10 +33,12 @@ defmodule DocuSign.Model.BillingPlanInformation do
           :appStoreReceipt => AppStoreReceipt,
           :billingAddress => AccountAddress,
           :creditCardInformation => CreditCardInformation,
+          :directDebitProcessorInformation => DirectDebitProcessorInformation,
           :downgradeReason => String.t(),
           :enableSupport => String.t(),
           :includedSeats => String.t(),
           :incrementalSeats => String.t(),
+          :paymentMethod => String.t(),
           :paymentProcessorInformation => PaymentProcessorInformation,
           :planInformation => PlanInformation,
           :referralInformation => ReferralInformation,
@@ -54,7 +58,18 @@ defimpl Poison.Decoder, for: DocuSign.Model.BillingPlanInformation do
     value
     |> deserialize(:appStoreReceipt, :struct, DocuSign.Model.AppStoreReceipt, options)
     |> deserialize(:billingAddress, :struct, DocuSign.Model.AccountAddress, options)
-    |> deserialize(:creditCardInformation, :struct, DocuSign.Model.CreditCardInformation, options)
+    |> deserialize(
+      :creditCardInformation,
+      :struct,
+      DocuSign.Model.CreditCardInformation,
+      options
+    )
+    |> deserialize(
+      :directDebitProcessorInformation,
+      :struct,
+      DocuSign.Model.DirectDebitProcessorInformation,
+      options
+    )
     |> deserialize(
       :paymentProcessorInformation,
       :struct,
@@ -62,6 +77,11 @@ defimpl Poison.Decoder, for: DocuSign.Model.BillingPlanInformation do
       options
     )
     |> deserialize(:planInformation, :struct, DocuSign.Model.PlanInformation, options)
-    |> deserialize(:referralInformation, :struct, DocuSign.Model.ReferralInformation, options)
+    |> deserialize(
+      :referralInformation,
+      :struct,
+      DocuSign.Model.ReferralInformation,
+      options
+    )
   end
 end

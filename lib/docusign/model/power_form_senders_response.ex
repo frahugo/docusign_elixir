@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.PowerFormSendersResponse do
   @moduledoc """
-
+  This object includes information about the users who have sent PowerForms.
   """
 
   @derive [Poison.Encoder]
@@ -19,13 +19,13 @@ defmodule DocuSign.Model.PowerFormSendersResponse do
   ]
 
   @type t :: %__MODULE__{
-          :endPosition => String.t(),
+          :endPosition => integer(),
           :nextUri => String.t(),
           :powerFormSenders => [UserInfo],
           :previousUri => String.t(),
-          :resultSetSize => String.t(),
-          :startPosition => String.t(),
-          :totalSetSize => String.t()
+          :resultSetSize => integer(),
+          :startPosition => integer(),
+          :totalSetSize => integer()
         }
 end
 

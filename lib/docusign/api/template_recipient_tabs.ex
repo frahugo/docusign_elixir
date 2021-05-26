@@ -17,15 +17,15 @@ defmodule DocuSign.Api.TemplateRecipientTabs do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - recipient_id (String.t): The &#x60;recipientId&#x60; used when the envelope or template was created.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - recipient_id (String.t): A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each &#x60;recipientId&#x60; must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a &#x60;recipientId&#x60; of &#x60;1&#x60;.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :template_tabs (TemplateTabs): 
+    - :template_tabs (TemplateTabs):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.TemplateRecipientTabs{}} on success
+  {:ok, %DocuSign.Model.Tabs{}} on success
   {:error, info} on failure
   """
   @spec recipients_delete_template_recipient_tabs(
@@ -34,7 +34,7 @@ defmodule DocuSign.Api.TemplateRecipientTabs do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.TemplateRecipientTabs.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.Tabs.t()} | {:error, Tesla.Env.t()}
   def recipients_delete_template_recipient_tabs(
         connection,
         account_id,
@@ -43,16 +43,18 @@ defmodule DocuSign.Api.TemplateRecipientTabs do
         opts \\ []
       ) do
     optional_params = %{
-      templateTabs: :body
+      :templateTabs => :body
     }
 
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/recipients/#{recipient_id}/tabs")
+    |> url(
+      "/v2.1/accounts/#{account_id}/templates/#{template_id}/recipients/#{recipient_id}/tabs"
+    )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.TemplateRecipientTabs{})
+    |> decode(%DocuSign.Model.Tabs{})
   end
 
   @doc """
@@ -62,16 +64,16 @@ defmodule DocuSign.Api.TemplateRecipientTabs do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - recipient_id (String.t): The &#x60;recipientId&#x60; used when the envelope or template was created.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - recipient_id (String.t): A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each &#x60;recipientId&#x60; must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a &#x60;recipientId&#x60; of &#x60;1&#x60;.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :include_anchor_tab_locations (String.t): When set to **true**, all tabs with anchor tab properties are included in the response. 
-    - :include_metadata (String.t): Reserved for DocuSign. 
+    - :include_anchor_tab_locations (String.t): When set to **true**, all tabs with anchor tab properties are included in the response. The default value is **false**.
+    - :include_metadata (String.t): When set to **true**, the response includes metadata indicating which properties are editable.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.TemplateRecipientTabs{}} on success
+  {:ok, %DocuSign.Model.Tabs{}} on success
   {:error, info} on failure
   """
   @spec recipients_get_template_recipient_tabs(
@@ -80,7 +82,7 @@ defmodule DocuSign.Api.TemplateRecipientTabs do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.TemplateRecipientTabs.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.Tabs.t()} | {:error, Tesla.Env.t()}
   def recipients_get_template_recipient_tabs(
         connection,
         account_id,
@@ -89,17 +91,19 @@ defmodule DocuSign.Api.TemplateRecipientTabs do
         opts \\ []
       ) do
     optional_params = %{
-      include_anchor_tab_locations: :query,
-      include_metadata: :query
+      :include_anchor_tab_locations => :query,
+      :include_metadata => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/recipients/#{recipient_id}/tabs")
+    |> url(
+      "/v2.1/accounts/#{account_id}/templates/#{template_id}/recipients/#{recipient_id}/tabs"
+    )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.TemplateRecipientTabs{})
+    |> decode(%DocuSign.Model.Tabs{})
   end
 
   @doc """
@@ -109,15 +113,15 @@ defmodule DocuSign.Api.TemplateRecipientTabs do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - recipient_id (String.t): The &#x60;recipientId&#x60; used when the envelope or template was created.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - recipient_id (String.t): A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each &#x60;recipientId&#x60; must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a &#x60;recipientId&#x60; of &#x60;1&#x60;.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :template_tabs (TemplateTabs): 
+    - :template_tabs (TemplateTabs):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.TemplateRecipientTabs{}} on success
+  {:ok, %DocuSign.Model.Tabs{}} on success
   {:error, info} on failure
   """
   @spec recipients_post_template_recipient_tabs(
@@ -126,7 +130,7 @@ defmodule DocuSign.Api.TemplateRecipientTabs do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.TemplateRecipientTabs.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.Tabs.t()} | {:error, Tesla.Env.t()}
   def recipients_post_template_recipient_tabs(
         connection,
         account_id,
@@ -135,16 +139,18 @@ defmodule DocuSign.Api.TemplateRecipientTabs do
         opts \\ []
       ) do
     optional_params = %{
-      templateTabs: :body
+      :templateTabs => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/recipients/#{recipient_id}/tabs")
+    |> url(
+      "/v2.1/accounts/#{account_id}/templates/#{template_id}/recipients/#{recipient_id}/tabs"
+    )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.TemplateRecipientTabs{})
+    |> decode(%DocuSign.Model.Tabs{})
   end
 
   @doc """
@@ -154,15 +160,15 @@ defmodule DocuSign.Api.TemplateRecipientTabs do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - recipient_id (String.t): The &#x60;recipientId&#x60; used when the envelope or template was created.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - recipient_id (String.t): A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each &#x60;recipientId&#x60; must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a &#x60;recipientId&#x60; of &#x60;1&#x60;.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :template_tabs (TemplateTabs): 
+    - :template_tabs (TemplateTabs):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.TemplateRecipientTabs{}} on success
+  {:ok, %DocuSign.Model.Tabs{}} on success
   {:error, info} on failure
   """
   @spec recipients_put_template_recipient_tabs(
@@ -171,7 +177,7 @@ defmodule DocuSign.Api.TemplateRecipientTabs do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.TemplateRecipientTabs.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.Tabs.t()} | {:error, Tesla.Env.t()}
   def recipients_put_template_recipient_tabs(
         connection,
         account_id,
@@ -180,15 +186,17 @@ defmodule DocuSign.Api.TemplateRecipientTabs do
         opts \\ []
       ) do
     optional_params = %{
-      templateTabs: :body
+      :templateTabs => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/recipients/#{recipient_id}/tabs")
+    |> url(
+      "/v2.1/accounts/#{account_id}/templates/#{template_id}/recipients/#{recipient_id}/tabs"
+    )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.TemplateRecipientTabs{})
+    |> decode(%DocuSign.Model.Tabs{})
   end
 end

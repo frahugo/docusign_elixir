@@ -4,25 +4,36 @@
 
 defmodule DocuSign.Model.ListItem do
   @moduledoc """
-  One of the selectable items in the &#x60;listItems&#x60; property of a [&#x60;list&#x60;](/esign/restapi/Envelopes/EnvelopeRecipientTabs/create/#/definitions/list) tab.
+  One of the selectable items in the &#x60;listItems&#x60; property of a [&#x60;list&#x60;](https://developers.docusign.com/docs/esign-rest-api/reference/Envelopes/EnvelopeRecipientTabs/create/) tab.
   """
 
   @derive [Poison.Encoder]
   defstruct [
     :selected,
+    :selectedMetadata,
     :text,
-    :value
+    :textMetadata,
+    :value,
+    :valueMetadata
   ]
 
   @type t :: %__MODULE__{
           :selected => String.t(),
+          :selectedMetadata => PropertyMetadata,
           :text => String.t(),
-          :value => String.t()
+          :textMetadata => PropertyMetadata,
+          :value => String.t(),
+          :valueMetadata => PropertyMetadata
         }
 end
 
 defimpl Poison.Decoder, for: DocuSign.Model.ListItem do
-  def decode(value, _options) do
+  import DocuSign.Deserializer
+
+  def decode(value, options) do
     value
+    |> deserialize(:selectedMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:textMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:valueMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
   end
 end

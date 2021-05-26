@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.ConnectLog do
   @moduledoc """
-
+  Contains information about a Connect log entry.
   """
 
   @derive [Poison.Encoder]

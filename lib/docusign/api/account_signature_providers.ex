@@ -11,13 +11,13 @@ defmodule DocuSign.Api.AccountSignatureProviders do
   import DocuSign.RequestBuilder
 
   @doc """
-  Returns Account available signature providers for specified account.
-
+  Gets the available signature providers for an account.
+  Returns a list of signature providers that the specified account can use.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -33,7 +33,7 @@ defmodule DocuSign.Api.AccountSignatureProviders do
   def account_signature_providers_get_signature_providers(connection, account_id, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/signatureProviders")
+    |> url("/v2.1/accounts/#{account_id}/signatureProviders")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.AccountSignatureProviders{})

@@ -17,11 +17,11 @@ defmodule DocuSign.Model.MatchBox do
   ]
 
   @type t :: %__MODULE__{
-          :height => integer(),
-          :pageNumber => integer(),
-          :width => integer(),
-          :xPosition => integer(),
-          :yPosition => integer()
+          :height => String.t(),
+          :pageNumber => String.t(),
+          :width => String.t(),
+          :xPosition => String.t(),
+          :yPosition => String.t()
         }
 end
 

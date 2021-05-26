@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.MemberGroupSharedItem do
   @moduledoc """
-
+  Information about items shared among groups.
   """
 
   @derive [Poison.Encoder]

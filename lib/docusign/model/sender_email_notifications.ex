@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.SenderEmailNotifications do
   @moduledoc """
-
+  Contains the settings for the email notifications that senders receive about the envelopes that they send.
   """
 
   @derive [Poison.Encoder]
@@ -15,6 +15,8 @@ defmodule DocuSign.Model.SenderEmailNotifications do
     :deliveryFailed,
     :envelopeComplete,
     :offlineSigningFailed,
+    :powerformResponsesLimitNotificationEmail,
+    :purgeDocuments,
     :recipientViewed,
     :senderEnvelopeDeclined,
     :withdrawnConsent
@@ -27,6 +29,8 @@ defmodule DocuSign.Model.SenderEmailNotifications do
           :deliveryFailed => String.t(),
           :envelopeComplete => String.t(),
           :offlineSigningFailed => String.t(),
+          :powerformResponsesLimitNotificationEmail => String.t(),
+          :purgeDocuments => String.t(),
           :recipientViewed => String.t(),
           :senderEnvelopeDeclined => String.t(),
           :withdrawnConsent => String.t()

@@ -17,16 +17,17 @@ defmodule DocuSign.Api.Folders do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - folder_id (String.t): The ID of the folder being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - folder_id (String.t): The id of the folder.
   - opts (KeywordList): [optional] Optional parameters
-    - :from_date (String.t):  Only return items on or after this date. If no value is provided, the default search is the previous 30 days. 
-    - :owner_email (String.t):  The email of the folder owner. 
-    - :owner_name (String.t):  The name of the folder owner. 
-    - :search_text (String.t):  The search text used to search the items of the envelope. The search looks at recipient names and emails, envelope custom fields, sender name, and subject. 
-    - :start_position (String.t): The position of the folder items to return. This is used for repeated calls, when the number of envelopes returned is too much for one return (calls return 100 envelopes at a time). The default value is 0.
-    - :status (String.t): A comma-separated list of current envelope statuses to included in the response. Possible values are:  * completed * created * declined * deleted * delivered * processing * sent * signed * timedout * voided  The &#x60;any&#x60; value is equivalent to any status.  
-    - :to_date (String.t): Only return items up to this date. If no value is provided, the default search is to the current date.
+    - :from_date (String.t): Reserved for DocuSign.
+    - :include_items (String.t): Indicates whether folder items are included in the response. If this parameter is omitted, the default is false.
+    - :owner_email (String.t): Reserved for DocuSign.
+    - :owner_name (String.t): Reserved for DocuSign.
+    - :search_text (String.t): Reserved for DocuSign.
+    - :start_position (String.t): Reserved for DocuSign.
+    - :status (String.t): Reserved for DocuSign.
+    - :to_date (String.t): Reserved for DocuSign.
 
   ## Returns
 
@@ -37,18 +38,19 @@ defmodule DocuSign.Api.Folders do
           {:ok, DocuSign.Model.FolderItemsResponse.t()} | {:error, Tesla.Env.t()}
   def folders_get_folder_items(connection, account_id, folder_id, opts \\ []) do
     optional_params = %{
-      from_date: :query,
-      owner_email: :query,
-      owner_name: :query,
-      search_text: :query,
-      start_position: :query,
-      status: :query,
-      to_date: :query
+      :from_date => :query,
+      :include_items => :query,
+      :owner_email => :query,
+      :owner_name => :query,
+      :search_text => :query,
+      :start_position => :query,
+      :status => :query,
+      :to_date => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/folders/#{folder_id}")
+    |> url("/v2.1/accounts/#{account_id}/folders/#{folder_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -62,78 +64,80 @@ defmodule DocuSign.Api.Folders do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :include (String.t): Reserved for DocuSign. 
-    - :start_position (String.t): Reserved for DocuSign. 
-    - :template (String.t): Specifies the items that are returned. Valid values are:   * include - The folder list will return normal folders plus template folders.  * only - Only the list of template folders are returned.
-    - :user_filter (String.t): Reserved for DocuSign. 
+    - :include (String.t): A comma-separated list of folder types to include in the response. Valid values are:  - &#x60;envelope_folders&#x60;: Returns a list of envelope folders. (Default) - &#x60;template_folders&#x60;: Returns a list of template folders.  - &#x60;shared_template_folders&#x60;: Returns a list of shared template folders.
+    - :include_items (String.t): Indicates whether folder items are included in the response. If this parameter is omitted, the default is false.
+    - :start_position (String.t): The position within the total result set from which to start returning values.
+    - :template (String.t): This parameter is deprecated as of version 2.1. Use &#x60;include&#x60; instead.
+    - :user_filter (String.t): Narrows down the resulting folder list by the following values:  - &#x60;all&#x60;: Returns all templates owned or shared with the user. (default) - &#x60;owned_by_me&#x60;: Returns only  templates the user owns. - &#x60;shared_with_me&#x60;: Returns only templates that are shared with the user.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.Folders{}} on success
+  {:ok, %DocuSign.Model.FoldersResponse{}} on success
   {:error, info} on failure
   """
   @spec folders_get_folders(Tesla.Env.client(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.Folders.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.FoldersResponse.t()} | {:error, Tesla.Env.t()}
   def folders_get_folders(connection, account_id, opts \\ []) do
     optional_params = %{
-      include: :query,
-      start_position: :query,
-      template: :query,
-      user_filter: :query
+      :include => :query,
+      :include_items => :query,
+      :start_position => :query,
+      :template => :query,
+      :user_filter => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/folders")
+    |> url("/v2.1/accounts/#{account_id}/folders")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.Folders{})
+    |> decode(%DocuSign.Model.FoldersResponse{})
   end
 
   @doc """
   Moves an envelope from its current folder to the specified folder.
-  Moves an envelope from its current folder to the specified folder.  ###### Note: You can use this endpoint to delete envelopes by specifying &#x60;recyclebin&#x60; in the &#x60;folderId&#x60; parameter of the endpoint. Placing an in process envelope (envelope status of &#x60;sent&#x60; or &#x60;delivered&#x60;) in the recycle bin voids the envelope. You can also use this endpoint to delete templates by specifying a template ID instead of an envelope ID in the &#39;envelopeIds&#39; property and specifying &#x60;recyclebin&#x60; in the &#x60;folderId&#x60; parameter. 
+  Moves an envelope from its current folder to the specified folder.  You can use this method to delete envelopes by specifying &#x60;recyclebin&#x60; in the &#x60;folderId&#x60; parameter. Placing an in-process envelope (envelope status of &#x60;sent&#x60; or &#x60;delivered&#x60;) in the recycle bin voids the envelope.  You can also use this method to delete templates by specifying a template ID instead of an envelope ID in the &#x60;envelopeIds&#x60; property and specifying &#x60;recyclebin&#x60; in the &#x60;folderId&#x60; parameter.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - folder_id (String.t): The ID of the folder being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - folder_id (String.t): The id of the folder.
   - opts (KeywordList): [optional] Optional parameters
-    - :folders_request (FoldersRequest): 
+    - :folders_request (FoldersRequest):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.Folders{}} on success
+  {:ok, %DocuSign.Model.FoldersResponse{}} on success
   {:error, info} on failure
   """
   @spec folders_put_folder_by_id(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.Folders.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.FoldersResponse.t()} | {:error, Tesla.Env.t()}
   def folders_put_folder_by_id(connection, account_id, folder_id, opts \\ []) do
     optional_params = %{
-      foldersRequest: :body
+      :foldersRequest => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/folders/#{folder_id}")
+    |> url("/v2.1/accounts/#{account_id}/folders/#{folder_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.Folders{})
+    |> decode(%DocuSign.Model.FoldersResponse{})
   end
 
   @doc """
   Gets a list of envelopes in folders matching the specified criteria.
-  Retrieves a list of envelopes that match the criteria specified in the query.  If the user ID of the user making the call is the same as the user ID for any returned recipient, then the userId property is added to the returned information for those recipients.
+  **This method is deprecated in API v2.1.**  Use  [Envelopes::listStatusChanges](https://developers.docusign.com/docs/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges) instead.  Retrieves a list of items that match the criteria specified in the query.  If the user ID of the user making the call is the same as the user ID for any returned recipient, then the userId property is added to the returned information for those recipients.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - search_folder_id (String.t): Specifies the envelope group that is searched by the request. These are logical groupings, not actual folder names. Valid values are: drafts, awaiting_my_signature, completed, out_for_signature.
   - opts (KeywordList): [optional] Optional parameters
     - :all (String.t): Specifies that all envelopes that match the criteria are returned.
@@ -163,19 +167,19 @@ defmodule DocuSign.Api.Folders do
         opts \\ []
       ) do
     optional_params = %{
-      all: :query,
-      count: :query,
-      from_date: :query,
-      include_recipients: :query,
-      order: :query,
-      order_by: :query,
-      start_position: :query,
-      to_date: :query
+      :all => :query,
+      :count => :query,
+      :from_date => :query,
+      :include_recipients => :query,
+      :order => :query,
+      :order_by => :query,
+      :start_position => :query,
+      :to_date => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/search_folders/#{search_folder_id}")
+    |> url("/v2.1/accounts/#{account_id}/search_folders/#{search_folder_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()

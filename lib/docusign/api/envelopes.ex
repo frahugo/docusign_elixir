@@ -17,8 +17,8 @@ defmodule DocuSign.Api.Envelopes do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -31,7 +31,7 @@ defmodule DocuSign.Api.Envelopes do
   def audit_events_get_audit_events(connection, account_id, envelope_id, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/audit_events")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/audit_events")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.EnvelopeAuditEventResponse{})
@@ -39,61 +39,78 @@ defmodule DocuSign.Api.Envelopes do
 
   @doc """
   Gets the status of a single envelope.
-  Retrieves the overall status for the specified envelope.  To get the status of a list of envelopes, use [Envelope: listStatusChanges ](/esign/restapi/Envelopes/Envelopes/listStatusChanges/)
+  Retrieves the overall status for the specified envelope. To get the status of a list of envelopes, use [Envelope: listStatusChanges ](https://developers.docusign.com/docs/esign-rest-api/reference/Envelopes/Envelopes/listStatusChanges/).
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :advanced_update (String.t): When true, envelope information can be added or modified.
-    - :include (String.t): Reserved for DocuSign. 
+    - :advanced_update (String.t): When **true**, envelope information can be added or modified.
+    - :include (String.t): Specifies additional information about the envelope to return. Enter a comma-separated list, such as &#x60;tabs,recipients&#x60;. Valid values are:  - &#x60;custom_fields&#x60;: The custom fields associated with the envelope. - &#x60;documents&#x60;: The documents associated with the envelope. - &#x60;attachments&#x60;: The attachments associated with the envelope. - &#x60;extensions&#x60;: Information about the email settings associated with the envelope. - &#x60;folders&#x60;: The folder where the envelope exists. - &#x60;recipients&#x60;: The recipients associated with the envelope. - &#x60;powerform&#x60;: The PowerForms associated with the envelope. - &#x60;tabs&#x60;: The tabs associated with the envelope. - &#x60;payment_tabs&#x60;: The payment tabs associated with the envelope.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.Envelopes{}} on success
+  {:ok, %DocuSign.Model.Envelope{}} on success
   {:error, info} on failure
   """
   @spec envelopes_get_envelope(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.Envelopes.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.Envelope.t()} | {:error, Tesla.Env.t()}
   def envelopes_get_envelope(connection, account_id, envelope_id, opts \\ []) do
     optional_params = %{
-      advanced_update: :query,
-      include: :query
+      :advanced_update => :query,
+      :include => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.Envelopes{})
+    |> decode(%DocuSign.Model.Envelope{})
   end
 
   @doc """
   Gets status changes for one or more envelopes.
-  Retrieves a list of envelopes that match your request.  A large set of optional filters let you filter by date, by envelope ID, or by status codes.  Your request must include one or more of the following parameters:  * &#x60;from_date&#x60; * &#x60;envelope_ids&#x60; * &#x60;transaction_ids&#x60;   Getting envelope status using &#x60;transaction_ids&#x60; is useful for offline signing situations where it can be used determine if an envelope was created or not. It can be used for the cases where a network connection was lost, before the envelope status could be returned.  To avoid unnecessary database queries, the DocuSign signature platform first checks requests to ensure that the filter set supplied does not result in a zero-size response before querying the database.   For example, for a request with a &#x60;from_to_status&#x60; of &#x60;delivered&#x60; and a current &#x60;status&#x60; of &#x60;created,sent&#x60;, DocuSign will always return an empty list.  This is because the request translates to: find the envelopes that were delivered between the &#x60;from_date&#x60; and &#x60;to_date&#x60; dates that have a current status of &#x60;created&#x60; or &#x60;sent&#x60;. Since an envelope that has been delivered can never have a status of &#x60;created&#x60; or &#x60;sent&#x60;, a zero-size response would be generated.  In this case, DocuSign does not query the database and returns an empty list immediately.   The following table shows the valid current envelope statuses (&#x60;status&#x60; parameter) for the different status qualifiers (&#x60;from_to_status&#x60; parameter) in the request. If the status and status qualifiers in the API request do not contain any of the values shown in the Valid Current Statuses column, then an empty list is returned.  Client applications should check that the statuses (&#x60;status&#x60; parameter) they are requesting make sense for a given &#x60;from_to_status&#x60; parameter value.  | Status Qualifier&lt;br&gt;(&#x60;from_to_status&#x60;) | Effective Status Qualifier | Valid Current Statuses                                                      |   | :------------------------------------- | :------------------------- | :-------------------------------------------------------------------------- |   | any (changed)                          | StatusChanged              | any, created, sent, delivered, signed, completed, declined, voided, deleted |   | created                                | Created                    | any, created, sent, delivered, signed, completed, declined, voided, deleted |   | sent                                   | Sent                       | any, sent, delivered, signed, completed, declined, voided, deleted          |   | delivered                              | StatusChanged              | any, delivered, signed, completed, declined, voided, deleted                |   | signed                                 | StatusChanged              | any, signed, completed, declined, voided, deleted                           |   | completed                              | Completed                  | any, completed, declined, voided, deleted                                   |   | declined                               | StatusChanged              | any, declined, voided, deleted                                              |   | timedout&lt;br&gt;always return zero results | StatusChanged              | any, voided, deleted                                                        |   | voided                                 | Voided                     | any, voided, deleted                                                        |   | deleted                                | StatusChanged              | any, deleted                                                                |    ## Extraneous results  In some cases, a request for a specific envelope status will include envelopes with additional statuses. For example, in a request with a &#x60;from_date&#x60; of 2017-01-01, a &#x60;to_date&#x60; of 2017-01-07 and the status qualifier (&#x60;from_to_status&#x60;) set to &#x60;delivered&#x60;, the response set might contain envelopes that were created during that time period, but not delivered during the time period. As a workaround, check the envelope status values in the result set as needed.  
+  Retrieves a list of envelopes that match your request.  A large set of optional filters let you filter by date, by envelope ID, or by status codes.  Your request must include one or more of the following parameters:  * &#x60;from_date&#x60; * &#x60;envelope_ids&#x60; * &#x60;transaction_ids&#x60;   Getting envelope status using &#x60;transaction_ids&#x60; is useful for offline signing situations where it can be used determine if an envelope was created or not. It can be used for the cases where a network connection was lost, before the envelope status could be returned.  To avoid unnecessary database queries, the DocuSign signature platform first checks requests to ensure that the filter set supplied does not result in a zero-size response before querying the database.   For example, for a request with a &#x60;from_to_status&#x60; of &#x60;delivered&#x60; and a current &#x60;status&#x60; of &#x60;created,sent&#x60;, DocuSign will always return an empty list.  This is because the request translates to: find the envelopes that were delivered between the &#x60;from_date&#x60; and &#x60;to_date&#x60; dates that have a current status of &#x60;created&#x60; or &#x60;sent&#x60;. Since an envelope that has been delivered can never have a status of &#x60;created&#x60; or &#x60;sent&#x60;, a zero-size response would be generated.  In this case, DocuSign does not query the database and returns an empty list immediately.   The following table shows the valid current envelope statuses (&#x60;status&#x60; parameter) for the different status qualifiers (&#x60;from_to_status&#x60; parameter) in the request. If the status and status qualifiers in the API request do not contain any of the values shown in the Valid Current Statuses column, then an empty list is returned.  Client applications should check that the statuses (&#x60;status&#x60; parameter) they are requesting make sense for a given &#x60;from_to_status&#x60; parameter value.  | Status Qualifier&lt;br&gt;(&#x60;from_to_status&#x60;) | Effective Status Qualifier | Valid Current Statuses                                                      |   | :------------------------------------- | :------------------------- | :-------------------------------------------------------------------------- |   | any (changed)                          | StatusChanged              | any, created, sent, delivered, signed, completed, declined, voided, deleted |   | created                                | Created                    | any, created, sent, delivered, signed, completed, declined, voided, deleted |   | sent                                   | Sent                       | any, sent, delivered, signed, completed, declined, voided, deleted          |   | delivered                              | StatusChanged              | any, delivered, signed, completed, declined, voided, deleted                |   | signed                                 | StatusChanged              | any, signed, completed, declined, voided, deleted                           |   | completed                              | Completed                  | any, completed, declined, voided, deleted                                   |   | declined                               | StatusChanged              | any, declined, voided, deleted                                              |   | timedout&lt;br&gt;always return zero results | StatusChanged              | any, voided, deleted                                                        |   | voided                                 | Voided                     | any, voided, deleted                                                        |   | deleted                                | StatusChanged              | any, deleted                                                                |    ## Extraneous results  In some cases, a request for a specific envelope status will include envelopes with additional statuses. For example, in a request with a &#x60;from_date&#x60; of 2017-01-01, a &#x60;to_date&#x60; of 2017-01-07 and the status qualifier (&#x60;from_to_status&#x60;) set to &#x60;delivered&#x60;, the response set might contain envelopes that were created during that time period, but not delivered during the time period. As a workaround, check the envelope status values in the result set as needed.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
     - :ac_status (String.t): Specifies the Authoritative Copy Status for the envelopes. The possible values are: Unknown, Original, Transferred, AuthoritativeCopy, AuthoritativeCopyExportPending, AuthoritativeCopyExported, DepositPending, Deposited, DepositedEO, or DepositFailed.
-    - :block (String.t): Reserved for DocuSign. 
-    - :count (String.t): Optional. Number of items to return. 
-    - :custom_field (String.t): Optional. Specifies a envelope custom field name and value searched for in the envelopes. Format: &#x60;custom_envelope_field_name&#x3D;desired_value&#x60;  The value portion of the query can use partial strings by adding &#39;%&#39; (percent sign) around the custom field query value.   Example 1: If you have an envelope custom field named \&quot;Region\&quot; and you want to search for all envelopes where the value is \&quot;West\&quot; you would use set this parameter to &#x60;Region&#x3D;West&#x60;.   Example 2: To search for envelopes where the &#x60;ApplicationID&#x60; custom field has the value or partial value of \&quot;DocuSign\&quot; in the field, set this parameter to &#x60;ApplicationId&#x3D;%DocuSign%&#x60; This would match envelopes where the custom field&#39;s value is \&quot;DocuSign for Salesforce\&quot; or \&quot;DocuSign envelope\&quot;.  
-    - :email (String.t): Limit results to envelopes sent by the account user with this email address.  &#x60;user_name&#x60; must be given as well, and both &#x60;email&#x60; and &#x60;user_name&#x60; must refer to an existing account user. 
+    - :block (String.t): Reserved for DocuSign.
+    - :cdse_mode (String.t): Reserved for DocuSign.
+    - :continuation_token (String.t): A token returned in the response to a previous API call that is used to resume a search query from a specific point.
+    - :count (String.t): Optional. Number of items to return. Currently there is no implicit maximum limit of the number of items that can be returned.
+    - :custom_field (String.t): Optional. Specifies a envelope custom field name and value searched for in the envelopes. Format: &#x60;custom_envelope_field_name&#x3D;desired_value&#x60;  Example: If you have an envelope custom field named \&quot;Region\&quot; and you want to search for all envelopes where the value is \&quot;West\&quot; you would use set this parameter to &#x60;Region&#x3D;West&#x60;.
+    - :email (String.t): Limit results to envelopes sent by the account user with this email address.  &#x60;user_name&#x60; must be given as well, and both &#x60;email&#x60; and &#x60;user_name&#x60; must refer to an existing account user.
     - :envelope_ids (String.t): Comma separated list of &#x60;envelopeId&#x60; values.
+    - :exclude (String.t): Excludes information from the response. Enter  as a comma-separated list (e.g., &#x60;folders,powerforms&#x60;). Valid values are:  - &#x60;recipients&#x60; - &#x60;powerforms&#x60; - &#x60;folders&#x60;
+    - :folder_ids (String.t): Returns the envelopes from specific folders. Enter as a comma-separated list of either valid folder Guids or the following values:   - &#x60;awaiting_my_signature&#x60; - &#x60;completed&#x60; - &#x60;draft&#x60; - &#x60;drafts&#x60; - &#x60;expiring_soon&#x60; - &#x60;inbox&#x60; - &#x60;out_for_signature&#x60; - &#x60;recyclebin&#x60; - &#x60;sentitems&#x60; - &#x60;waiting_for_others&#x60;
+    - :folder_types (String.t): A comma-separated list of folder types you want to retrieve envelopes from. Valid values are:   - &#x60;normal&#x60; - &#x60;inbox&#x60; - &#x60;sentitems&#x60; - &#x60;draft&#x60; - &#x60;templates&#x60;
     - :from_date (String.t): Specifies the date and time to start looking for status changes. This parameter is required unless &#x60;envelopeIds&#x60; or &#x60;transactionIds&#x60; are set.   Although you can use any date format supported by the .NET system library&#39;s [&#x60;DateTime.Parse()&#x60;][msoft] function, DocuSign recommends using [ISO 8601][] format dates with an explicit time zone offset If you do not provide a time zone offset, the method uses the server&#39;s time zone.  For example, the following dates and times refer to the same instant:  * &#x60;2017-05-02T01:44Z&#x60; * &#x60;2017-05-01T21:44-04:00&#x60; * &#x60;2017-05-01T18:44-07:00&#x60;   [msoft]: https://msdn.microsoft.com/en-us/library/system.datetime.parse(v&#x3D;vs.110).aspx#StringToParse [ISO 8601]: https://en.wikipedia.org/wiki/ISO_8601
-    - :from_to_status (String.t): The status value checked for in the &#x60;from_date&#x60; to &#x60;to_date&#x60; time period.   Possible values are: Voided, Changed, Created, Deleted, Sent, Delivered, Signed, Completed, Declined, TimedOut and Processing.  If &#x60;Changed&#x60; is specified, then envelopes that changed status during the period will be returned.   For example, if &#x60;Created&#x60; is specified, then envelopes created during the period are found.   The default is &#x60;Changed&#x60;. 
-    - :start_position (String.t): Reserved for DocuSign. 
-    - :status (String.t): A comma-separated list of current envelope statuses to included in the response. Possible values are:  * completed * created * declined * deleted * delivered * processing * sent * signed * timedout * voided  The &#x60;any&#x60; value is equivalent to any status.  
-    - :to_date (String.t): Specifies the date and time to stop looking for status changes. The default is the current date and time.  Although you can use any date format supported by the .NET system library&#39;s [&#x60;DateTime.Parse()&#x60;][msoft] function, DocuSign recommends using [ISO 8601][] format dates with an explicit time zone offset If you do not provide a time zone offset, the method uses the server&#39;s time zone.  For example, the following dates and times refer to the same instant:  * &#x60;2017-05-02T01:44Z&#x60; * &#x60;2017-05-01T21:44-04:00&#x60; * &#x60;2017-05-01T18:44-07:00&#x60;   [msoft]: https://msdn.microsoft.com/en-us/library/system.datetime.parse(v&#x3D;vs.110).aspx#StringToParse [ISO 8601]: https://en.wikipedia.org/wiki/ISO_8601 
-    - :transaction_ids (String.t): A comma-separated list of envelope transaction IDs. Transaction IDs are only valid for seven days. 
-    - :user_name (String.t): Limit results to envelopes sent by the account user with this user name.  &#x60;email&#x60; must be given as well, and both &#x60;email&#x60; and &#x60;user_name&#x60; must refer to an existing account user. 
+    - :from_to_status (String.t): This is the status type checked for in the &#x60;from_date&#x60;/&#x60;to_date&#x60; period. If &#x60;changed&#x60; is specified, then envelopes that changed status during the period are found. If for example, &#x60;created&#x60; is specified, then envelopes created during the period are found. Default is &#x60;changed&#x60;.   Possible values are: Voided, Changed, Created, Deleted, Sent, Delivered, Signed, Completed, Declined, TimedOut and Processing.
+    - :include (String.t): Specifies additional information to return  about the envelopes. Enter a comma-separated list, such as &#x60;tabs,recipients&#x60;. Valid values are:  - &#x60;custom_fields&#x60;: The custom fields associated with the envelope. - &#x60;documents&#x60;: The documents associated with the envelope. - &#x60;attachments&#x60;: The attachments associated with the envelope. - &#x60;extensions&#x60;: Information about the email settings associated with the envelope. - &#x60;folders&#x60;: The folders where the envelope exists. - &#x60;recipients&#x60;: The recipients associated with the envelope. - &#x60;powerform&#x60;: The PowerForms associated with the envelope. - &#x60;payment_tabs&#x60;: The payment tabs associated with the envelope.
+    - :include_purge_information (String.t): When set to **true**, information about envelopes that have been deleted is included in the response.
+    - :intersecting_folder_ids (String.t): A comma-separated list of folders that you want want to get envelopes from. Valid values are:   - &#x60;normal&#x60; - &#x60;inbox&#x60; - &#x60;sentitems&#x60; - &#x60;draft&#x60; - &#x60;templates&#x60;
+    - :last_queried_date (String.t): Returns envelopes that were modified prior to the specified date and time.   Example: &#x60;2020-05-09T21:56:12.2500000Z&#x60;
+    - :order (String.t): Returns envelopes in either ascending (&#x60;asc&#x60;) or descending (&#x60;desc&#x60;) order.
+    - :order_by (String.t): Sorts results according to a specific property. Valid values are:  - &#x60;last_modified&#x60; - &#x60;action_required&#x60; - &#x60;created&#x60; - &#x60;completed&#x60; - &#x60;envelope_name&#x60; - &#x60;expire&#x60; - &#x60;sent&#x60; - &#x60;signer_list&#x60; - &#x60;status&#x60; - &#x60;subject&#x60; - &#x60;user_name&#x60; - &#x60;status_changed&#x60; - &#x60;last_modified&#x60;
+    - :powerformids (String.t): A comma-separated list of &#x60;PowerFormId&#x60; values.
+    - :query_budget (String.t): The time in seconds that the query should run before returning data.
+    - :requester_date_format (String.t):
+    - :search_text (String.t): Free text search criteria that you can use to filter the list of envelopes that is returned.
+    - :start_position (String.t): This value is supported and currently has no implicit maximum items.
+    - :status (String.t): A comma-separated list of current envelope statuses to included in the response. Possible values are:  * &#x60;completed&#x60; * &#x60;created&#x60; * &#x60;declined&#x60; * &#x60;deleted&#x60; * &#x60;delivered&#x60; * &#x60;processing&#x60; * &#x60;sent&#x60; * &#x60;signed&#x60; * &#x60;timedout&#x60; * &#x60;voided&#x60;  The &#x60;any&#x60; value is equivalent to any status.
+    - :to_date (String.t): Specifies the date and time to stop looking for status changes. The default is the current date and time.  Although you can use any date format supported by the .NET system library&#39;s [&#x60;DateTime.Parse()&#x60;][msoft] function, DocuSign recommends using [ISO 8601][] format dates with an explicit time zone offset If you do not provide a time zone offset, the method uses the server&#39;s time zone.  For example, the following dates and times refer to the same instant:  * &#x60;2017-05-02T01:44Z&#x60; * &#x60;2017-05-01T21:44-04:00&#x60; * &#x60;2017-05-01T18:44-07:00&#x60;   [msoft]: https://msdn.microsoft.com/en-us/library/system.datetime.parse(v&#x3D;vs.110).aspx#StringToParse [ISO 8601]: https://en.wikipedia.org/wiki/ISO_8601
+    - :transaction_ids (String.t): If included in the query string, this is a comma separated list of envelope &#x60;transactionId&#x60;s.   If included in the &#x60;request_body&#x60;, this is a list of envelope &#x60;transactionId&#x60;s.   ###### Note: &#x60;transactionId&#x60;s are only valid in the DocuSign system for seven days.
+    - :user_filter (String.t): Returns envelopes where the current user is the recipient, the sender, or the recipient only. (For example, &#x60;user_filter&#x3D;sender&#x60;.) Valid values are:  - &#x60;sender&#x60; - &#x60;recipient&#x60; - &#x60;recipient_only&#x60;
+    - :user_id (String.t): The ID of the user who created the envelopes to be retrieved. Note that an account can have multiple users, and any user with account access can retrieve envelopes by user_id from the account.
+    - :user_name (String.t): Limit results to envelopes sent by the account user with this user name.  &#x60;email&#x60; must be given as well, and both &#x60;email&#x60; and &#x60;user_name&#x60; must refer to an existing account user.
 
   ## Returns
 
@@ -104,24 +121,41 @@ defmodule DocuSign.Api.Envelopes do
           {:ok, DocuSign.Model.EnvelopesInformation.t()} | {:error, Tesla.Env.t()}
   def envelopes_get_envelopes(connection, account_id, opts \\ []) do
     optional_params = %{
-      ac_status: :query,
-      block: :query,
-      count: :query,
-      custom_field: :query,
-      email: :query,
-      envelope_ids: :query,
-      from_date: :query,
-      from_to_status: :query,
-      start_position: :query,
-      status: :query,
-      to_date: :query,
-      transaction_ids: :query,
-      user_name: :query
+      :ac_status => :query,
+      :block => :query,
+      :cdse_mode => :query,
+      :continuation_token => :query,
+      :count => :query,
+      :custom_field => :query,
+      :email => :query,
+      :envelope_ids => :query,
+      :exclude => :query,
+      :folder_ids => :query,
+      :folder_types => :query,
+      :from_date => :query,
+      :from_to_status => :query,
+      :include => :query,
+      :include_purge_information => :query,
+      :intersecting_folder_ids => :query,
+      :last_queried_date => :query,
+      :order => :query,
+      :order_by => :query,
+      :powerformids => :query,
+      :query_budget => :query,
+      :requester_date_format => :query,
+      :search_text => :query,
+      :start_position => :query,
+      :status => :query,
+      :to_date => :query,
+      :transaction_ids => :query,
+      :user_filter => :query,
+      :user_id => :query,
+      :user_name => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/envelopes")
+    |> url("/v2.1/accounts/#{account_id}/envelopes")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -130,19 +164,18 @@ defmodule DocuSign.Api.Envelopes do
 
   @doc """
   Creates an envelope.
-  Creates and sends an envelope or creates a draft envelope. Envelopes are fundamental resources in the DocuSign platform and are used in a variety of ways.  With this method you can:  * Create and send an envelope   with documents, recipients, and tabs. * Create and send an envelope from a template. * Create and send an envelope from   a combination of documents and templates. * Create a draft envelope.  There are many ways to use envelopes. You can create and send an envelope with a single API request, or you can use several API requests to create, populate, and send envelopes.  When you use this method to create and send an envelope in a single request, the following parameters are required:  | Parameter      | Description | | :--------      | :---------- | | &#x60;status&#x60;       | Set to &#x60;sent&#x60; to send the envelope to recipients.&lt;br&gt;Set to &#x60;created&#x60; (or don&#39;t set at all) to save the envelope as a draft. | | &#x60;emailSubject&#x60; | The subject of the email used to send the envelope. | | &#x60;documents&#x60;    | The documents to be signed. | | &#x60;recipients&#x60;   | The email addresses of the envelope recipients. |  If you are creating an envelope to be sent later, save it as a draft by either setting &#x60;status&#x60; to &#x60;created&#x60; or leaving it unset. For instance, you can create a draft envelope with documents only. Using additional API requests, you can add the recipients and send the envelope in subsequent API requests.    ## Feature Availability  Not all DocuSign features are available to all accounts. Use DocuSign Admin to check and enable feature availability. You can also check feature availability via the web application. For example, if the web application allows you to send an envelope with SMS authentication, then you can use the same feature through the API.  ## Sending Envelopes  Documents can be included with the Envelopes:create method, or a template can include documents. Documents can be added by using a multipart/form request or by using the &#x60;documentBase64&#x60; property of the [&#x60;document&#x60; object][documentDef].  ### Adding Documents to Requests  There are two ways to add documents to your envelopes:  1. Use the &#x60;documents&#x60; property of the envelope definition. 2. Send this request as a multipart/form &#x60;POST&#x60;    with documents added through additional request parts.  Using the &#x60;documents&#x60; property is the simpler option, but the request may be quite large due to the base64 encoding. This example shows how to add a document using this method.  &#x60;&#x60;&#x60;json {   \&quot;status\&quot;: \&quot;sent\&quot;,   \&quot;emailSubject\&quot;: \&quot;Example of one recipient, type signer\&quot;,   \&quot;documents\&quot;: [{     \&quot;documentId\&quot;: \&quot;1\&quot;,     \&quot;name\&quot;: \&quot;contract.pdf\&quot;,     \&quot;documentBase64\&quot;: \&quot;base64 document bytes...\&quot;,   }],   \&quot;recipients\&quot;: {     \&quot;signers\&quot;: [{       \&quot;name\&quot;: \&quot;Lisa Simpson\&quot;,       \&quot;email\&quot;: \&quot;lisa@email.com\&quot;,       \&quot;recipientId\&quot;: \&quot;1\&quot;,       \&quot;routingOrder\&quot;: \&quot;1\&quot;,       \&quot;tabs\&quot;: {         \&quot;signHereTabs\&quot;: [{           \&quot;xPosition\&quot;: \&quot;150\&quot;,           \&quot;yPosition\&quot;: \&quot;200\&quot;,           \&quot;documentId\&quot;: \&quot;1\&quot;,           \&quot;pageNumber\&quot;: \&quot;1\&quot;         }],       }     }]   } } &#x60;&#x60;&#x60;  If you are using a multipart/form &#x60;POST&#x60; request, you do not have to base64 encode your documents. You place the envelope definition in one part and the document bytes in another:  &#x60;&#x60;&#x60; --AAA Content-Type: application/json Content-Disposition: form-data  &lt;ENVELOPE DEFINITION GOES HERE&gt; --AAA Content-Type:application/pdf Content-Disposition: file; filename&#x3D;\&quot;contract.pdf\&quot;; documentid&#x3D;1  &lt;DOCUMENT BYTES GO HERE&gt; --AAA-- &#x60;&#x60;&#x60;  ### Using Supplemental Documents  Supplemental documents are supporting materials such as disclosures and other informational documents that need to accompany a document sent for signature. These supplemental documents are available to the signer to view and acknowledge, without making the envelope too large or confusing for signers.  Supplemental documents use the following properties in the [&#x60;document&#x60; object][documentDef].  | Name                  | Type    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | | :-------------------- | :------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | | includeInDownload     | Boolean | When set to **true**, the document is included in the combined document download. The default value is **true**.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | | display               | String  | This string sets the display and behavior properties of the document during signing. The possible values are:&lt;br&gt;&#x60;&lt;ul&gt;&lt;li&gt;&lt;p&gt;&lt;code&gt;modal&lt;/code&gt;&lt;br&gt;The document is shown as a supplement action strip and can be viewed, downloaded, or printed in a modal window. This is the recommended value for supplemental documents.&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;&lt;code&gt;download&lt;/code&gt;&lt;br&gt;The document is shown as a supplement action strip and can be viewed, downloaded, or printed in a new browser window.&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;&lt;code&gt;inline&lt;/code&gt;&lt;br&gt;This value is not used with supplemental documents, but is the default value for all other documents. The document is shown in the normal signing window.&lt;/li&gt;&lt;/ul&gt; | | signerMustAcknowledge | String  | Sets how the signer interacts with the supplemental document. The possible values are:&lt;br&gt;&lt;ul&gt;&lt;li&gt;&lt;p&gt;&lt;code&gt;no_interaction&lt;/code&gt;&lt;br&gt;No recipient action is required.&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;&lt;code&gt;view&lt;/code&gt;&lt;br&gt;The recipient is required to view the document.&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;&lt;code&gt;accept&lt;/code&gt;&lt;br&gt;The recipient is required to accept the document by selecting accept during signing, but is not required to view the document.&lt;/p&gt;&lt;/li&gt;&lt;li&gt;&lt;p&gt;&lt;code&gt;view_accept&lt;/code&gt;&lt;br&gt;The recipient is required to view and accept the document.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;                                                                                                                                                    |   [viewtab]: /esign/restapi/Envelopes/EnvelopeRecipientTabs/#view-tab  The [View][viewtab] and Approve tabs are used to set the interactions for individual recipients. The View tab includes a &#x60;required&#x60; property that requires the recipient to view the supplemental document. If the View tab &#x60;required&#x60; property is not set, the recipient can, but is not required to, view the supplemental document.  To use the View and Approve tabs for supplemental documents, the document &#x60;display&#x60; property must be set to &#x60;modal&#x60; or &#x60;download&#x60;.  The actions that the recipient must take depend on the value of the &#x60;signerMustAcknowledge&#x60; document property and whether the signer is assigned View or Approve tabs on the document.  To set the interactions for individual recipients, set the &#x60;signerMustAcknowledge&#x60; property to &#x60;no_interaction&#x60;, then add View and Approve tabs on the appropriate document for the recipient.   The action that a signer must take depends on the value of the &#x60;signerMustAcknowledge&#x60; document property, whether the signer has an Approve tab, and the value of the &#x60;required&#x60; property of the View tab. The following table shows the actions a recipient must take for different combinations of these tabs and properties.    | Document &#x60;signerMustAcknowledge&#x60;property  | Approve Tab | View Tab &#x60;required&#x60; property  | Recipient is required to ...  | | :----                                     | :----       | :----                         | :----                         | | no_interaction                            | No          |  --                           |  Take no action               | | no_interaction                            | No          |  false                        |  Take no action               | | no_interaction                            | No          |  true                         |  View                         | | no_interaction                            | Yes         |  false                        |  Accept                       | | no_interaction                            | Yes         |  true                         |  View and Accept              | | view                                      | No          |  --                           |  View                         | | view                                      | Yes         |  --                           |  View and Accept              | | accept                                    | --          |  false                        |  Accept                       | | accept                                    | --          |  true                         |  View and Accept              | | view_accept                               | --          |  --                           |  View and Accept              |     ### Recipient Types  An [&#x60;envelopeDefinition&#x60; object][envelopeDef] is used as the method&#39;s body. Envelope recipients can be defined in the envelope or in templates. The &#x60;envelopeDefinition&#x60; object&#39;s &#x60;recipients&#x60; property is an [&#x60;EnvelopeRecipients&#x60; resource object][envelopeRecipientsDef]. It includes arrays of the seven types of recipients defined by DocuSign:  | Recipient type                      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | | :---------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | | [Agents][agentDef]                  | An agent recipient can add name and email information for recipients that appear after the agent in routing order.                                                                                                                                                                                                                                                                                                                                                                                  | | [Carbon Copies][ccDef]              | Carbon copy recipients get a copy of the envelope but don&#39;t need to sign, initial, date or add information to any of the documents. This type of recipient can be used in any routing order. Carbon copy recipients receive their copy of the envelope when the envelope reaches the recipient&#39;s order in the process flow and when the envelope is completed.                                                                                                                                      | | [Certified Deliveries][certfiedDef] | Certified delivery recipients must receive the completed documents for the envelope to be completed. However, they don&#39;t need to sign, initial, date or add information to any of the documents.                                                                                                                                                                                                                                                                                                    | | [Editors][editorDef]                | Editors have the same management and access rights for the envelope as the sender. They can make changes to the envelope as if they were using the Advanced Correct feature. This recipient can add name and email information, add or change the routing order and set authentication options for the remaining recipients. Additionally, this recipient can edit signature/initial tabs and data fields for the remaining recipients. The recipient must have a DocuSign account to be an editor. | | [In-Person Signers][inPersonDef]    | An in-person recipient is a DocuSign user, acting as a Signing Host, who is in the same physical location as the signer.                                                                                                                                                                                                                                                                                                                                                                            | | [Intermediaries][intermediaryDef]   | An intermediary is a recipient who can, but is not required to, add name and email information for recipients at the same or subsequent level in the routing order, unless subsequent agents, editors or intermediaries are added.                                                                                                                                                                                                                                                                  | | [Signers][signerDef]                | A signer is a recipient who must sign, initial, date, or add data to form fields on the documents in the envelope.                                                                                                                                                                                                                                                                                                                                                                                  |   Additional information about the different types of recipients is available from the [&#x60;EnvelopeRecipients&#x60; resource page][envelopeRecipientsRes] and from the Developer Center [Recipients][devecenterrecipients] topic.    ### Tabs  Tabs (also referred to as tags and fields in the web application), can be defined in the &#x60;envelopeDefinition&#x60;, in templates, by transforming PDF Form Fields, or by using Composite Templates (see below).  The &#x60;inPersonSigner&#x60;, and &#x60;signer&#x60; recipient objects include a &#x60;tabs&#x60; property. It is an [&#x60;EnvelopeRecipientTabs&#x60; resource object][envRecipientTabsDef] that includes arrays of the different tab types available. See the [&#x60;EnvelopeRecipientTabs&#x60; resource][envRecipientTabsRes] for more information.   ## Using Templates  Envelopes use specific people or groups as recipients. Templates can specify a role, eg &#x60;account_manager.&#x60; When a template is used in an envelope, the roles must be replaced with specific people or groups.  When you create an envelope using a &#x60;templateId&#x60;, the different recipient type objects within the [&#x60;EnvelopeRecipients&#x60; property][envelopeRecipientsDef] are used to assign recipients to the template&#39;s roles via the &#x60;roleName&#x60; property. The recipient objects can also override settings that were specified in the template, and set values for tab fields that were defined in the template.  ### Message Lock  When a template is added or applied to an envelope, and the template has a locked email subject and message, that subject and message are used for the envelope and cannot be changed even if another locked template is subsequently added or applied to the envelope. The &#x60;messageLock&#x60; property is used to lock the email subject and message.  If an email subject or message is entered before adding or applying a template with &#x60;messageLock&#x60; set to **true**, the email subject and message is overwritten with the locked email subject and message from the template.  ## Envelope Status  The status of sent envelopes can be determined through the DocuSign webhook system or by polling. Webhooks are highly recommended: they provide your application with the quickest updates when an envelope&#39;s status changes. DocuSign limits polling to once every 15 minutes or less frequently. See [API Rules and Limits][apirules] for more information and examples.   When a webhook is used, DocuSign calls your application via the URL you provide, with a notification XML message.  See the [Webhook recipe](https://www.docusign.com/developer-center/recipes/webhook-status) for examples and live demos of using webhooks.  ## Webhook Options  The two webhook options, &#x60;eventNotification&#x60; and Connect, use the same notification mechanism and message formats. Use &#x60;eventNotification&#x60; to create a webhook for a specific envelope sent via the API. Connect webhooks can be used for any envelope sent from an account, from any user, from any client. The [Connect guide][connectGuide] discusses the webhook notification message format.  ### eventNotification Webhooks  The Envelopes:create method includes an optional [&#x60;eventNotification&#x60; object][eventNotificationDef] property that adds a webhook to the envelope. &#x60;eventNotification&#x60; webhooks are available for all DocuSign accounts with API access.  ### Connect Webhooks  Connect can be used to create a webhook for all envelopes sent by all users in an account, either through the API or through other DocuSign clients (web, mobile, etc). Connect configurations are independent of specific envelopes. A Connect configuration includes a filter that may be used to limit the webhook to specific users, envelope statuses, etc.  You can create and manage Connect configurations with the [ConnectConfigurations resource][connectConfigurationsRes]. Configurations can also be created and managed from DocuSign Admin accessed by selecting **Go to Admin** from the menu next to your picture on the DocuSign web app. See the **Connect** topic in the **Integrations** section of DocuSign Admin. For repeatability, and to minimize support questions, creating Connect configurations via the API is recommended, especially for ISVs.  Connect is available for some DocuSign account types. Please contact DocuSign Sales for more information.  ## Composite Templates  The Composite Templates feature, like [compositing in film production](https://en.wikipedia.org/wiki/Compositing), enables you to overlay document, recipient, and tab definitions from multiple sources, including PDF Form Field definitions, templates defined on the server, and more.  Each Composite Template consists of optional elements: server templates, inline templates, PDF Metadata templates, and documents.  * The Composite Template ID is an optional element used to identify the   composite template. It is used as a reference when adding document   object information via a multipart HTTP message. If used, the document   content-disposition must include the &#x60;compositeTemplateId&#x60; to which the   document should be added. If &#x60;compositeTemplateId&#x60; is not specified in   the content-disposition, the document is applied based on the   &#x60;documentId&#x60; only. If no document object is specified, the composite   template inherits the first document.  * Server Templates are server-side templates stored on the DocuSign   platform. If supplied, they are overlaid into the envelope in the order   of their Sequence value.  * Inline Templates provide a container to add documents, recipients,   tabs, and custom fields. If inline templates are supplied, they are   overlaid into the envelope in the order of their Sequence value.  * Document objects are optional structures that provide a container to   pass in a document or form. If this object is not included, the   composite template inherits the *first* document it finds from a server   template or inline template, starting with the lowest sequence value.  PDF Form objects are only transformed from the document object. DocuSign does not derive PDF form properties from server templates or inline templates. To instruct DocuSign to transform fields from the PDF form, set &#x60;transformPdfFields&#x60; to **true** for the document.  See [PDF Form Field Transformation](#pdf-form-field-transformation) for more information about process.  * PDF Metadata Templates provide a container to embed design-time   template information into a PDF document. DocuSign uses this information   when processing the Envelope. This convention allows the document to   carry the signing instructions with it, so that less information needs   to be provided at run-time through an inline template or synchronized   with an external structure like a server template. PDF Metadata   templates are stored in the Metadata layer of a PDF in accordance with   Acrobat&#39;s XMP specification. DocuSign will only find PDF Metadata   templates inside documents passed in the Document object (see below). If   supplied, the PDF metadata template will be overlaid into the envelope   in the order of its Sequence value.  ### Compositing the Definitions  Each Composite Template adds a new document and templates overlay into the envelope. For each Composite Template these rules are applied:  * Templates are overlaid in the order of their Sequence value. * If Document is not passed into the Composite Template&#39;s &#x60;document&#x60;   field, the *first* template&#39;s document (based on the template&#39;s Sequence   value) is used. * Last in wins in all cases except for the document (i.e. envelope   information, recipient information, secure field information). There is   no special casing.  For example, if you want higher security on a tab, then that needs to be specified in a later template (by sequence number) than where the tab is included. If you want higher security on a role recipient, then it needs to be in a later template than where that role recipient is specified.  * Recipient matching is based on Recipient Role and Routing Order. If   there are matches, the recipient information is merged together. A final   pass is done on all Composite Templates, after all template overlays   have been applied, to collapse recipients with the same email, username   and routing order. This prevents having the same recipients at the same   routing order.  * If you specify in a template that a recipient is locked, once that   recipient is overlaid the recipient attributes can no longer be changed.   The only items that can be changed for the recipient in this case are   the email, username, access code and IDCheckInformationInput.  * Tab matching is based on Tab Labels, Tab Types and Documents. If a Tab   Label matches but the Document is not supplied, the Tab is overlaid for   all the Documents.  For example, if you have a simple inline template with only one tab in it with a label and a value, the Signature, Initial, Company, Envelope ID, User Name tabs will only be matched and collapsed if they fall in the exact same X and Y locations.  * &#x60;roleName&#x60; and &#x60;tabLabel&#x60; matching is case sensitive.  * The &#x60;defaultRecipient&#x60; property enables you to specify which recipient   the tabs generated from a PDF form are mapped to. You can also set PDF   form generated tabs to a recipient other than the default recipient by   specifying the mapping of the tab label that is created to one of the   template recipients.  * You can use &#x60;tabLabel&#x60; wild carding to map a series of tabs from the PDF   form. To use this you must end a tab label with \&quot;\\*\&quot; and then the system   matches tabs that start with the label.  * If no &#x60;defaultRecipient&#x60; is specified, tabs must be explicitly mapped   to recipients in order to be generated from the form. Unmapped form   objects will not be generated into their DocuSign equivalents. (In the   case of Signature/Initials, the tabs will be disregarded entirely; in   the case of pdf text fields, the field data will be flattened on the   Envelope document, but there will not be a corresponding DocuSign data   tab.)  ### Including the Document Content for Composite Templates  Document content can be supplied inline, using the &#x60;documentBase64&#x60; or can be included in a multipart HTTP message. If a multipart message is used and there are multiple Composite Templates, the document content-disposition can include the &#x60;compositeTemplateId&#x60; to which the document should be added. Using the &#x60;compositeTemplateId&#x60; sets which documents are associated with particular composite templates. An example of this usage is:  &#x60;&#x60;&#x60; --5cd3320a-5aac-4453-b3a4-cbb52a4cba5d Content-Type: application/pdf Content-Disposition: file; filename&#x3D;\&quot;eula.pdf\&quot;; documentId&#x3D;1; compositeTemplateId&#x3D;\&quot;1\&quot; Content-Transfer-Encoding: base64 &#x60;&#x60;&#x60;  ### PDF Form Field Transformation  Only the following PDF Form FieldTypes are transformed to DocuSign tabs:  * CheckBox * DateTime * ListBox * Numeric * Password * Radio * Signature, * Text  Field Properties that are transformed:  * Read Only * Required * Max Length * Positions * Initial Data  When transforming a PDF Form Digital Signature Field, the following rules apply. Any other PDF Form Digital Signature Field will be transformed to a DocuSign Signature tab   | If the PDF Field Name contains                              | Then the DocuSign tab will be | | :---------------------------------------------------------- | :---------------------------- | | DocuSignSignHere or&lt;br&gt; eSignSignHere                       | Signature                     | | DocuSignSignHereOptional or&lt;br&gt; eSignSignHereOptional       | Optional Signature            | | DocuSignInitialHere or&lt;br&gt; eSignInitialHere                 | Initials                      | | DocuSignInitialHereOptional or&lt;br&gt; eSignInitialHereOptional | Optional Initials             |   When transforming PDF Form Text Fields, the following rules apply. Any other PDF Form Text Field will be transformed to a DocuSign data (text) tab.   | If the PDF Field Name contains                                        | Then the DocuSign tab will be | | :-------------------------------------------------------------------- | :---------------------------- | | DocuSignSignHere or&lt;br&gt; eSignSignHere                                 | Signature                     | | DocuSignSignHereOptional or&lt;br&gt; eSignSignHereOptional                 | Optional Signature            | | DocuSignInitialHere or&lt;br&gt; eSignInitialHere                           | Initials                      | | DocuSignInitialHereOptional or&lt;br&gt; eSignInitialHereOptional           | Optional Initials             | | DocuSignEnvelopeID or&lt;br&gt; eSignEnvelopeID                             | EnvelopeID                    | | DocuSignCompany or&lt;br&gt; eSignCompany                                   | Company                       | | DocuSignDateSigned or&lt;br&gt; eSignDateSigned                             | Date Signed                   | | DocuSignTitle or&lt;br&gt; eSignTitle                                       | Title                         | | DocuSignFullName or&lt;br&gt; eSignFullName                                 | Full Name                     | | DocuSignSignerAttachmentOptional or&lt;br&gt; eSignSignerAttachmentOptional | Optional Signer Attachment    |   PDF Form Field Names that include &#x60;DocuSignIgnoreTransform&#x60; or &#x60;eSignIgnoreTransform&#x60; will not be transformed.  PDF Form Date fields that include &#x60;DocuSignDateSigned&#x60; or &#x60;eSignDateSigned&#x60; will be transformed to Date Signed fields.  ## Template Email Subject Merge Fields  This feature enables you to insert recipient name and email address merge fields into the email subject line when creating or sending from a template.  The merge fields, based on the recipient&#39;s &#x60;roleName&#x60;, are added to the &#x60;emailSubject&#x60; when the template is created or when the template is used to create an envelope. After a template sender adds the name and email information for the recipient and sends the envelope, the recipient information is automatically merged into the appropriate fields in the email subject line.  Both the sender and the recipients will see the information in the email subject line for any emails associated with the template. This provides an easy way for senders to organize their envelope emails without having to open an envelope to check the recipient.  If merging the recipient information into the subject line causes the subject line to exceed 100 characters, then any characters over the 100 character limit are not included in the subject line. For cases where the recipient name or email is expected to be long, you should consider placing the merge field at the start of the email subject.  * To add a recipient&#39;s name in the subject line add the following text   in the &#x60;emailSubject&#x60; when creating the template or when sending an   envelope from a template:     &#x60;[[&lt;roleName&gt;_UserName]]&#x60;     Example:     &#x60;\&quot;emailSubject\&quot;:\&quot;[[Signer 1_UserName]], Please sign this NDA\&quot;&#x60;  * To add a recipient&#39;s email address in the subject line add the   following text in the emailSubject when creating the template or when   sending an envelope from a template:     &#x60;[[&lt;roleName&gt;_Email]]&#x60;     Example:     &#x60;\&quot;emailSubject\&quot;:\&quot;[[Signer 1_Email]], Please sign this NDA\&quot;&#x60;  In both cases &#x60;&lt;roleName&gt;&#x60; is the recipient&#39;s &#x60;roleName&#x60; in the template.  For cases where another recipient (such as an Agent, Editor, or Intermediary recipient) is entering the name and email information for the recipient included in the email subject, then &#x60;[[&lt;roleName&gt;_UserName]]&#x60; or &#x60;[[&lt;roleName&gt;_Email]]&#x60; is shown in the email subject.  ## Branding an Envelope  The following rules are used to determine the &#x60;brandId&#x60; used in an envelope:  * If a &#x60;brandId&#x60; is specified in the envelope or template   and that &#x60;brandId&#x60; is available to the account,   that brand is used in the envelope. * If more than one template is used in an envelope,   and more than one &#x60;brandId&#x60; is specified,   the first &#x60;brandId&#x60; specified is used throughout the envelope. * In cases where no brand is specified,   and the sender belongs to a group:   - If there is only one brand associated with the group,     then that brand is used in the envelope.   - Otherwise, the account&#39;s default signing brand is used. * For envelopes that do not meet any of the previous criteria,   the account&#39;s default signing brand is used for the envelope.   ## BCC Email Address Feature  The BCC Email address feature is designed to provide a copy of all email communications for external archiving purposes. DocuSign recommends that envelopes sent using the BCC for Email Archive feature, including the BCC Email Override option, include additional signer authentication options.  Do **not** use this feature to send a copy of the envelope to a recipient who does not need to sign. Use a Carbon Copy or Certified Delivery Recipient type instead.  ## Merge Recipient Roles for Draft Envelopes  When an envelope with multiple templates is sent, the recipients from the templates are merged according to the template roles, and empty recipients are removed. When creating an envelope with multiple templates, but not sending it (keeping it in a created state), duplicate recipients are not merged, which could leave duplicate recipients in the envelope.  To prevent this, the query parameter &#x60;merge_roles_on_draft&#x60; should be added when posting a draft envelope (&#x60;status&#x60; is &#x60;created&#x60;) with multiple templates. Doing this will merge template roles and remove empty recipients.   DocuSign recommends that the &#x60;merge_roles_on_draft&#x60; query parameter be used any time you are creating an envelope with multiple templates and keeping it in draft (&#x60;status&#x60; is &#x60;created&#x60;) status.   [agentDef]:                 #/definitions/agent [apirules]:                 /esign/guide/appendix/resource_limits.html#api-rules-and-limits [ccDef]:                     #/definitions/carbonCopy [certfiedDef]:               #/definitions/certifiedDelivery [connectConfigurationsRes]: /esign/restapi/Connect/ConnectConfigurations/ [connectGuide]:             https://www.docusign.com/supportdocs/pdf/connect-guide.pdf [devecenterrecipients]:     https://www.docusign.com/developer-center/explore/features/recipients [documentDef]:               #/definitions/document [editorDef]:                 #/definitions/editor [envelopeDef]:               #/definitions/envelopeDefinition [envelopeRecipientsDef]:     #/definitions/EnvelopeRecipients [envelopeRecipientsRes]:    /esign/restapi/Envelopes/EnvelopeRecipients/ [envRecipientTabsDef]:       #/definitions/EnvelopeRecipientTabs [envRecipientTabsRes]:      /esign/restapi/Envelopes/EnvelopeRecipientTabs/ [eventNotificationDef]:      #/definitions/eventNotification [inPersonDef]:               #/definitions/inPersonSigner [intermediaryDef]:           #/definitions/intermediary [signerDef]:                 #/definitions/signer 
+  Creates and sends an envelope or creates a draft envelope. Envelopes are fundamental resources in the DocuSign platform.  With this method you can:  * Create and send an envelope   with [documents][], [recipients][], and [tabs][]. * [Create and send an envelope from a template](https://developers.docusign.com/docs/esign-rest-api/esign101/concepts/templates/). * [Create and send an envelope from   a combination of documents and templates](https://developers.docusign.com/docs/esign-rest-api/esign101/concepts/templates/composite/). * Create a draft envelope.   When you use this method to create and send an envelope in a single request, the following parameters in the request body (an [&#x60;envelopeDefinition&#x60;][envelopeDefinition]) are required:  | Parameter      | Description | | :--------      | :---------- | | &#x60;status&#x60;       | Set to &#x60;sent&#x60; to send the envelope to recipients.&lt;br&gt;Set to &#x60;created&#x60; (or don&#39;t set at all) to save the envelope as a draft. | | &#x60;emailSubject&#x60; | The subject of the email used to send the envelope. | | &#x60;documents&#x60;    | The [documents][] to be signed. | | &#x60;recipients&#x60;   | The email addresses of the envelope [recipients][]. |   **Note**: If the envelope has a workflow definition and the &#x60;workflowStatus&#x60; is &#x60;paused&#x60;, the envelope will not be sent immediately, even if the envelope&#39;s &#x60;status&#x60; is &#x60;sent&#x60;.  There are many ways to use envelopes. You can create and send an envelope with a single API request, or you can use several API requests to create, populate, and send envelopes.   | See:                  | To learn about:                                                                                                                    | | :----------------------- | :--------------------------------------------------------------------------------------------------------------------------------- | | [Envelopes][envelopes]   | Envelopes, [adding documents][addingdocs], [tracking][], [locking][], [deleting][], [templates][]                                  | | [Documents][documents]   | Documents, [attachments][], [supplemental documents][supdocs], [authoritative copies][authcopies], [purging][]                     | | [Recipients][recipients] | Recipients, [recipient types][reciptypes], [recipient status][recipstatus]                                                         | | [Tabs][tabs]             | Tabs, [anchoring tabs][tabanchor],   [custom tabs][tabcustom], [payments][] |   [addingdocs]:           https://developers.docusign.com/docs/esign-rest-api/esign101/concepts/envelopes/ [attachments]:          https://developers.docusign.com/docs/esign-rest-api/esign101/concepts/documents/ [authcopies]:           https://developers.docusign.com/docs/esign-rest-api/esign101/concepts/documents/ [conoverview]:          https://developers.docusign.com/docs/esign-rest-api/esign101/concepts/overview [deleting]:             https://developers.docusign.com/docs/esign-rest-api/esign101/concepts/envelopes/ [documents]:            https://developers.docusign.com/docs/esign-rest-api/esign101/concepts/documents [envelopeDefinition]:   https://developers.docusign.com/docs/esign-rest-api/reference/Envelopes/Envelopes/create/ [envelopes]:            https://developers.docusign.com/docs/esign-rest-api/esign101/concepts/envelopes [locking]:              https://developers.docusign.com/docs/esign-rest-api/esign101/concepts/envelopes/ [payments]:             https://developers.docusign.com/docs/esign-rest-api/esign101/concepts/tabs/payment/ [purging]:              https://developers.docusign.com/docs/esign-rest-api/esign101/concepts/documents/ [recipients]:           https://developers.docusign.com/docs/esign-rest-api/esign101/concepts/recipients [recipstatus]:          https://developers.docusign.com/docs/esign-rest-api/esign101/concepts/recipients/ [reciptypes]:           https://developers.docusign.com/docs/esign-rest-api/esign101/concepts/recipients/ [supdocs]:              https://developers.docusign.com/docs/esign-rest-api/esign101/concepts/documents/ [tabanchor]:            https://developers.docusign.com/docs/esign-rest-api/esign101/concepts/tabs/auto-place/ [tabcustom]:            https://developers.docusign.com/docs/esign-rest-api/esign101/concepts/tabs/custom-tabs/ [tabs]:                 https://developers.docusign.com/docs/esign-rest-api/esign101/concepts/tabs [tabtypes]:             https://developers.docusign.com/docs/esign-rest-api/esign101/concepts/tabs/ [templates]:            https://developers.docusign.com/docs/esign-rest-api/esign101/concepts/envelopes/ [tracking]:             https://developers.docusign.com/docs/esign-rest-api/esign101/concepts/envelopes/  **Note**: When you create an envelope by using a [composite template](https://developers.docusign.com/docs/esign-rest-api/esign101/concepts/templates/composite/), you should specify the envelope custom fields in the inline template. Any custom fields that you specify at the root level are ignored.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :cdse_mode (String.t): Reserved for DocuSign. 
-    - :change_routing_order (String.t): 
-    - :completed_documents_only (String.t): Reserved for DocuSign. 
-    - :merge_roles_on_draft (String.t): When set to **true**, template roles will be merged, and empty recipients will be removed. This parameter applies when you create a draft envelope with multiple templates. (To create a draft envelope, the &#x60;status&#x60; field is set to &#x60;created&#x60;.)  ###### Note: DocuSign recommends that this parameter should be set to **true** whenever you create a draft envelope with multiple templates.
-    - :preserve_template_recipientids (String.t): 
-    - :envelope_definition (EnvelopeDefinition): 
+    - :cdse_mode (String.t): Reserved for DocuSign.
+    - :change_routing_order (String.t): When true, users can define the routing order of recipients while sending documents for signature.
+    - :completed_documents_only (String.t): Reserved for DocuSign.
+    - :merge_roles_on_draft (String.t): When set to **true**, template roles will be merged, and empty recipients will be removed. This parameter applies when you create a draft envelope with multiple templates. (To create a draft envelope, the &#x60;status&#x60; field is set to &#x60;created&#x60;.)  **Note**: DocuSign recommends that this parameter should be set to **true** whenever you create a draft envelope with multiple templates.
+    - :envelope_definition (EnvelopeDefinition):
 
   ## Returns
 
@@ -153,17 +186,16 @@ defmodule DocuSign.Api.Envelopes do
           {:ok, DocuSign.Model.EnvelopeSummary.t()} | {:error, Tesla.Env.t()}
   def envelopes_post_envelopes(connection, account_id, opts \\ []) do
     optional_params = %{
-      cdse_mode: :query,
-      change_routing_order: :query,
-      completed_documents_only: :query,
-      merge_roles_on_draft: :query,
-      preserve_template_recipientids: :query,
-      envelopeDefinition: :body
+      :cdse_mode => :query,
+      :change_routing_order => :query,
+      :completed_documents_only => :query,
+      :merge_roles_on_draft => :query,
+      :envelopeDefinition => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/envelopes")
+    |> url("/v2.1/accounts/#{account_id}/envelopes")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -172,17 +204,17 @@ defmodule DocuSign.Api.Envelopes do
 
   @doc """
   Send, void, or modify a draft envelope. Purge documents from a completed envelope.
-  This method lets you make changes to an envelope. You can use it to:  * Send a draft envelope * Void an in-process envelope * Modify a draft envelope * Purge documents and envelope metadata from the DocuSign platform   &lt;div class&#x3D;\&quot;highlight highlight-info\&quot;&gt; &lt;p markdown&#x3D;\&quot;1\&quot;&gt;  Although the request body for this method is a complete envelope definition, you only need to provide properties that you&#39;re updating.   &lt;/p&gt; &lt;/div&gt;   ## Sending a Draft Envelope  To send a draft envelope, include this in the request body:  &#x60;&#x60;&#x60;json {   \&quot;status\&quot;: \&quot;sent\&quot; } &#x60;&#x60;&#x60;   ## Voiding an In-Process Envelope  To void an in-process envelope, include this in the request body:  &#x60;&#x60;&#x60;json {   \&quot;status\&quot;: \&quot;voided\&quot;,   \&quot;voidedReason\&quot;: \&quot;The reason for voiding the envelope\&quot; } &#x60;&#x60;&#x60;  ## Modifying Envelope Email Information  To change the email subject and message of a draft envelope, include this in the request body:  &#x60;&#x60;&#x60;json {   \&quot;emailSubject\&quot;: \&quot;new email subject\&quot;,   \&quot;emailBlurb\&quot;: \&quot;new email message\&quot; } &#x60;&#x60;&#x60;  ## Purging Documents from DocuSign   To place only the documents in the purge queue, leaving any corresponding attachments  and tabs in the DocuSign platform, set the &#x60;purgeState&#x60; property to &#x60;documents_queued&#x60;.   &#x60;&#x60;&#x60;json {   \&quot;purgeState\&quot;: \&quot;documents_queued\&quot; } &#x60;&#x60;&#x60;  To place documents, attachments, and tabs in the purge queue, set the &#x60;purgeState&#x60; property to &#x60;documents_and_metadata_queued&#x60;.  &#x60;&#x60;&#x60;json {   \&quot;purgeState\&quot;: \&quot;documents_and_metadata_queued\&quot; } &#x60;&#x60;&#x60;   You can purge documents only from completed envelopes that are not marked as the authoritative copy. The user requesting the purge must have permission to purge documents and must be the sender or be acting on behalf of the sender.    When the purge request is initiated the items to be purged are placed in the purge queue for deletion in 14 days. The sender and all recipients with DocuSign accounts associated with the envelope get an email notification the the documents will be deleted in 14 days. The notification contains a link to the documents. A second email notification is sent 7 days later. At the end of the 14-day period the documents are deleted from the system. Recipients without DocuSign accounts do not receive email notifications.   If your account has a Document Retention policy, envelope documents are automatically placed in the purge queue, and notification emails are sent at the end of the retention period. Setting a Document Retention policy is the same as setting a schedule for purging documents. 
+  This method enables you to make changes to an envelope. You can use it to:  * Send a draft envelope * Void an in-process envelope * Modify a draft envelope * Purge documents and envelope metadata from the DocuSign platform   &lt;div class&#x3D;\&quot;highlight highlight-info\&quot;&gt; &lt;p markdown&#x3D;\&quot;1\&quot;&gt;  Although the request body for this method is a complete envelope definition, you only need to provide the properties that you&#39;re updating.  &lt;/p&gt; &lt;/div&gt;   ## Sending a Draft Envelope  To send a draft envelope, include the following code in the request body:  &#x60;&#x60;&#x60;json {   \&quot;status\&quot;: \&quot;sent\&quot; } &#x60;&#x60;&#x60;  You can attach a workflow before sending the envelope:  &#x60;&#x60;&#x60;json {   \&quot;status\&quot;: \&quot;sent\&quot;,   \&quot;workflow\&quot;: {     \&quot;workflowSteps\&quot;: [       {         \&quot;action\&quot;: \&quot;pause_before\&quot;,         \&quot;description\&quot;: \&quot;pause_before routing order 2\&quot;,         \&quot;itemId\&quot;: 2,         \&quot;triggerOnItem\&quot;: \&quot;routing_order\&quot;       }     ]   } } &#x60;&#x60;&#x60;  ## Working with Workflows  To unpause a workflow, the request body should include this:  &#x60;&#x60;&#x60;json {   \&quot;workflow\&quot;: {     \&quot;workflowStatus\&quot;: \&quot;in_progress\&quot;   } } &#x60;&#x60;&#x60;  ## Voiding an In-Process Envelope  To void an in-process envelope, include the following code in the request body:  &#x60;&#x60;&#x60;json {   \&quot;status\&quot;: \&quot;voided\&quot;,   \&quot;voidedReason\&quot;: \&quot;The reason for voiding the envelope\&quot; } &#x60;&#x60;&#x60;  ## Modifying Envelope Email Information  To change the email subject and message of a draft envelope, include the following code in the request body:  &#x60;&#x60;&#x60;json {   \&quot;emailSubject\&quot;: \&quot;new email subject\&quot;,   \&quot;emailBlurb\&quot;: \&quot;new email message\&quot; } &#x60;&#x60;&#x60;  ## Purging Documents from DocuSign   To place only the documents in the purge queue, leaving any corresponding attachments and tabs in the DocuSign platform, set the &#x60;purgeState&#x60; property to &#x60;documents_queued&#x60;.   &#x60;&#x60;&#x60;json {   \&quot;purgeState\&quot;: \&quot;documents_queued\&quot; } &#x60;&#x60;&#x60;  To place documents, attachments, and tabs in the purge queue, set the &#x60;purgeState&#x60; property to &#x60;documents_and_metadata_queued&#x60;.  &#x60;&#x60;&#x60;json {   \&quot;purgeState\&quot;: \&quot;documents_and_metadata_queued\&quot; } &#x60;&#x60;&#x60;   You can purge documents only from completed envelopes that are not marked as the authoritative copy. The user requesting the purge must have permission to purge documents and must be the sender or be acting on behalf of the sender.    When the purge request is initiated the items to be purged are placed in the purge queue for deletion in 14 days. The sender and all recipients with DocuSign accounts associated with the envelope get an email notification the the documents will be deleted in 14 days. The notification contains a link to the documents. A second email notification is sent 7 days later. At the end of the 14-day period the documents are deleted from the system. Recipients without DocuSign accounts do not receive email notifications.   If your account has a Document Retention policy, envelope documents are automatically placed in the purge queue, and notification emails are sent at the end of the retention period. Setting a Document Retention policy is the same as setting a schedule for purging documents.  ## Removing Documents from the Purge Queue  To remove documents from the purge queue, include the following code in the request body:  &#x60;&#x60;&#x60; {   \&quot;purgeState\&quot;: \&quot;documents_dequeued\&quot; } &#x60;&#x60;&#x60;
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
     - :advanced_update (String.t): When set to **true**, allows the caller to update recipients, tabs, custom fields, notification, email settings and other envelope attributes.
     - :resend_envelope (String.t): When set to **true**, sends the specified envelope again.
-    - :envelopes (Envelopes): 
+    - :envelope (Envelope): A container used to send documents to recipients. The envelope carries information about the sender and timestamps to indicate the progress of the delivery procedure. It can contain collections of Documents, Tabs and Recipients.
 
   ## Returns
 
@@ -193,14 +225,14 @@ defmodule DocuSign.Api.Envelopes do
           {:ok, DocuSign.Model.EnvelopeUpdateSummary.t()} | {:error, Tesla.Env.t()}
   def envelopes_put_envelope(connection, account_id, envelope_id, opts \\ []) do
     optional_params = %{
-      advanced_update: :query,
-      resend_envelope: :query,
-      Envelopes: :body
+      :advanced_update => :query,
+      :resend_envelope => :query,
+      :envelope => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -208,19 +240,27 @@ defmodule DocuSign.Api.Envelopes do
   end
 
   @doc """
-  Gets the envelope status for the specified envelopes.
-  Retrieves the envelope status for the specified envelopes.
+  Gets envelope statuses for a set of envelopes.
+  Retrieves envelope statuses for a set of envelopes.  You must specify _one_ of the following query parameters:  | Parameter         | Description                                                                      | | :---------------- | :------------------------------------------------------------------------------- | | &#x60;from_date&#x60;       | a valid UTC DateTime:  &#x60;2016-01-01&#x60;                                              | | &#x60;envelope_ids&#x60;    | A comma-separated list of envelope IDs&lt;br&gt;or the special value &#x60;request_body&#x60;    | | &#x60;transaction_ids&#x60; | A comma-separated list of transaction IDs&lt;br&gt;or the special value &#x60;request_body&#x60; |  When you use the special value &#x60;request_body&#x60;, the request body looks like this:  &#x60;&#x60;&#x60; {   \&quot;envelopeIds\&quot;: [     \&quot;44c5ad6c-xxxx-xxxx-xxxx-ebda5e2dfe15\&quot;,     \&quot;8e26040d-xxxx-xxxx-xxxx-1e29b924d237\&quot;,     \&quot;c8b40a2d-xxxx-xxxx-xxxx-4fe56fe10f95\&quot;   ] } &#x60;&#x60;&#x60;  **Note**: It is an error omit the request body altogether. The request body must be at least &#x60;{}&#x60;.  ### You can find an example of using this API endpoint in the following how-to:  * [How to list envelope status changes](https://developers.docusign.com/docs/esign-rest-api/how-to/list-envelope-status-changes/)
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :email (String.t): Reserved for DocuSign. 
-    - :from_date (String.t): The date/time setting that specifies when the request begins checking for status changes for envelopes in the account.  This is required unless parameters &#x60;envelopeIds&#x60; and/or &#x60;transactionIds&#x60; are set.
-    - :start_position (String.t): Reserved for DocuSign. 
-    - :to_date (String.t): Optional date/time setting that specifies the last date/time  or envelope status changes in the result set.   Default: \&quot;now\&quot;, the time that you call the method.  
-    - :envelope_ids_request (EnvelopeIdsRequest): 
+    - :ac_status (String.t): Specifies the Authoritative Copy Status for the envelopes. The possible values are:   - &#x60;Unknown&#x60; - &#x60;Original&#x60; - &#x60;Transferred&#x60; - &#x60;AuthoritativeCopy&#x60; - &#x60;AuthoritativeCopyExportPending&#x60; - &#x60;AuthoritativeCopyExported&#x60; - &#x60;DepositPending&#x60; - &#x60;Deposited&#x60; - &#x60;DepositedEO&#x60; - &#x60;DepositFailed&#x60;
+    - :block (String.t): If set to **true**, removes any results that match one of the provided &#x60;transaction_ids&#x60;.
+    - :count (String.t): The maximum number of results to return.
+    - :email (String.t): The email address of the sender.
+    - :envelope_ids (String.t): The envelope IDs to include in the results.  The value of this property can be: - A comma-separated list of envelope IDs - The special value &#x60;request_body&#x60;. In this case, the method uses the envelope IDs in the request body.
+    - :from_date (String.t): The date/time setting that specifies when the request begins checking for status changes for envelopes in the account. This is required unless parameters &#x60;envelope_ids&#x60; and/or &#x60;transaction_Ids&#x60; are provided.   ****Note****: This parameter must be set to a valid  &#x60;DateTime&#x60;, or  &#x60;envelope_ids&#x60; and/or &#x60;transaction_ids&#x60; must be specified.
+    - :from_to_status (String.t): The envelope status that you are checking for. Possible values are:   - &#x60;Changed&#x60; (default) - &#x60;Completed&#x60; - &#x60;Created&#x60; - &#x60;Declined&#x60; - &#x60;Deleted&#x60; - &#x60;Delivered&#x60; - &#x60;Processing&#x60; - &#x60;Sent&#x60; - &#x60;Signed&#x60; - &#x60;TimedOut&#x60; - &#x60;Voided&#x60;  For example, if you specify &#x60;Changed&#x60;, this method returns a list of envelopes that changed status during the &#x60;from_date&#x60; to &#x60;to_date&#x60; time period.
+    - :start_position (String.t): The starting index position for search.
+    - :status (String.t): A comma-separated list of envelope status to search for. Possible values are:  - &#x60;completed&#x60; - &#x60;created&#x60; - &#x60;declined&#x60; - &#x60;deleted&#x60; - &#x60;delivered&#x60; - &#x60;processing&#x60; - &#x60;sent&#x60; - &#x60;signed&#x60; - &#x60;template&#x60; - &#x60;voided&#x60;
+    - :to_date (String.t): Optional date/time setting that specifies the last date/time  or envelope status changes in the result set.   The default value is the time that you call the method.
+    - :transaction_ids (String.t): The transaction IDs to include in the results. Note that transaction IDs are valid for seven days.  The value of this property can be: - A list of comma-separated transaction IDs - The special value &#x60;request_body&#x60;. In this case, this method uses the transaction IDs in the request body.
+    - :user_name (String.t): Limits results to envelopes sent by the account user with this user name.  &#x60;email&#x60; must be given as well, and both &#x60;email&#x60; and &#x60;user_name&#x60; must refer to an existing account user.
+    - :envelope_ids_request (EnvelopeIdsRequest):
 
   ## Returns
 
@@ -231,16 +271,24 @@ defmodule DocuSign.Api.Envelopes do
           {:ok, DocuSign.Model.EnvelopesInformation.t()} | {:error, Tesla.Env.t()}
   def envelopes_put_status(connection, account_id, opts \\ []) do
     optional_params = %{
-      email: :query,
-      from_date: :query,
-      start_position: :query,
-      to_date: :query,
-      envelopeIdsRequest: :body
+      :ac_status => :query,
+      :block => :query,
+      :count => :query,
+      :email => :query,
+      :envelope_ids => :query,
+      :from_date => :query,
+      :from_to_status => :query,
+      :start_position => :query,
+      :status => :query,
+      :to_date => :query,
+      :transaction_ids => :query,
+      :user_name => :query,
+      :envelopeIdsRequest => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/envelopes/status")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/status")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -254,8 +302,8 @@ defmodule DocuSign.Api.Envelopes do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -277,23 +325,23 @@ defmodule DocuSign.Api.Envelopes do
       ) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/notification")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/notification")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.Notification{})
   end
 
   @doc """
-  Sets envelope notification (Reminders/Expirations) structure for an existing envelope.
-
+  Sets envelope notifications for an existing envelope.
+  This method sets the notifications (reminders and expirations) for an existing envelope. The request body sends a structure containing reminders and expirations settings. It also specifies whether to use the settings specified in the request, or the account default notification settings for the envelope.  Note that this request only specifies when notifications are sent; it does not initiate sending of email messages.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :envelope_notification_request (EnvelopeNotificationRequest): 
+    - :envelope_notification_request (EnvelopeNotificationRequest):
 
   ## Returns
 
@@ -313,12 +361,12 @@ defmodule DocuSign.Api.Envelopes do
         opts \\ []
       ) do
     optional_params = %{
-      envelopeNotificationRequest: :body
+      :envelopeNotificationRequest => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/notification")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/notification")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -332,9 +380,9 @@ defmodule DocuSign.Api.Envelopes do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - page_number (String.t): The page number being accessed.
   - opts (KeywordList): [optional] Optional parameters
 
@@ -362,7 +410,7 @@ defmodule DocuSign.Api.Envelopes do
     %{}
     |> method(:delete)
     |> url(
-      "/v2/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/pages/#{
+      "/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/pages/#{
         page_number
       }"
     )
@@ -373,20 +421,20 @@ defmodule DocuSign.Api.Envelopes do
 
   @doc """
   Gets a page image from an envelope for display.
-  Retrieves a page image for display from the specified envelope.
+  Returns an image of a page in a document for display.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - page_number (String.t): The page number being accessed.
   - opts (KeywordList): [optional] Optional parameters
-    - :dpi (String.t): Sets the dpi for the image.
-    - :max_height (String.t): Sets the maximum height for the page image in pixels. The dpi is recalculated based on this setting.
-    - :max_width (String.t): Sets the maximum width for the page image in pixels. The dpi is recalculated based on this setting.
-    - :show_changes (String.t): 
+    - :dpi (String.t): Sets the dots per inch (DPI) for the returned image.
+    - :max_height (String.t): Sets the maximum height for the page image in pixels. The DPI is recalculated based on this setting.
+    - :max_width (String.t): Sets the maximum width for the page image in pixels. The DPI is recalculated based on this setting.
+    - :show_changes (String.t): When **true**, changes display in the user interface.
 
   ## Returns
 
@@ -410,16 +458,16 @@ defmodule DocuSign.Api.Envelopes do
         opts \\ []
       ) do
     optional_params = %{
-      dpi: :query,
-      max_height: :query,
-      max_width: :query,
-      show_changes: :query
+      :dpi => :query,
+      :max_height => :query,
+      :max_width => :query,
+      :show_changes => :query
     }
 
     %{}
     |> method(:get)
     |> url(
-      "/v2/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/pages/#{
+      "/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/pages/#{
         page_number
       }/page_image"
     )
@@ -431,21 +479,21 @@ defmodule DocuSign.Api.Envelopes do
 
   @doc """
   Returns document page image(s) based on input.
-
+  Returns images of the pages in a document for display based on the parameters that you specify.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :count (String.t): The maximum number of results to be returned by this request.
-    - :dpi (String.t): Number of dots per inch for the resulting image. The default if not used is 94. The range is 1-310.
-    - :max_height (String.t): Sets the maximum height (in pixels) of the returned image.
-    - :max_width (String.t): Sets the maximum width (in pixels) of the returned image.
-    - :nocache (String.t): 
-    - :show_changes (String.t): 
+    - :count (String.t): The maximum number of results to return.
+    - :dpi (String.t): The number of dots per inch (DPI) for the resulting images. Valid values are 1-310 DPI. The default value is 94.
+    - :max_height (String.t): Sets the maximum height of the returned images in pixels.
+    - :max_width (String.t): Sets the maximum width of the returned images in pixels.
+    - :nocache (String.t): If **true**, using cache is disabled and image information is retrieved from a database. **True** is the default value.
+    - :show_changes (String.t): If **true**, changes display in the user interface.
     - :start_position (String.t): The position within the total result set from which to start returning values. The value **thumbnail** may be used to return the page image.
 
   ## Returns
@@ -457,18 +505,18 @@ defmodule DocuSign.Api.Envelopes do
           {:ok, DocuSign.Model.PageImages.t()} | {:error, Tesla.Env.t()}
   def pages_get_page_images(connection, account_id, document_id, envelope_id, opts \\ []) do
     optional_params = %{
-      count: :query,
-      dpi: :query,
-      max_height: :query,
-      max_width: :query,
-      nocache: :query,
-      show_changes: :query,
-      start_position: :query
+      :count => :query,
+      :dpi => :query,
+      :max_height => :query,
+      :max_width => :query,
+      :nocache => :query,
+      :show_changes => :query,
+      :start_position => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/pages")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/pages")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -482,12 +530,12 @@ defmodule DocuSign.Api.Envelopes do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - page_number (String.t): The page number being accessed.
   - opts (KeywordList): [optional] Optional parameters
-    - :page_request (PageRequest): 
+    - :page_request (PageRequest):
 
   ## Returns
 
@@ -511,13 +559,13 @@ defmodule DocuSign.Api.Envelopes do
         opts \\ []
       ) do
     optional_params = %{
-      pageRequest: :body
+      :pageRequest => :body
     }
 
     %{}
     |> method(:put)
     |> url(
-      "/v2/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/pages/#{
+      "/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/pages/#{
         page_number
       }/page_image"
     )
@@ -534,9 +582,9 @@ defmodule DocuSign.Api.Envelopes do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
-  - recipient_id (String.t): The &#x60;recipientId&#x60; used when the envelope or template was created.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
+  - recipient_id (String.t): A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each &#x60;recipientId&#x60; must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a &#x60;recipientId&#x60; of &#x60;1&#x60;.
   - opts (KeywordList): [optional] Optional parameters
     - :include_chrome (String.t): The added line and identifier around the initial image. Note: Older envelopes might only have chromed images. If getting the non-chromed image fails, try getting the chromed image.
 
@@ -560,13 +608,13 @@ defmodule DocuSign.Api.Envelopes do
         opts \\ []
       ) do
     optional_params = %{
-      include_chrome: :query
+      :include_chrome => :query
     }
 
     %{}
     |> method(:get)
     |> url(
-      "/v2/accounts/#{account_id}/envelopes/#{envelope_id}/recipients/#{recipient_id}/initials_image"
+      "/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/recipients/#{recipient_id}/initials_image"
     )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
@@ -581,14 +629,14 @@ defmodule DocuSign.Api.Envelopes do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
-  - recipient_id (String.t): The &#x60;recipientId&#x60; used when the envelope or template was created.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
+  - recipient_id (String.t): A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each &#x60;recipientId&#x60; must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a &#x60;recipientId&#x60; of &#x60;1&#x60;.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
 
-  {:ok, %DocuSign.Model.UserSignatures{}} on success
+  {:ok, %DocuSign.Model.UserSignature{}} on success
   {:error, info} on failure
   """
   @spec recipients_get_recipient_signature(
@@ -597,7 +645,7 @@ defmodule DocuSign.Api.Envelopes do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.UserSignatures.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.UserSignature.t()} | {:error, Tesla.Env.t()}
   def recipients_get_recipient_signature(
         connection,
         account_id,
@@ -608,11 +656,11 @@ defmodule DocuSign.Api.Envelopes do
     %{}
     |> method(:get)
     |> url(
-      "/v2/accounts/#{account_id}/envelopes/#{envelope_id}/recipients/#{recipient_id}/signature"
+      "/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/recipients/#{recipient_id}/signature"
     )
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.UserSignatures{})
+    |> decode(%DocuSign.Model.UserSignature{})
   end
 
   @doc """
@@ -622,11 +670,11 @@ defmodule DocuSign.Api.Envelopes do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
-  - recipient_id (String.t): The &#x60;recipientId&#x60; used when the envelope or template was created.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
+  - recipient_id (String.t): A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each &#x60;recipientId&#x60; must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a &#x60;recipientId&#x60; of &#x60;1&#x60;.
   - opts (KeywordList): [optional] Optional parameters
-    - :include_chrome (String.t): When set to **true**, indicates the chromed version of the signature image should be retrieved.
+    - :include_chrome (String.t): When set to **true**, the response includes the chromed version of the signature image.
 
   ## Returns
 
@@ -648,13 +696,13 @@ defmodule DocuSign.Api.Envelopes do
         opts \\ []
       ) do
     optional_params = %{
-      include_chrome: :query
+      :include_chrome => :query
     }
 
     %{}
     |> method(:get)
     |> url(
-      "/v2/accounts/#{account_id}/envelopes/#{envelope_id}/recipients/#{recipient_id}/signature_image"
+      "/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/recipients/#{recipient_id}/signature_image"
     )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
@@ -669,9 +717,9 @@ defmodule DocuSign.Api.Envelopes do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
-  - recipient_id (String.t): The &#x60;recipientId&#x60; used when the envelope or template was created.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
+  - recipient_id (String.t): A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each &#x60;recipientId&#x60; must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a &#x60;recipientId&#x60; of &#x60;1&#x60;.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -696,7 +744,7 @@ defmodule DocuSign.Api.Envelopes do
     %{}
     |> method(:put)
     |> url(
-      "/v2/accounts/#{account_id}/envelopes/#{envelope_id}/recipients/#{recipient_id}/initials_image"
+      "/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/recipients/#{recipient_id}/initials_image"
     )
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -710,9 +758,9 @@ defmodule DocuSign.Api.Envelopes do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
-  - recipient_id (String.t): The &#x60;recipientId&#x60; used when the envelope or template was created.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
+  - recipient_id (String.t): A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each &#x60;recipientId&#x60; must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a &#x60;recipientId&#x60; of &#x60;1&#x60;.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -737,7 +785,7 @@ defmodule DocuSign.Api.Envelopes do
     %{}
     |> method(:put)
     |> url(
-      "/v2/accounts/#{account_id}/envelopes/#{envelope_id}/recipients/#{recipient_id}/signature_image"
+      "/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/recipients/#{recipient_id}/signature_image"
     )
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()

@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.SettingsMetadata do
   @moduledoc """
-
+  Metadata that indicates whether a property is editable and describes setting-specific options.
   """
 
   @derive [Poison.Encoder]

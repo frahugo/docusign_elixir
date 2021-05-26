@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.TemplateCustomFields do
   @moduledoc """
-  Template custom fields
+  A template custom field enables you to prepopulate custom metadata for all new envelopes that are created by using a specific template. You can then use the custom data for sorting, organizing, searching, and other downstream processes.
   """
 
   @derive [Poison.Encoder]

@@ -17,8 +17,8 @@ defmodule DocuSign.Api.ConnectEvents do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - failure_id (String.t): The ID of the failed connect log entry.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - failure_id (String.t): The id of the Connect post failure.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -35,7 +35,7 @@ defmodule DocuSign.Api.ConnectEvents do
   def connect_failures_delete_connect_failure_log(connection, account_id, failure_id, _opts \\ []) do
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/connect/failures/#{failure_id}")
+    |> url("/v2.1/accounts/#{account_id}/connect/failures/#{failure_id}")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(false)
@@ -43,47 +43,47 @@ defmodule DocuSign.Api.ConnectEvents do
 
   @doc """
   Gets the Connect failure log information.
-  Retrieves the Connect Failure Log information. It can be used to determine which envelopes failed to post, so a republish request can be created.
+  Retrieves the Connect failure log information. You can use this log to determine which envelopes failed to post, in order to create a republish request.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :from_date (String.t): Start of the search date range. Only returns templates created on or after this date/time. If no value is specified, there is no limit on the earliest date created.
-    - :to_date (String.t): End of the search date range. Only returns templates created up to this date/time. If no value is provided, this defaults to the current date.
+    - :from_date (String.t): The start date for a date range in UTC DateTime format.  **Note**: If this property is null, no date filtering is applied.
+    - :to_date (String.t): The end of a search date range in UTC DateTime format. When you use this parameter, only templates created up to this date and time are returned.  **Note**: If this property is null, the value defaults to the current date.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.ConnectEvents{}} on success
+  {:ok, %DocuSign.Model.ConnectLogs{}} on success
   {:error, info} on failure
   """
   @spec connect_failures_get_connect_logs(Tesla.Env.client(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.ConnectEvents.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.ConnectLogs.t()} | {:error, Tesla.Env.t()}
   def connect_failures_get_connect_logs(connection, account_id, opts \\ []) do
     optional_params = %{
-      from_date: :query,
-      to_date: :query
+      :from_date => :query,
+      :to_date => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/connect/failures")
+    |> url("/v2.1/accounts/#{account_id}/connect/failures")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.ConnectEvents{})
+    |> decode(%DocuSign.Model.ConnectLogs{})
   end
 
   @doc """
   Deletes a specified Connect log entry.
-  Deletes a specified entry from the Connect Log. 
+  Deletes a specified entry from the Connect Log.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - log_id (String.t): The ID of the connect log entry
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - log_id (String.t): The id of the Connect log entry.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -96,20 +96,20 @@ defmodule DocuSign.Api.ConnectEvents do
   def connect_log_delete_connect_log(connection, account_id, log_id, _opts \\ []) do
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/connect/logs/#{log_id}")
+    |> url("/v2.1/accounts/#{account_id}/connect/logs/#{log_id}")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(false)
   end
 
   @doc """
-  Gets a list of Connect log entries.
-  Retrieves a list of connect log entries for your account.  ###### Note: The &#x60;enableLog&#x60; property in the Connect configuration must be set to **true** to enable logging. If logging is not enabled, then no log entries are recorded.
+  Deletes a list of Connect log entries.
+  Deletes a list of Connect log entries for your account.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -122,23 +122,23 @@ defmodule DocuSign.Api.ConnectEvents do
   def connect_log_delete_connect_logs(connection, account_id, _opts \\ []) do
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/connect/logs")
+    |> url("/v2.1/accounts/#{account_id}/connect/logs")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(false)
   end
 
   @doc """
-  Get the specified Connect log entry.
-  Retrieves the specified Connect log entry for your account.  ###### Note: The &#x60;enableLog&#x60; setting in the Connect configuration must be set to true to enable logging. If logging is not enabled, then no log entries are recorded. 
+  Gets a Connect log entry.
+  Retrieves the specified Connect log entry for your account.  **Note**: The &#x60;enableLog&#x60; setting in the Connect configuration must be set to true to enable logging. If logging is not enabled, then no log entries are recorded.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - log_id (String.t): The ID of the connect log entry
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - log_id (String.t): The id of the Connect log entry.
   - opts (KeywordList): [optional] Optional parameters
-    - :additional_info (String.t): When true, the connectDebugLog information is included in the response.
+    - :additional_info (String.t): When set to **true**, the response includes the &#x60;connectDebugLog&#x60; information.
 
   ## Returns
 
@@ -149,12 +149,12 @@ defmodule DocuSign.Api.ConnectEvents do
           {:ok, DocuSign.Model.ConnectLog.t()} | {:error, Tesla.Env.t()}
   def connect_log_get_connect_log(connection, account_id, log_id, opts \\ []) do
     optional_params = %{
-      additional_info: :query
+      :additional_info => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/connect/logs/#{log_id}")
+    |> url("/v2.1/accounts/#{account_id}/connect/logs/#{log_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -163,48 +163,48 @@ defmodule DocuSign.Api.ConnectEvents do
 
   @doc """
   Gets the Connect log.
-  Retrieves a list of connect log entries for your account.  ###### Note: The &#x60;enableLog&#x60; setting in the Connect configuration must be set to true to enable logging. If logging is not enabled, then no log entries are recorded. 
+  Retrieves a list of connect log entries for your account.  **Note**: The &#x60;enableLog&#x60; setting in the Connect configuration must be set to true to enable logging. If logging is not enabled, then no log entries are recorded.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :from_date (String.t): Start of the search date range. Only returns templates created on or after this date/time. If no value is specified, there is no limit on the earliest date created.
-    - :to_date (String.t): End of the search date range. Only returns templates created up to this date/time. If no value is provided, this defaults to the current date.
+    - :from_date (String.t): The start date for a date range in UTC DateTime format.  **Note**: If this property is null, no date filtering is applied.
+    - :to_date (String.t): The end of a search date range in UTC DateTime format. When you use this parameter, only templates created up to this date and time are returned.  **Note**: If this property is null, the value defaults to the current date.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.ConnectEvents{}} on success
+  {:ok, %DocuSign.Model.ConnectLogs{}} on success
   {:error, info} on failure
   """
   @spec connect_log_get_connect_logs(Tesla.Env.client(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.ConnectEvents.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.ConnectLogs.t()} | {:error, Tesla.Env.t()}
   def connect_log_get_connect_logs(connection, account_id, opts \\ []) do
     optional_params = %{
-      from_date: :query,
-      to_date: :query
+      :from_date => :query,
+      :to_date => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/connect/logs")
+    |> url("/v2.1/accounts/#{account_id}/connect/logs")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.ConnectEvents{})
+    |> decode(%DocuSign.Model.ConnectLogs{})
   end
 
   @doc """
   Republishes Connect information for multiple envelopes.
-  Republishes Connect information for the  specified set of envelopes. The primary use is to republish Connect post failures by including envelope IDs for the envelopes that failed to post in the request. The list of envelope IDs that failed to post correctly can be retrieved by calling to [ML:GetConnectLog] retrieve the failure log.
+  Republishes Connect information for the  specified set of envelopes. The primary use is to republish Connect post failures by including envelope IDs for the envelopes that failed to post in the request. The list of envelope IDs that failed to post correctly can be retrieved by calling to [Connect::listEventLogs](https://developers.docusign.com/docs/esign-rest-api/reference/Connect/ConnectEvents/list) retrieve the failure log.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :connect_failure_filter (ConnectFailureFilter): 
+    - :connect_failure_filter (ConnectFailureFilter):
 
   ## Returns
 
@@ -215,12 +215,12 @@ defmodule DocuSign.Api.ConnectEvents do
           {:ok, DocuSign.Model.ConnectFailureResults.t()} | {:error, Tesla.Env.t()}
   def connect_publish_put_connect_retry(connection, account_id, opts \\ []) do
     optional_params = %{
-      connectFailureFilter: :body
+      :connectFailureFilter => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/connect/envelopes/retry_queue")
+    |> url("/v2.1/accounts/#{account_id}/connect/envelopes/retry_queue")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -234,8 +234,8 @@ defmodule DocuSign.Api.ConnectEvents do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -257,7 +257,7 @@ defmodule DocuSign.Api.ConnectEvents do
       ) do
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/connect/envelopes/#{envelope_id}/retry_queue")
+    |> url("/v2.1/accounts/#{account_id}/connect/envelopes/#{envelope_id}/retry_queue")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.ConnectFailureResults{})

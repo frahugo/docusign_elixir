@@ -9,22 +9,50 @@ defmodule DocuSign.Model.UserSignatureDefinition do
 
   @derive [Poison.Encoder]
   defstruct [
+    :dateStampProperties,
+    :disallowUserResizeStamp,
+    :externalID,
+    :imageType,
+    :isDefault,
+    :nrdsId,
+    :nrdsLastName,
+    :phoneticName,
     :signatureFont,
     :signatureId,
     :signatureInitials,
-    :signatureName
+    :signatureName,
+    :stampFormat,
+    :stampSizeMM
   ]
 
   @type t :: %__MODULE__{
+          :dateStampProperties => DateStampProperties,
+          :disallowUserResizeStamp => String.t(),
+          :externalID => String.t(),
+          :imageType => String.t(),
+          :isDefault => String.t(),
+          :nrdsId => String.t(),
+          :nrdsLastName => String.t(),
+          :phoneticName => String.t(),
           :signatureFont => String.t(),
           :signatureId => String.t(),
           :signatureInitials => String.t(),
-          :signatureName => String.t()
+          :signatureName => String.t(),
+          :stampFormat => String.t(),
+          :stampSizeMM => String.t()
         }
 end
 
 defimpl Poison.Decoder, for: DocuSign.Model.UserSignatureDefinition do
-  def decode(value, _options) do
+  import DocuSign.Deserializer
+
+  def decode(value, options) do
     value
+    |> deserialize(
+      :dateStampProperties,
+      :struct,
+      DocuSign.Model.DateStampProperties,
+      options
+    )
   end
 end

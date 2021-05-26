@@ -4,50 +4,120 @@
 
 defmodule DocuSign.Model.Radio do
   @moduledoc """
-  One of the selectable radio buttons in the &#x60;radios&#x60; property of a [&#x60;radioGroup&#x60;](/esign/restapi/Envelopes/EnvelopeRecipientTabs/create/#/definitions/radioGroup) tab. 
+  One of the selectable radio buttons in the &#x60;radios&#x60; property of a [&#x60;radioGroup&#x60;](https://developers.docusign.com/docs/esign-rest-api/reference/Envelopes/EnvelopeRecipientTabs/) tab.
   """
 
   @derive [Poison.Encoder]
   defstruct [
+    :anchorAllowWhiteSpaceInCharacters,
+    :anchorAllowWhiteSpaceInCharactersMetadata,
     :anchorCaseSensitive,
+    :anchorCaseSensitiveMetadata,
     :anchorHorizontalAlignment,
+    :anchorHorizontalAlignmentMetadata,
     :anchorIgnoreIfNotPresent,
+    :anchorIgnoreIfNotPresentMetadata,
     :anchorMatchWholeWord,
+    :anchorMatchWholeWordMetadata,
     :anchorString,
+    :anchorStringMetadata,
+    :anchorTabProcessorVersion,
+    :anchorTabProcessorVersionMetadata,
     :anchorUnits,
+    :anchorUnitsMetadata,
     :anchorXOffset,
+    :anchorXOffsetMetadata,
     :anchorYOffset,
+    :anchorYOffsetMetadata,
+    :bold,
+    :boldMetadata,
     :errorDetails,
+    :font,
+    :fontColor,
+    :fontColorMetadata,
+    :fontMetadata,
+    :fontSize,
+    :fontSizeMetadata,
+    :italic,
+    :italicMetadata,
     :locked,
+    :lockedMetadata,
     :pageNumber,
+    :pageNumberMetadata,
     :required,
+    :requiredMetadata,
     :selected,
+    :selectedMetadata,
+    :status,
+    :statusMetadata,
     :tabId,
+    :tabIdMetadata,
     :tabOrder,
+    :tabOrderMetadata,
+    :underline,
+    :underlineMetadata,
     :value,
+    :valueMetadata,
     :xPosition,
-    :yPosition
+    :xPositionMetadata,
+    :yPosition,
+    :yPositionMetadata
   ]
 
   @type t :: %__MODULE__{
+          :anchorAllowWhiteSpaceInCharacters => String.t(),
+          :anchorAllowWhiteSpaceInCharactersMetadata => PropertyMetadata,
           :anchorCaseSensitive => String.t(),
+          :anchorCaseSensitiveMetadata => PropertyMetadata,
           :anchorHorizontalAlignment => String.t(),
+          :anchorHorizontalAlignmentMetadata => PropertyMetadata,
           :anchorIgnoreIfNotPresent => String.t(),
+          :anchorIgnoreIfNotPresentMetadata => PropertyMetadata,
           :anchorMatchWholeWord => String.t(),
+          :anchorMatchWholeWordMetadata => PropertyMetadata,
           :anchorString => String.t(),
+          :anchorStringMetadata => PropertyMetadata,
+          :anchorTabProcessorVersion => String.t(),
+          :anchorTabProcessorVersionMetadata => PropertyMetadata,
           :anchorUnits => String.t(),
+          :anchorUnitsMetadata => PropertyMetadata,
           :anchorXOffset => String.t(),
+          :anchorXOffsetMetadata => PropertyMetadata,
           :anchorYOffset => String.t(),
+          :anchorYOffsetMetadata => PropertyMetadata,
+          :bold => String.t(),
+          :boldMetadata => PropertyMetadata,
           :errorDetails => ErrorDetails,
+          :font => String.t(),
+          :fontColor => String.t(),
+          :fontColorMetadata => PropertyMetadata,
+          :fontMetadata => PropertyMetadata,
+          :fontSize => String.t(),
+          :fontSizeMetadata => PropertyMetadata,
+          :italic => String.t(),
+          :italicMetadata => PropertyMetadata,
           :locked => String.t(),
+          :lockedMetadata => PropertyMetadata,
           :pageNumber => String.t(),
+          :pageNumberMetadata => PropertyMetadata,
           :required => String.t(),
+          :requiredMetadata => PropertyMetadata,
           :selected => String.t(),
+          :selectedMetadata => PropertyMetadata,
+          :status => String.t(),
+          :statusMetadata => PropertyMetadata,
           :tabId => String.t(),
+          :tabIdMetadata => PropertyMetadata,
           :tabOrder => String.t(),
+          :tabOrderMetadata => PropertyMetadata,
+          :underline => String.t(),
+          :underlineMetadata => PropertyMetadata,
           :value => String.t(),
+          :valueMetadata => PropertyMetadata,
           :xPosition => String.t(),
-          :yPosition => String.t()
+          :xPositionMetadata => PropertyMetadata,
+          :yPosition => String.t(),
+          :yPositionMetadata => PropertyMetadata
         }
 end
 
@@ -56,6 +126,77 @@ defimpl Poison.Decoder, for: DocuSign.Model.Radio do
 
   def decode(value, options) do
     value
+    |> deserialize(
+      :anchorAllowWhiteSpaceInCharactersMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
+    |> deserialize(
+      :anchorCaseSensitiveMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
+    |> deserialize(
+      :anchorHorizontalAlignmentMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
+    |> deserialize(
+      :anchorIgnoreIfNotPresentMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
+    |> deserialize(
+      :anchorMatchWholeWordMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
+    |> deserialize(
+      :anchorStringMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
+    |> deserialize(
+      :anchorTabProcessorVersionMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
+    |> deserialize(:anchorUnitsMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(
+      :anchorXOffsetMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
+    |> deserialize(
+      :anchorYOffsetMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
+    |> deserialize(:boldMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
     |> deserialize(:errorDetails, :struct, DocuSign.Model.ErrorDetails, options)
+    |> deserialize(:fontColorMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:fontMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:fontSizeMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:italicMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:lockedMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:pageNumberMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:requiredMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:selectedMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:statusMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:tabIdMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:tabOrderMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:underlineMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:valueMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:xPositionMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:yPositionMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
   end
 end

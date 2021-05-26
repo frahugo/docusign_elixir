@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.Jurisdiction do
   @moduledoc """
-
+  Describes the jurisdiction of a notary. This is read-only object.
   """
 
   @derive [Poison.Encoder]

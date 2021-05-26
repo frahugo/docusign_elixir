@@ -22,6 +22,11 @@ defimpl Poison.Decoder, for: DocuSign.Model.AccountPasswordStrengthType do
 
   def decode(value, options) do
     value
-    |> deserialize(:options, :list, DocuSign.Model.AccountPasswordStrengthTypeOption, options)
+    |> deserialize(
+      :options,
+      :list,
+      DocuSign.Model.AccountPasswordStrengthTypeOption,
+      options
+    )
   end
 end

@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.ReturnUrlRequest do
   @moduledoc """
-  The request body for the EnvelopeViews: createSender method.
+  The request body for the EnvelopeViews::createSender method.
   """
 
   @derive [Poison.Encoder]

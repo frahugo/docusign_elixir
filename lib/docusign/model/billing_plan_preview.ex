@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.BillingPlanPreview do
   @moduledoc """
-  Contains information about a preview billing plan.
+  Information used to provide a preview of a billing plan.
   """
 
   @derive [Poison.Encoder]
@@ -19,7 +19,7 @@ defmodule DocuSign.Model.BillingPlanPreview do
 
   @type t :: %__MODULE__{
           :currencyCode => String.t(),
-          :invoice => Invoices,
+          :invoice => BillingInvoice,
           :isProrated => String.t(),
           :subtotalAmount => String.t(),
           :taxAmount => String.t(),
@@ -32,6 +32,6 @@ defimpl Poison.Decoder, for: DocuSign.Model.BillingPlanPreview do
 
   def decode(value, options) do
     value
-    |> deserialize(:invoice, :struct, DocuSign.Model.Invoices, options)
+    |> deserialize(:invoice, :struct, DocuSign.Model.BillingInvoice, options)
   end
 end

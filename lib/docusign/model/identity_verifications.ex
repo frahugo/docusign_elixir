@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.IdentityVerifications do
   @moduledoc """
-
+  Identity Verification enables you to verify a signer&#39;s identity before they can access a document. The &#x60;IdentityVerifications&#x60; resource provides a method that enables you to list the workflows that are available to an account.
   """
 
   @derive [Poison.Encoder]

@@ -11,13 +11,13 @@ defmodule DocuSign.Api.PaymentGatewayAccounts do
   import DocuSign.RequestBuilder
 
   @doc """
-  List payment gateway account information
-  List payment gateway account information
+  List payment gateway accounts
+  This method returns a list of payment gateway accounts and basic information about them.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -37,7 +37,7 @@ defmodule DocuSign.Api.PaymentGatewayAccounts do
       ) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/payment_gateway_accounts")
+    |> url("/v2.1/accounts/#{account_id}/payment_gateway_accounts")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.PaymentGatewayAccountsInfo{})

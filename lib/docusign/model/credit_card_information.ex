@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.CreditCardInformation do
   @moduledoc """
-
+  This object contains information about a credit card that is associated with an account.
   """
 
   @derive [Poison.Encoder]
@@ -12,6 +12,7 @@ defmodule DocuSign.Model.CreditCardInformation do
     :address,
     :cardNumber,
     :cardType,
+    :cvNumber,
     :expirationMonth,
     :expirationYear,
     :nameOnCard
@@ -21,6 +22,7 @@ defmodule DocuSign.Model.CreditCardInformation do
           :address => AddressInformation,
           :cardNumber => String.t(),
           :cardType => String.t(),
+          :cvNumber => String.t(),
           :expirationMonth => String.t(),
           :expirationYear => String.t(),
           :nameOnCard => String.t()

@@ -10,19 +10,40 @@ defmodule DocuSign.Model.RecipientEmailNotification do
   @derive [Poison.Encoder]
   defstruct [
     :emailBody,
+    :emailBodyMetadata,
     :emailSubject,
-    :supportedLanguage
+    :emailSubjectMetadata,
+    :supportedLanguage,
+    :supportedLanguageMetadata
   ]
 
   @type t :: %__MODULE__{
           :emailBody => String.t(),
+          :emailBodyMetadata => PropertyMetadata,
           :emailSubject => String.t(),
-          :supportedLanguage => String.t()
+          :emailSubjectMetadata => PropertyMetadata,
+          :supportedLanguage => String.t(),
+          :supportedLanguageMetadata => PropertyMetadata
         }
 end
 
 defimpl Poison.Decoder, for: DocuSign.Model.RecipientEmailNotification do
-  def decode(value, _options) do
+  import DocuSign.Deserializer
+
+  def decode(value, options) do
     value
+    |> deserialize(:emailBodyMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(
+      :emailSubjectMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
+    |> deserialize(
+      :supportedLanguageMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
   end
 end

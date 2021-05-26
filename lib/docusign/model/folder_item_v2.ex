@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.FolderItemV2 do
   @moduledoc """
-
+  Information about folder item results.
   """
 
   @derive [Poison.Encoder]
@@ -17,8 +17,6 @@ defmodule DocuSign.Model.FolderItemV2 do
     :folderId,
     :folderUri,
     :is21CFRPart11,
-    :isSignatureProviderEnvelope,
-    :lastModifiedDateTime,
     :ownerName,
     :recipients,
     :recipientsUri,
@@ -28,7 +26,9 @@ defmodule DocuSign.Model.FolderItemV2 do
     :senderUserId,
     :sentDateTime,
     :status,
-    :subject
+    :subject,
+    :templateId,
+    :templateUri
   ]
 
   @type t :: %__MODULE__{
@@ -40,8 +40,6 @@ defmodule DocuSign.Model.FolderItemV2 do
           :folderId => String.t(),
           :folderUri => String.t(),
           :is21CFRPart11 => String.t(),
-          :isSignatureProviderEnvelope => String.t(),
-          :lastModifiedDateTime => String.t(),
           :ownerName => String.t(),
           :recipients => EnvelopeRecipients,
           :recipientsUri => String.t(),
@@ -51,7 +49,9 @@ defmodule DocuSign.Model.FolderItemV2 do
           :senderUserId => String.t(),
           :sentDateTime => String.t(),
           :status => String.t(),
-          :subject => String.t()
+          :subject => String.t(),
+          :templateId => String.t(),
+          :templateUri => String.t()
         }
 end
 

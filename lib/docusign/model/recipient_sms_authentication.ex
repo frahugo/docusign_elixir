@@ -9,16 +9,26 @@ defmodule DocuSign.Model.RecipientSmsAuthentication do
 
   @derive [Poison.Encoder]
   defstruct [
-    :senderProvidedNumbers
+    :senderProvidedNumbers,
+    :senderProvidedNumbersMetadata
   ]
 
   @type t :: %__MODULE__{
-          :senderProvidedNumbers => [String.t()]
+          :senderProvidedNumbers => [String.t()],
+          :senderProvidedNumbersMetadata => PropertyMetadata
         }
 end
 
 defimpl Poison.Decoder, for: DocuSign.Model.RecipientSmsAuthentication do
-  def decode(value, _options) do
+  import DocuSign.Deserializer
+
+  def decode(value, options) do
     value
+    |> deserialize(
+      :senderProvidedNumbersMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
   end
 end

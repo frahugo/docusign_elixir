@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.ListCustomField do
   @moduledoc """
-
+  This object represents a list custom field from which envelope creators and senders can select custom data.
   """
 
   @derive [Poison.Encoder]

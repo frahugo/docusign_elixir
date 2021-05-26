@@ -13,10 +13,13 @@ defmodule DocuSign.Model.NewAccountDefinition do
     :accountSettings,
     :addressInformation,
     :creditCardInformation,
+    :directDebitProcessorInformation,
     :distributorCode,
     :distributorPassword,
+    :envelopePartitionId,
     :initialUser,
-    :PaymentProcessorInformation,
+    :paymentMethod,
+    :paymentProcessorInformation,
     :planInformation,
     :referralInformation,
     :socialAccountInformation
@@ -24,16 +27,19 @@ defmodule DocuSign.Model.NewAccountDefinition do
 
   @type t :: %__MODULE__{
           :accountName => String.t(),
-          :accountSettings => [NameValue],
+          :accountSettings => AccountSettingsInformation,
           :addressInformation => AccountAddress,
           :creditCardInformation => CreditCardInformation,
+          :directDebitProcessorInformation => DirectDebitProcessorInformation,
           :distributorCode => String.t(),
           :distributorPassword => String.t(),
-          :initialUser => Users,
-          :PaymentProcessorInformation => PaymentProcessorInformation,
+          :envelopePartitionId => String.t(),
+          :initialUser => UserInformation,
+          :paymentMethod => String.t(),
+          :paymentProcessorInformation => PaymentProcessorInformation,
           :planInformation => PlanInformation,
           :referralInformation => ReferralInformation,
-          :socialAccountInformation => UserSocialAccountLogins
+          :socialAccountInformation => SocialAccountInformation
         }
 end
 
@@ -42,22 +48,43 @@ defimpl Poison.Decoder, for: DocuSign.Model.NewAccountDefinition do
 
   def decode(value, options) do
     value
-    |> deserialize(:accountSettings, :list, DocuSign.Model.NameValue, options)
-    |> deserialize(:addressInformation, :struct, DocuSign.Model.AccountAddress, options)
-    |> deserialize(:creditCardInformation, :struct, DocuSign.Model.CreditCardInformation, options)
-    |> deserialize(:initialUser, :struct, DocuSign.Model.Users, options)
     |> deserialize(
-      :PaymentProcessorInformation,
+      :accountSettings,
+      :struct,
+      DocuSign.Model.AccountSettingsInformation,
+      options
+    )
+    |> deserialize(:addressInformation, :struct, DocuSign.Model.AccountAddress, options)
+    |> deserialize(
+      :creditCardInformation,
+      :struct,
+      DocuSign.Model.CreditCardInformation,
+      options
+    )
+    |> deserialize(
+      :directDebitProcessorInformation,
+      :struct,
+      DocuSign.Model.DirectDebitProcessorInformation,
+      options
+    )
+    |> deserialize(:initialUser, :struct, DocuSign.Model.UserInformation, options)
+    |> deserialize(
+      :paymentProcessorInformation,
       :struct,
       DocuSign.Model.PaymentProcessorInformation,
       options
     )
     |> deserialize(:planInformation, :struct, DocuSign.Model.PlanInformation, options)
-    |> deserialize(:referralInformation, :struct, DocuSign.Model.ReferralInformation, options)
+    |> deserialize(
+      :referralInformation,
+      :struct,
+      DocuSign.Model.ReferralInformation,
+      options
+    )
     |> deserialize(
       :socialAccountInformation,
       :struct,
-      DocuSign.Model.UserSocialAccountLogins,
+      DocuSign.Model.SocialAccountInformation,
       options
     )
   end

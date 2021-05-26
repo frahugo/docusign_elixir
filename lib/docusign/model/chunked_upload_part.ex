@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.ChunkedUploadPart do
   @moduledoc """
-
+  An object that contains information about the chunked upload part.
   """
 
   @derive [Poison.Encoder]

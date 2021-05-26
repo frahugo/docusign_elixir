@@ -4,19 +4,23 @@
 
 defmodule DocuSign.Model.RecipientUpdateResponse do
   @moduledoc """
-
+  The recipient details that are returned after you update the recipient.
   """
 
   @derive [Poison.Encoder]
   defstruct [
+    :combined,
     :errorDetails,
     :recipientId,
+    :recipientIdGuid,
     :tabs
   ]
 
   @type t :: %__MODULE__{
+          :combined => String.t(),
           :errorDetails => ErrorDetails,
           :recipientId => String.t(),
+          :recipientIdGuid => String.t(),
           :tabs => EnvelopeRecipientTabs
         }
 end

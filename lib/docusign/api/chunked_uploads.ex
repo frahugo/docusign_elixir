@@ -11,19 +11,19 @@ defmodule DocuSign.Api.ChunkedUploads do
   import DocuSign.RequestBuilder
 
   @doc """
-  Delete an existing ChunkedUpload.
-
+  Deletes a chunked upload.
+  Deletes a chunked upload that has been committed but not yet consumed.  This method cannot be used to delete the following types of chunked uploads, which the system deletes automatically:   - Chunked uploads that have been consumed by use in another API call. - Expired chunked uploads.  **Note**: If you are aware of a chunked upload that can be discarded, the best practice is to explicitly delete it. If you wait for the system to automatically delete it after it expires, the chunked upload will continue to count against your quota.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - chunked_upload_id (String.t): 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - chunked_upload_id (String.t): The id of the chunked upload.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
 
-  {:ok, %DocuSign.Model.ChunkedUploads{}} on success
+  {:ok, %DocuSign.Model.ChunkedUploadResponse{}} on success
   {:error, info} on failure
   """
   @spec chunked_uploads_delete_chunked_upload(
@@ -31,7 +31,7 @@ defmodule DocuSign.Api.ChunkedUploads do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.ChunkedUploads.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.ChunkedUploadResponse.t()} | {:error, Tesla.Env.t()}
   def chunked_uploads_delete_chunked_upload(
         connection,
         account_id,
@@ -40,93 +40,93 @@ defmodule DocuSign.Api.ChunkedUploads do
       ) do
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/chunked_uploads/#{chunked_upload_id}")
+    |> url("/v2.1/accounts/#{account_id}/chunked_uploads/#{chunked_upload_id}")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.ChunkedUploads{})
+    |> decode(%DocuSign.Model.ChunkedUploadResponse{})
   end
 
   @doc """
-  Retrieves the current metadata of a ChunkedUpload.
-
+  Retrieves metadata about a chunked upload.
+  Returns the details (but not the content) about a chunked upload.  **Note**: You cannot obtain details about a chunked upload that has expired, been deleted, or consumed by other actions.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - chunked_upload_id (String.t): 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - chunked_upload_id (String.t): The id of the chunked upload.
   - opts (KeywordList): [optional] Optional parameters
-    - :include (String.t): A comma-separated list of additional template attributes to include in the response. Valid values are: recipients, folders, documents, custom_fields, and notifications.
+    - :include (String.t): (Optional) This parameter enables you to include additional attribute data in the response. The valid value for this method is &#x60;checksum&#x60;, which returns an SHA256 checksum of the content of the chunked upload in the response. You can use compare this checksum against your own checksum of the original content to verify that there are no missing parts before you attempt to commit the chunked upload.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.ChunkedUploads{}} on success
+  {:ok, %DocuSign.Model.ChunkedUploadResponse{}} on success
   {:error, info} on failure
   """
   @spec chunked_uploads_get_chunked_upload(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.ChunkedUploads.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.ChunkedUploadResponse.t()} | {:error, Tesla.Env.t()}
   def chunked_uploads_get_chunked_upload(connection, account_id, chunked_upload_id, opts \\ []) do
     optional_params = %{
-      include: :query
+      :include => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/chunked_uploads/#{chunked_upload_id}")
+    |> url("/v2.1/accounts/#{account_id}/chunked_uploads/#{chunked_upload_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.ChunkedUploads{})
+    |> decode(%DocuSign.Model.ChunkedUploadResponse{})
   end
 
   @doc """
-  Initiate a new ChunkedUpload.
-
+  Initiate a new chunked upload.
+  This method initiates a new chunked upload with the first part of the content.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :chunked_upload_request (ChunkedUploadRequest): 
+    - :chunked_upload_request (ChunkedUploadRequest):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.ChunkedUploads{}} on success
+  {:ok, %DocuSign.Model.ChunkedUploadResponse{}} on success
   {:error, info} on failure
   """
   @spec chunked_uploads_post_chunked_uploads(Tesla.Env.client(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.ChunkedUploads.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.ChunkedUploadResponse.t()} | {:error, Tesla.Env.t()}
   def chunked_uploads_post_chunked_uploads(connection, account_id, opts \\ []) do
     optional_params = %{
-      chunkedUploadRequest: :body
+      :chunkedUploadRequest => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/chunked_uploads")
+    |> url("/v2.1/accounts/#{account_id}/chunked_uploads")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.ChunkedUploads{})
+    |> decode(%DocuSign.Model.ChunkedUploadResponse{})
   end
 
   @doc """
-  Add a chunk, a chunk &#39;part&#39;, to an existing ChunkedUpload.
-
+  Add a chunk to an existing chunked upload.
+  Adds a chunk or part to an existing chunked upload. After you use the Create method to initiate a new chunked upload and upload the first part,  use this method to upload subsequent parts.  For simplicity, we recommend that you upload the parts in their sequential order ( 1,2, 3, 4, etc.). The Create method adds the first part and assigns it the &#x60;sequence&#x60; value &#x60;0&#x60;. As a result, we recommend that you start with a &#x60;sequence&#x60; value of &#x60;1&#x60; when you use this method, and continue uploading parts contiguously until you have uploaded the entirety of the original content to DocuSign.  Example:   &#x60;&#x60;&#x60; PUT /v2.1/accounts/{accountId}/chunked_uploads/{chunkedUploadId}/1 PUT /v2.1/accounts/{accountId}/chunked_uploads/{chunkedUploadId}/2 PUT /v2.1/accounts/{accountId}/chunked_uploads/{chunkedUploadId}/3 &#x60;&#x60;&#x60;  **Note**: You cannot replace a part that DocuSign has already received, or add parts to a chunked upload that is already successfully committed.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - chunked_upload_id (String.t): 
-  - chunked_upload_part_seq (String.t): 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - chunked_upload_id (String.t): The id of the chunked upload.
+  - chunked_upload_part_seq (String.t): The sequence or order of the part in the chunked upload. By default, the sequence of the first part that is uploaded as part of the Create request is &#x60;0&#x60;.  **Note**: You can add parts out of order. However, the chunked upload must consist of a contiguous series of one or more parts before you can successfully commit it.
   - opts (KeywordList): [optional] Optional parameters
-    - :chunked_upload_request (ChunkedUploadRequest): 
+    - :chunked_upload_request (ChunkedUploadRequest):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.ChunkedUploads{}} on success
+  {:ok, %DocuSign.Model.ChunkedUploadResponse{}} on success
   {:error, info} on failure
   """
   @spec chunked_uploads_put_chunked_upload_part(
@@ -135,7 +135,7 @@ defmodule DocuSign.Api.ChunkedUploads do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.ChunkedUploads.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.ChunkedUploadResponse.t()} | {:error, Tesla.Env.t()}
   def chunked_uploads_put_chunked_upload_part(
         connection,
         account_id,
@@ -144,50 +144,52 @@ defmodule DocuSign.Api.ChunkedUploads do
         opts \\ []
       ) do
     optional_params = %{
-      chunkedUploadRequest: :body
+      :chunkedUploadRequest => :body
     }
 
     %{}
     |> method(:put)
     |> url(
-      "/v2/accounts/#{account_id}/chunked_uploads/#{chunked_upload_id}/#{chunked_upload_part_seq}"
+      "/v2.1/accounts/#{account_id}/chunked_uploads/#{chunked_upload_id}/#{
+        chunked_upload_part_seq
+      }"
     )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.ChunkedUploads{})
+    |> decode(%DocuSign.Model.ChunkedUploadResponse{})
   end
 
   @doc """
-  Integrity-Check and Commit a ChunkedUpload, readying it for use elsewhere.
-
+  Commit a chunked upload.
+  This method checks the integrity of a chunked upload and then commits it. When this request is successful, the chunked upload is then ready to be referenced in other API calls.  If the request is unsuccessful, ensure that you have uploaded all of the parts by using the Update method.  **Note**: After you commit a chunked upload, it no longer accepts additional parts.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - chunked_upload_id (String.t): 
+  - account_id (String.t): (Required) The external account number (int) or account ID GUID.
+  - chunked_upload_id (String.t): (Required) The id of the chunked upload to commit.
   - opts (KeywordList): [optional] Optional parameters
-    - :action (String.t): 
+    - :action (String.t): (Required) You must use this query parameter with the value &#x60;commit&#x60;, which affirms the request to validate and prepare the chunked upload for use with other API calls.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.ChunkedUploads{}} on success
+  {:ok, %DocuSign.Model.ChunkedUploadResponse{}} on success
   {:error, info} on failure
   """
   @spec chunked_uploads_put_chunked_uploads(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.ChunkedUploads.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.ChunkedUploadResponse.t()} | {:error, Tesla.Env.t()}
   def chunked_uploads_put_chunked_uploads(connection, account_id, chunked_upload_id, opts \\ []) do
     optional_params = %{
-      action: :query
+      :action => :query
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/chunked_uploads/#{chunked_upload_id}")
+    |> url("/v2.1/accounts/#{account_id}/chunked_uploads/#{chunked_upload_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.ChunkedUploads{})
+    |> decode(%DocuSign.Model.ChunkedUploadResponse{})
   end
 end

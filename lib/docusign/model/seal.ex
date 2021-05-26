@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.Seal do
   @moduledoc """
-
+  Set of information related to the electronic seal used by the Trust Service Provider (TSP).
   """
 
   @derive [Poison.Encoder]

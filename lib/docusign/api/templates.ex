@@ -17,8 +17,8 @@ defmodule DocuSign.Api.Templates do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -40,7 +40,7 @@ defmodule DocuSign.Api.Templates do
       ) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/notification")
+    |> url("/v2.1/accounts/#{account_id}/templates/#{template_id}/notification")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.Notification{})
@@ -53,10 +53,10 @@ defmodule DocuSign.Api.Templates do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :template_notification_request (TemplateNotificationRequest): 
+    - :template_notification_request (TemplateNotificationRequest):
 
   ## Returns
 
@@ -76,12 +76,12 @@ defmodule DocuSign.Api.Templates do
         opts \\ []
       ) do
     optional_params = %{
-      templateNotificationRequest: :body
+      :templateNotificationRequest => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/notification")
+    |> url("/v2.1/accounts/#{account_id}/templates/#{template_id}/notification")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -95,12 +95,12 @@ defmodule DocuSign.Api.Templates do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
   - page_number (String.t): The page number being accessed.
-  - template_id (String.t): The ID of the template being accessed.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :page_request (PageRequest): 
+    - :page_request (PageRequest):
 
   ## Returns
 
@@ -124,13 +124,13 @@ defmodule DocuSign.Api.Templates do
         opts \\ []
       ) do
     optional_params = %{
-      pageRequest: :body
+      :pageRequest => :body
     }
 
     %{}
     |> method(:delete)
     |> url(
-      "/v2/accounts/#{account_id}/templates/#{template_id}/documents/#{document_id}/pages/#{
+      "/v2.1/accounts/#{account_id}/templates/#{template_id}/documents/#{document_id}/pages/#{
         page_number
       }"
     )
@@ -147,15 +147,15 @@ defmodule DocuSign.Api.Templates do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
   - page_number (String.t): The page number being accessed.
-  - template_id (String.t): The ID of the template being accessed.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :dpi (String.t): Number of dots per inch for the resulting image. The default if not used is 94. The range is 1-310.
-    - :max_height (String.t): Sets the maximum height (in pixels) of the returned image.
-    - :max_width (String.t): Sets the maximum width (in pixels) of the returned image.
-    - :show_changes (String.t): 
+    - :dpi (String.t): The number of dots per inch (DPI) for the resulting images. Valid values are 1-310 DPI. The default value is 94.
+    - :max_height (String.t): Sets the maximum height of the returned images in pixels.
+    - :max_width (String.t): Sets the maximum width of the returned images in pixels.
+    - :show_changes (String.t):
 
   ## Returns
 
@@ -179,16 +179,16 @@ defmodule DocuSign.Api.Templates do
         opts \\ []
       ) do
     optional_params = %{
-      dpi: :query,
-      max_height: :query,
-      max_width: :query,
-      show_changes: :query
+      :dpi => :query,
+      :max_height => :query,
+      :max_width => :query,
+      :show_changes => :query
     }
 
     %{}
     |> method(:get)
     |> url(
-      "/v2/accounts/#{account_id}/templates/#{template_id}/documents/#{document_id}/pages/#{
+      "/v2.1/accounts/#{account_id}/templates/#{template_id}/documents/#{document_id}/pages/#{
         page_number
       }/page_image"
     )
@@ -200,21 +200,21 @@ defmodule DocuSign.Api.Templates do
 
   @doc """
   Returns document page image(s) based on input.
-
+  Returns images of the pages in a template document for display based on the parameters that you specify.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): (Required) The external account number (int) or account ID GUID.
+  - document_id (String.t): (Required) The ID of the document.
+  - template_id (String.t): (Required) The ID of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :count (String.t): The maximum number of results to be returned by this request.
-    - :dpi (String.t): Number of dots per inch for the resulting image. The default if not used is 94. The range is 1-310.
-    - :max_height (String.t): Sets the maximum height (in pixels) of the returned image.
-    - :max_width (String.t): Sets the maximum width (in pixels) of the returned image.
-    - :nocache (String.t): 
-    - :show_changes (String.t): 
+    - :count (String.t): The maximum number of results to return.
+    - :dpi (String.t): The number of dots per inch (DPI) for the resulting images. Valid values are 1-310 DPI. The default value is 94.
+    - :max_height (String.t): Sets the maximum height of the returned images in pixels.
+    - :max_width (String.t): Sets the maximum width of the returned images in pixels.
+    - :nocache (String.t): If **true**, using cache is disabled and image information is retrieved from a database. **True** is the default value.
+    - :show_changes (String.t): If **true**, changes display in the user interface.
     - :start_position (String.t): The position within the total result set from which to start returning values. The value **thumbnail** may be used to return the page image.
 
   ## Returns
@@ -231,18 +231,18 @@ defmodule DocuSign.Api.Templates do
         ) :: {:ok, DocuSign.Model.PageImages.t()} | {:error, Tesla.Env.t()}
   def pages_get_template_page_images(connection, account_id, document_id, template_id, opts \\ []) do
     optional_params = %{
-      count: :query,
-      dpi: :query,
-      max_height: :query,
-      max_width: :query,
-      nocache: :query,
-      show_changes: :query,
-      start_position: :query
+      :count => :query,
+      :dpi => :query,
+      :max_height => :query,
+      :max_width => :query,
+      :nocache => :query,
+      :show_changes => :query,
+      :start_position => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/documents/#{document_id}/pages")
+    |> url("/v2.1/accounts/#{account_id}/templates/#{template_id}/documents/#{document_id}/pages")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -256,12 +256,12 @@ defmodule DocuSign.Api.Templates do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
   - page_number (String.t): The page number being accessed.
-  - template_id (String.t): The ID of the template being accessed.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :page_request (PageRequest): 
+    - :page_request (PageRequest):
 
   ## Returns
 
@@ -285,13 +285,13 @@ defmodule DocuSign.Api.Templates do
         opts \\ []
       ) do
     optional_params = %{
-      pageRequest: :body
+      :pageRequest => :body
     }
 
     %{}
     |> method(:put)
     |> url(
-      "/v2/accounts/#{account_id}/templates/#{template_id}/documents/#{document_id}/pages/#{
+      "/v2.1/accounts/#{account_id}/templates/#{template_id}/documents/#{document_id}/pages/#{
         page_number
       }/page_image"
     )
@@ -308,15 +308,15 @@ defmodule DocuSign.Api.Templates do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - template_id (String.t): The id of the template.
   - template_part (String.t): Currently, the only defined part is **groups**.
   - opts (KeywordList): [optional] Optional parameters
-    - :groups (Groups): 
+    - :group_information (GroupInformation):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.Groups{}} on success
+  {:ok, %DocuSign.Model.GroupInformation{}} on success
   {:error, info} on failure
   """
   @spec templates_delete_template_part(
@@ -325,7 +325,7 @@ defmodule DocuSign.Api.Templates do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.Groups.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.GroupInformation.t()} | {:error, Tesla.Env.t()}
   def templates_delete_template_part(
         connection,
         account_id,
@@ -334,77 +334,83 @@ defmodule DocuSign.Api.Templates do
         opts \\ []
       ) do
     optional_params = %{
-      Groups: :body
+      :groupInformation => :body
     }
 
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/#{template_part}")
+    |> url("/v2.1/accounts/#{account_id}/templates/#{template_id}/#{template_part}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.Groups{})
+    |> decode(%DocuSign.Model.GroupInformation{})
   end
 
   @doc """
-  Gets a list of templates for a specified account.
+  Gets a specific template associated with a specified account.
   Retrieves the definition of the specified template.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :include (String.t): A comma-separated list of additional template attributes to include in the response. Valid values are: recipients, folders, documents, custom_fields, and notifications.
+    - :include (String.t): A comma-separated list of additional template attributes to include in the response. Valid values are:  - &#x60;powerforms&#x60;: Includes information about PowerForms. - &#x60;tabs&#x60;: Includes information about tabs. - &#x60;documents&#x60;: Includes information about documents. - &#x60;favorite_template_status&#x60;: : Includes the template &#x60;favoritedByMe&#x60; property in the response. **Note**: You can mark a template as a favorite only in eSignature v2.1.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.Templates{}} on success
+  {:ok, %DocuSign.Model.EnvelopeTemplate{}} on success
   {:error, info} on failure
   """
   @spec templates_get_template(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.Templates.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.EnvelopeTemplate.t()} | {:error, Tesla.Env.t()}
   def templates_get_template(connection, account_id, template_id, opts \\ []) do
     optional_params = %{
-      include: :query
+      :include => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}")
+    |> url("/v2.1/accounts/#{account_id}/templates/#{template_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.Templates{})
+    |> decode(%DocuSign.Model.EnvelopeTemplate{})
   end
 
   @doc """
-  Gets the definition of a template.
+  Gets template definitions.
   Retrieves the list of templates for the specified account. The request can be limited to a specific folder.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :count (String.t): Number of records to return in the cache.
-    - :folder (String.t): The query value can be a folder name or folder ID. The response will only return templates in the specified folder.
-    - :folder_ids (String.t): A comma separated list of folder ID GUIDs.
+    - :count (String.t): The number of records to return in the cache.
+    - :created_from_date (String.t): Lists templates created on or after this date.
+    - :created_to_date (String.t): Lists templates modified before this date.
+    - :folder_ids (String.t): A comma-separated list of folder id GUIDs.
+    - :folder_types (String.t): The type of folder to return templates for. Possible values are:  - &#x60;templates&#x60;: Templates in the **My Templates** folder.   Templates in the **Shared Templates**  and **All Template** folders (if the request id from and Admin) are excluded. - &#x60;templates_root&#x60;: Templates in the root level of the **My Templates** folder, but not in an actual folder. Note that the **My Templates** folder is not a real folder. - &#x60;recylebin&#x60;: Templates that have been deleted.
     - :from_date (String.t): Start of the search date range. Only returns templates created on or after this date/time. If no value is specified, there is no limit on the earliest date created.
-    - :include (String.t): A comma-separated list of additional template attributes to include in the response. Valid values are:  * custom_fields * documents * folders * notifications * recipients 
-    - :modified_from_date (String.t): 
-    - :modified_to_date (String.t): 
-    - :order (String.t): Sets the direction order used to sort the list. Valid values are: -asc &#x3D; ascending sort order (a to z)  -desc &#x3D; descending sort order (z to a)
-    - :order_by (String.t): Sets the file attribute used to sort the list. Valid values are:  -name: template name  -modified: date/time template was last modified.  -used: date/time the template was last used.
-    - :search_text (String.t): The search text used to search the names of templates.
-    - :shared_by_me (String.t): If true, the response only includes templates shared by the user. If false, the response only returns template not shared by the user. If not specified, the response is not affected.
-    - :start_position (String.t): The starting index for the first template shown in the response. This must be greater than or equal to 0 (zero).
-    - :to_date (String.t): End of the search date range. Only returns templates created up to this date/time. If no value is provided, this defaults to the current date.
+    - :include (String.t): A comma-separated list of additional template attributes to include in the response. Valid values are:  - &#x60;powerforms&#x60;: Includes details about the PowerForms associated with the templates. - &#x60;documents&#x60;: Includes information about template documents. - &#x60;folders&#x60;: Includes information about the folder that holds the template. - &#x60;favorite_template_status&#x60;: Includes the template &#x60;favoritedByMe&#x60; property. **Note**: You can mark a template as a favorite only in eSignature v2.1. - &#x60;advanced_templates&#x60;: Includes information about advanced templates. - &#x60;recipients&#x60;: Includes information about template recipients. - &#x60;custom_fields&#x60;: Includes information about template custom fields. - &#x60;notifications&#x60;: Includes information about the notification settings for templates.
+    - :is_deleted_template_only (String.t):
+    - :is_download (String.t): When set to **true**, downloads the templates listed in &#x60;template_ids&#x60; as a collection of JSON definitions in a single zip file.  The &#x60;Content-Disposition&#x60; header is set in the response. The value of the header provides the filename of the file.  The default is **false**.  **Note**: This parameter only works when you specify a list of templates in the &#x60;template_ids&#x60; parameter.
+    - :modified_from_date (String.t): Lists templates modified on or after this date.
+    - :modified_to_date (String.t): Lists templates modified before this date.
+    - :order (String.t): Specifies the sort order of the search results. Valid values are:  - &#x60;asc&#x60;: Ascending (A to Z) - &#x60;desc&#x60;: Descending (Z to A)
+    - :order_by (String.t): Specifies how the search results are listed. Valid values are:  - &#x60;name&#x60;: template name - &#x60;modified&#x60;: date/time template was last modified - &#x60;used&#x60;: date/time the template was last used.
+    - :search_fields (String.t): A comma-separated list of additional template properties to search.   - &#x60;sender&#x60;: Include sender name and email in the search. - &#x60;recipients&#x60;: Include recipient names and emails in the search. - &#x60;envelope&#x60;: Not used in template searches.
+    - :search_text (String.t): The search text to use to search the names of templates.
+    - :shared_by_me (String.t): If **true**, the response only includes templates shared by the user. If false, the response only returns template not shared by the user. If not specified, the response is not affected.
+    - :start_position (String.t): The starting zero-based index position for the first template to show in the response. This value must be greater than or equal to &#x60;0&#x60; (zero).
+    - :template_ids (String.t): A comma-separated list of template ids to download. This value is valid only when &#x60;is_download&#x60; is **true**.
+    - :to_date (String.t): The end of a search date range in UTC DateTime format. When you use this parameter, only templates created up to this date and time are returned.  **Note**: If this property is null, the value defaults to the current date.
     - :used_from_date (String.t): Start of the search date range. Only returns templates used or edited on or after this date/time. If no value is specified, there is no limit on the earliest date used.
     - :used_to_date (String.t): End of the search date range. Only returns templates used or edited up to this date/time. If no value is provided, this defaults to the current date.
-    - :user_filter (String.t): Sets if the templates shown in the response Valid values are:  -owned_by_me: only shows templates the user owns.  -shared_with_me: only shows templates that are shared with the user.  -all: shows all templates owned or shared with the user.
-    - :user_id (String.t): 
+    - :user_filter (String.t): Filters the templates in the response. Valid values are:   - &#x60;owned_by_me&#x60;: Results include only templates owned by the user. - &#x60;shared_with_me&#x60;: Results include only templates owned by the user.   - &#x60;all&#x60;:  Results include all templates owned or shared with the user.
+    - :user_id (String.t): The id of the user.
 
   ## Returns
 
@@ -415,28 +421,34 @@ defmodule DocuSign.Api.Templates do
           {:ok, DocuSign.Model.EnvelopeTemplateResults.t()} | {:error, Tesla.Env.t()}
   def templates_get_templates(connection, account_id, opts \\ []) do
     optional_params = %{
-      count: :query,
-      folder: :query,
-      folder_ids: :query,
-      from_date: :query,
-      include: :query,
-      modified_from_date: :query,
-      modified_to_date: :query,
-      order: :query,
-      order_by: :query,
-      search_text: :query,
-      shared_by_me: :query,
-      start_position: :query,
-      to_date: :query,
-      used_from_date: :query,
-      used_to_date: :query,
-      user_filter: :query,
-      user_id: :query
+      :count => :query,
+      :created_from_date => :query,
+      :created_to_date => :query,
+      :folder_ids => :query,
+      :folder_types => :query,
+      :from_date => :query,
+      :include => :query,
+      :is_deleted_template_only => :query,
+      :is_download => :query,
+      :modified_from_date => :query,
+      :modified_to_date => :query,
+      :order => :query,
+      :order_by => :query,
+      :search_fields => :query,
+      :search_text => :query,
+      :shared_by_me => :query,
+      :start_position => :query,
+      :template_ids => :query,
+      :to_date => :query,
+      :used_from_date => :query,
+      :used_to_date => :query,
+      :user_filter => :query,
+      :user_id => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/templates")
+    |> url("/v2.1/accounts/#{account_id}/templates")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -444,15 +456,15 @@ defmodule DocuSign.Api.Templates do
   end
 
   @doc """
-  Creates a template.
-  Creates a template definition using a multipart request.  ### Template Email Subject Merge Fields  Call this endpoint to insert a recipient name and email address merge fields into the email subject line when creating or sending from a template.  The merge fields, based on the recipient&#39;s role name, are added to the &#x60;emailSubject&#x60; property when the template is created or when the template is used to create an envelope. After a template sender adds the name and email information for the recipient and sends the envelope, the recipient information is automatically merged into the appropriate fields in the email subject line.  Both the sender and the recipients will see the information in the email subject line for any emails associated with the template. This provides an easy way for senders to organize their envelope emails without having to open an envelope to check the recipient.   ###### If merging the recipient information into the subject line causes the subject line to exceed 100 characters, then any characters over the 100 character limit are not included in the subject line. For cases where the recipient name or email is expected to be long, you should consider placing the merge field at the start of the email subject.  To add a recipient&#39;s name in the subject line add the following text in the &#x60;emailSubject&#x60; property when creating the template or when sending an envelope from a template:  &#x60;[[&lt;roleName&gt;_UserName]]&#x60;  Example:  &#x60;\&quot;emailSubject\&quot;:\&quot;[[Signer 1_UserName]], Please sign this NDA\&quot;,&#x60;  To add a recipient&#39;s email address in the subject line add the following text in the &#x60;emailSubject&#x60; property when creating the template or when sending an envelope from a template:  &#x60;[[&lt;roleName&gt;_Email]]&#x60;  Example:  &#x60;\&quot;emailSubject\&quot;:\&quot;[[Signer 1_Email]], Please sign this NDA\&quot;,&#x60;   In both cases the &lt;roleName&gt; is the recipient&#39;s contents of the &#x60;roleName&#x60; property in the template.  For cases where another recipient (such as an Agent, Editor, or Intermediary recipient) is entering the name and email information for the recipient included in the email subject, then &#x60;[[&lt;roleName&gt;_UserName]]&#x60; or &#x60;[[&lt;roleName&gt;_Email]]&#x60; is shown in the email subject.
+  Creates one or more templates.
+  Creates one or more template definitions, using a multipart request for each template.  Templates help streamline the sending process when you frequently send the same or similar documents, or send different documents to the same group of people.  When you create a template, you define placeholder roles. Rather than specifying a person, you specify a role that regularly participates in a transaction that uses the template. Then, when you create or send an envelope based on the template, you assign actual recipients to the template roles. The recipients automatically inherit all of the workflow that is defined for that role in the template, such as the tabs and routing information.  For code examples and more information, see [REST API Templates](https://developers.docusign.com/esign-rest-api/guides/features/templates#sending-from-a-template).  ## Template Email Subject Merge Fields  Placeholder roles have associated merge fields that personalize the email notification that DocuSign sends. For example, the template automatically personalizes the email message by adding placeholders for the recipient&#39;s name and email address within the email subject line, based on the recipient&#39;s role. When the sender adds the name and email information for the recipient and sends the envelope, the recipient information is automatically merged into the appropriate fields in the email subject line.  Both the sender and the recipients will see the information in the email subject line for any emails associated with the template. This provides an easy way for senders to organize their envelope emails without having to open an envelope to find out who the recipient is.  **Warning: If merging the recipient information into the subject line causes the subject line to exceed 100 characters, then any characters over the 100 character limit are not included in the subject line. For cases where you expect the recipient name or email to be long, you should consider placing the merge field at the start of the email subject.**  To insert a recipient&#39;s name into the subject line, add the following text in the &#x60;emailSubject&#x60; property when you create the template:  &#x60;[[&lt;roleName&gt;_UserName]]&#x60;  Example:  &#x60;\&quot;emailSubject\&quot;:\&quot;[[Signer 1_UserName]], Please sign this NDA\&quot;,&#x60;  To add a recipient&#39;s email address in the subject line, add the following text in the &#x60;emailSubject&#x60; property when you create the template or send an envelope from the template:  &#x60;[[&lt;roleName&gt;_Email]]&#x60;  Example:  &#x60;\&quot;emailSubject\&quot;:\&quot;[[Signer 1_Email]], Please sign this NDA\&quot;,&#x60;  In these examples, the role name specified in the template  is “Signer 1”.  When the envelope is sent, the placeholder will be dynamically substituted with the recipient&#39;s name or email.  ## Creating multiple templates  To create multiple templates, you provide a zip file of JSON files. You can also use the Templates::ListTemplates method with the &#x60;is_download&#x60; query parameter to download a zip file containing your existing templates and use that as a guide. The API supports both .zip and .gzip file formats as input.  You also need to set the following headers:  - &#x60;Content-Length&#x60; - &#x60;Content-Type&#x60; - &#x60;Content-Disposition&#x60;  Example:   &#x60;Content-Length: 71068&#x60;  &#x60;Content-Type: application/zip&#x60;  &#x60;Content-Disposition: file; filename&#x3D;\&quot;DocuSignTemplates_Nov_25_2019_20_40_21.zip\&quot;; fileExtension&#x3D;.zip&#x60;
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): (Required) The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :templates (Templates): 
+    - :envelope_template (EnvelopeTemplate):
 
   ## Returns
 
@@ -463,12 +475,12 @@ defmodule DocuSign.Api.Templates do
           {:ok, DocuSign.Model.TemplateSummary.t()} | {:error, Tesla.Env.t()}
   def templates_post_templates(connection, account_id, opts \\ []) do
     optional_params = %{
-      Templates: :body
+      :envelopeTemplate => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/templates")
+    |> url("/v2.1/accounts/#{account_id}/templates")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -482,10 +494,10 @@ defmodule DocuSign.Api.Templates do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :templates (Templates): 
+    - :envelope_template (EnvelopeTemplate):
 
   ## Returns
 
@@ -496,12 +508,12 @@ defmodule DocuSign.Api.Templates do
           {:ok, DocuSign.Model.TemplateUpdateSummary.t()} | {:error, Tesla.Env.t()}
   def templates_put_template(connection, account_id, template_id, opts \\ []) do
     optional_params = %{
-      Templates: :body
+      :envelopeTemplate => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}")
+    |> url("/v2.1/accounts/#{account_id}/templates/#{template_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -509,21 +521,21 @@ defmodule DocuSign.Api.Templates do
   end
 
   @doc """
-  Shares a template with a group
-  Shares a template with the specified members group.
+  Shares a template with a group.
+  Shares a template with the specified members group.  **Note**: For a newer version of this functionality, see [Accounts::Update Shared Access](https://developers.docusign.com/docs/esign-rest-api/reference/Accounts/Accounts/updateSharedAccess).
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - template_id (String.t): The id of the template.
   - template_part (String.t): Currently, the only defined part is **groups**.
   - opts (KeywordList): [optional] Optional parameters
-    - :groups (Groups): 
+    - :group_information (GroupInformation):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.Groups{}} on success
+  {:ok, %DocuSign.Model.GroupInformation{}} on success
   {:error, info} on failure
   """
   @spec templates_put_template_part(
@@ -532,18 +544,18 @@ defmodule DocuSign.Api.Templates do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.Groups.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.GroupInformation.t()} | {:error, Tesla.Env.t()}
   def templates_put_template_part(connection, account_id, template_id, template_part, opts \\ []) do
     optional_params = %{
-      Groups: :body
+      :groupInformation => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/#{template_part}")
+    |> url("/v2.1/accounts/#{account_id}/templates/#{template_id}/#{template_part}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.Groups{})
+    |> decode(%DocuSign.Model.GroupInformation{})
   end
 end

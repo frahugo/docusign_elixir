@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.NameValue do
   @moduledoc """
-
+  A name-value pair that describes an item and provides a value for the item.
   """
 
   @derive [Poison.Encoder]

@@ -17,10 +17,10 @@ defmodule DocuSign.Api.EnvelopeTemplates do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -47,7 +47,7 @@ defmodule DocuSign.Api.EnvelopeTemplates do
     %{}
     |> method(:delete)
     |> url(
-      "/v2/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/templates/#{
+      "/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/templates/#{
         template_id
       }"
     )
@@ -63,15 +63,15 @@ defmodule DocuSign.Api.EnvelopeTemplates do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :include (String.t): A comma-separated list that limits the results. Valid values:  * applied * matched 
+    - :include (String.t): A comma-separated list that limits the results. Valid values are:  * &#x60;applied&#x60; * &#x60;matched&#x60;
 
   ## Returns
 
-  {:ok, %DocuSign.Model.EnvelopeTemplates{}} on success
+  {:ok, %DocuSign.Model.TemplateInformation{}} on success
   {:error, info} on failure
   """
   @spec templates_get_document_templates(
@@ -80,7 +80,7 @@ defmodule DocuSign.Api.EnvelopeTemplates do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.EnvelopeTemplates.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.TemplateInformation.t()} | {:error, Tesla.Env.t()}
   def templates_get_document_templates(
         connection,
         account_id,
@@ -89,51 +89,51 @@ defmodule DocuSign.Api.EnvelopeTemplates do
         opts \\ []
       ) do
     optional_params = %{
-      include: :query
+      :include => :query
     }
 
     %{}
     |> method(:get)
     |> url(
-      "/v2/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/templates"
+      "/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/templates"
     )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.EnvelopeTemplates{})
+    |> decode(%DocuSign.Model.TemplateInformation{})
   end
 
   @doc """
   Get List of Templates used in an Envelope
-  This returns a list of the server-side templates, their name and ID, used in an envelope. 
+  This returns a list of the server-side templates, their name and ID, used in an envelope.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :include (String.t): The possible values are:  matching_applied - This returns template matching information for the template.
+    - :include (String.t): The possible value is &#x60;matching_applied&#x60;, which returns template matching information for the template.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.EnvelopeTemplates{}} on success
+  {:ok, %DocuSign.Model.TemplateInformation{}} on success
   {:error, info} on failure
   """
   @spec templates_get_envelope_templates(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.EnvelopeTemplates.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.TemplateInformation.t()} | {:error, Tesla.Env.t()}
   def templates_get_envelope_templates(connection, account_id, envelope_id, opts \\ []) do
     optional_params = %{
-      include: :query
+      :include => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/templates")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/templates")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.EnvelopeTemplates{})
+    |> decode(%DocuSign.Model.TemplateInformation{})
   end
 
   @doc """
@@ -143,11 +143,12 @@ defmodule DocuSign.Api.EnvelopeTemplates do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :document_template_list (DocumentTemplateList): 
+    - :preserve_template_recipient (String.t):
+    - :document_template_list (DocumentTemplateList):
 
   ## Returns
 
@@ -169,13 +170,14 @@ defmodule DocuSign.Api.EnvelopeTemplates do
         opts \\ []
       ) do
     optional_params = %{
-      documentTemplateList: :body
+      :preserve_template_recipient => :query,
+      :documentTemplateList => :body
     }
 
     %{}
     |> method(:post)
     |> url(
-      "/v2/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/templates"
+      "/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/templates"
     )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
@@ -190,10 +192,11 @@ defmodule DocuSign.Api.EnvelopeTemplates do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :document_template_list (DocumentTemplateList): 
+    - :preserve_template_recipient (String.t):
+    - :document_template_list (DocumentTemplateList):
 
   ## Returns
 
@@ -204,12 +207,13 @@ defmodule DocuSign.Api.EnvelopeTemplates do
           {:ok, DocuSign.Model.DocumentTemplateList.t()} | {:error, Tesla.Env.t()}
   def templates_post_envelope_templates(connection, account_id, envelope_id, opts \\ []) do
     optional_params = %{
-      documentTemplateList: :body
+      :preserve_template_recipient => :query,
+      :documentTemplateList => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/templates")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/templates")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()

@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.DocumentVisibility do
   @moduledoc """
-
+  This object configures a recipient&#39;s read/write access to a document.
   """
 
   @derive [Poison.Encoder]

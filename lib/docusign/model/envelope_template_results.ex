@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.EnvelopeTemplateResults do
   @moduledoc """
-
+  Information about templates.
   """
 
   @derive [Poison.Encoder]
@@ -21,7 +21,7 @@ defmodule DocuSign.Model.EnvelopeTemplateResults do
 
   @type t :: %__MODULE__{
           :endPosition => String.t(),
-          :envelopeTemplates => [EnvelopeTemplateResult],
+          :envelopeTemplates => [EnvelopeTemplate],
           :folders => [Folder],
           :nextUri => String.t(),
           :previousUri => String.t(),
@@ -36,7 +36,7 @@ defimpl Poison.Decoder, for: DocuSign.Model.EnvelopeTemplateResults do
 
   def decode(value, options) do
     value
-    |> deserialize(:envelopeTemplates, :list, DocuSign.Model.EnvelopeTemplateResult, options)
+    |> deserialize(:envelopeTemplates, :list, DocuSign.Model.EnvelopeTemplate, options)
     |> deserialize(:folders, :list, DocuSign.Model.Folder, options)
   end
 end

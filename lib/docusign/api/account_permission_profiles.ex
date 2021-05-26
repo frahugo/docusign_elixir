@@ -11,15 +11,16 @@ defmodule DocuSign.Api.AccountPermissionProfiles do
   import DocuSign.RequestBuilder
 
   @doc """
-  Deletes a permissions profile within the specified account.
-
+  Deletes a permission profile from an account.
+  This method deletes a permission profile from an account.  To delete a permission profile, it must not have any users associated with it. When you use this method to delete a permission profile, you can reassign the users associated with it to a new permission profile at the same time by using the &#x60;move_users_to&#x60; query parameter.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - permission_profile_id (String.t): 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - permission_profile_id (String.t): The ID of the permission profile. Possible values include:  - &#x60;2301416&#x60; (for the &#x60;DocuSign Viewer&#x60; profile) - &#x60;2301415&#x60; (for the &#x60;DocuSign Sender&#x60; profile) - &#x60;2301414&#x60; (for the &#x60;Account Administrator&#x60; profile)  In addition, any custom permission profiles associated with your account will have an automatically generated &#x60;permissionProfileId&#x60;.
   - opts (KeywordList): [optional] Optional parameters
+    - :move_users_to (String.t):
 
   ## Returns
 
@@ -36,31 +37,36 @@ defmodule DocuSign.Api.AccountPermissionProfiles do
         connection,
         account_id,
         permission_profile_id,
-        _opts \\ []
+        opts \\ []
       ) do
+    optional_params = %{
+      :move_users_to => :query
+    }
+
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/permission_profiles/#{permission_profile_id}")
+    |> url("/v2.1/accounts/#{account_id}/permission_profiles/#{permission_profile_id}")
+    |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(false)
   end
 
   @doc """
-  Returns a permissions profile in the specified account.
-
+  Returns a permission profile for an account.
+  This method returns information about a specific permission profile that is associated with an account.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - permission_profile_id (String.t): 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - permission_profile_id (String.t): The ID of the permission profile. Possible values include:  - &#x60;2301416&#x60; (for the &#x60;DocuSign Viewer&#x60; profile) - &#x60;2301415&#x60; (for the &#x60;DocuSign Sender&#x60; profile) - &#x60;2301414&#x60; (for the &#x60;Account Administrator&#x60; profile)  In addition, any custom permission profiles associated with your account will have an automatically generated &#x60;permissionProfileId&#x60;.
   - opts (KeywordList): [optional] Optional parameters
-    - :include (String.t): A comma-separated list of additional template attributes to include in the response. Valid values are: recipients, folders, documents, custom_fields, and notifications.
+    - :include (String.t): A comma-separated list of additional properties to return in the response. The only valid value for this request is &#x60;metadata&#x60;, which returns metadata indicating whether the properties associated with the account permission profile are editable.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.AccountPermissionProfiles{}} on success
+  {:ok, %DocuSign.Model.PermissionProfile{}} on success
   {:error, info} on failure
   """
   @spec permission_profiles_get_permission_profile(
@@ -68,7 +74,7 @@ defmodule DocuSign.Api.AccountPermissionProfiles do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.AccountPermissionProfiles.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.PermissionProfile.t()} | {:error, Tesla.Env.t()}
   def permission_profiles_get_permission_profile(
         connection,
         account_id,
@@ -76,28 +82,28 @@ defmodule DocuSign.Api.AccountPermissionProfiles do
         opts \\ []
       ) do
     optional_params = %{
-      include: :query
+      :include => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/permission_profiles/#{permission_profile_id}")
+    |> url("/v2.1/accounts/#{account_id}/permission_profiles/#{permission_profile_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.AccountPermissionProfiles{})
+    |> decode(%DocuSign.Model.PermissionProfile{})
   end
 
   @doc """
   Gets a list of permission profiles.
-  Retrieves a list of Permission Profiles. Permission Profiles are a standard set of user permissions that you can apply to individual users or users in a Group. This makes it easier to manage user permissions for a large number of users, without having to change permissions on a user-by-user basis.  Currently, Permission Profiles can only be created and modified in the DocuSign console.
+  This method returns a list of permission profiles that are associated with an account.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :include (String.t): Reserved for DocuSign. 
+    - :include (String.t): A comma-separated list of additional properties to return in the response. Valid values are:  - &#x60;user_count&#x60;: The total number of users associated with the permission profile. - &#x60;closed_users&#x60;: Includes closed users in the &#x60;user_count&#x60;. - &#x60;account_management&#x60;: The account management settings. - &#x60;metadata&#x60;: Metadata indicating whether the properties associated with the account permission profile are editable.  Example: &#x60;user_count,closed_users&#x60;
 
   ## Returns
 
@@ -108,12 +114,12 @@ defmodule DocuSign.Api.AccountPermissionProfiles do
           {:ok, DocuSign.Model.PermissionProfileInformation.t()} | {:error, Tesla.Env.t()}
   def permission_profiles_get_permission_profiles(connection, account_id, opts \\ []) do
     optional_params = %{
-      include: :query
+      :include => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/permission_profiles")
+    |> url("/v2.1/accounts/#{account_id}/permission_profiles")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -121,55 +127,55 @@ defmodule DocuSign.Api.AccountPermissionProfiles do
   end
 
   @doc """
-  Creates a new permission profile in the specified account.
-
+  Creates a new permission profile for an account.
+  This method creates a new permission profile for an account.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :include (String.t): A comma-separated list of additional template attributes to include in the response. Valid values are: recipients, folders, documents, custom_fields, and notifications.
-    - :account_permission_profiles (AccountPermissionProfiles): 
+    - :include (String.t): A comma-separated list of additional properties to return in the response. The only valid value for this request is &#x60;metadata&#x60;, which returns metadata indicating whether the properties associated with the account permission profile are editable.
+    - :permission_profile (PermissionProfile):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.AccountPermissionProfiles{}} on success
+  {:ok, %DocuSign.Model.PermissionProfile{}} on success
   {:error, info} on failure
   """
   @spec permission_profiles_post_permission_profiles(Tesla.Env.client(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.AccountPermissionProfiles.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.PermissionProfile.t()} | {:error, Tesla.Env.t()}
   def permission_profiles_post_permission_profiles(connection, account_id, opts \\ []) do
     optional_params = %{
-      include: :query,
-      AccountPermissionProfiles: :body
+      :include => :query,
+      :permissionProfile => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/permission_profiles")
+    |> url("/v2.1/accounts/#{account_id}/permission_profiles")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.AccountPermissionProfiles{})
+    |> decode(%DocuSign.Model.PermissionProfile{})
   end
 
   @doc """
-  Updates a permission profile within the specified account.
-
+  Updates a permission profile.
+  This method updates an account permission profile.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - permission_profile_id (String.t): 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - permission_profile_id (String.t): The ID of the permission profile. Possible values include:  - &#x60;2301416&#x60; (for the &#x60;DocuSign Viewer&#x60; profile) - &#x60;2301415&#x60; (for the &#x60;DocuSign Sender&#x60; profile) - &#x60;2301414&#x60; (for the &#x60;Account Administrator&#x60; profile)  In addition, any custom permission profiles associated with your account will have an automatically generated &#x60;permissionProfileId&#x60;.
   - opts (KeywordList): [optional] Optional parameters
-    - :include (String.t): A comma-separated list of additional template attributes to include in the response. Valid values are: recipients, folders, documents, custom_fields, and notifications.
-    - :account_permission_profiles (AccountPermissionProfiles): 
+    - :include (String.t): A comma-separated list of additional properties to return in the response. The only valid value for this request is &#x60;metadata&#x60;, which returns metadata indicating whether the properties associated with the account permission profile are editable.
+    - :permission_profile (PermissionProfile):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.AccountPermissionProfiles{}} on success
+  {:ok, %DocuSign.Model.PermissionProfile{}} on success
   {:error, info} on failure
   """
   @spec permission_profiles_put_permission_profiles(
@@ -177,7 +183,7 @@ defmodule DocuSign.Api.AccountPermissionProfiles do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.AccountPermissionProfiles.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.PermissionProfile.t()} | {:error, Tesla.Env.t()}
   def permission_profiles_put_permission_profiles(
         connection,
         account_id,
@@ -185,16 +191,16 @@ defmodule DocuSign.Api.AccountPermissionProfiles do
         opts \\ []
       ) do
     optional_params = %{
-      include: :query,
-      AccountPermissionProfiles: :body
+      :include => :query,
+      :permissionProfile => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/permission_profiles/#{permission_profile_id}")
+    |> url("/v2.1/accounts/#{account_id}/permission_profiles/#{permission_profile_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.AccountPermissionProfiles{})
+    |> decode(%DocuSign.Model.PermissionProfile{})
   end
 end

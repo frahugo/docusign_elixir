@@ -36,6 +36,11 @@ defimpl Poison.Decoder, for: DocuSign.Model.BillingPlanUpdateResponse do
 
   def decode(value, options) do
     value
-    |> deserialize(:billingPlanPreview, :struct, DocuSign.Model.BillingPlanPreview, options)
+    |> deserialize(
+      :billingPlanPreview,
+      :struct,
+      DocuSign.Model.BillingPlanPreview,
+      options
+    )
   end
 end

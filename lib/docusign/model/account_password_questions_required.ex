@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.AccountPasswordQuestionsRequired do
   @moduledoc """
-
+  Information about the number of password questions required (0 to 4) to confirm a user&#39;s identity when a user needs to reset their password.
   """
 
   @derive [Poison.Encoder]

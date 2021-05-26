@@ -19,7 +19,7 @@ defmodule DocuSign.Model.InlineTemplate do
   @type t :: %__MODULE__{
           :customFields => AccountCustomFields,
           :documents => [Document],
-          :envelope => Envelopes,
+          :envelope => Envelope,
           :recipients => EnvelopeRecipients,
           :sequence => String.t()
         }
@@ -32,7 +32,7 @@ defimpl Poison.Decoder, for: DocuSign.Model.InlineTemplate do
     value
     |> deserialize(:customFields, :struct, DocuSign.Model.AccountCustomFields, options)
     |> deserialize(:documents, :list, DocuSign.Model.Document, options)
-    |> deserialize(:envelope, :struct, DocuSign.Model.Envelopes, options)
+    |> deserialize(:envelope, :struct, DocuSign.Model.Envelope, options)
     |> deserialize(:recipients, :struct, DocuSign.Model.EnvelopeRecipients, options)
   end
 end

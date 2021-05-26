@@ -17,10 +17,10 @@ defmodule DocuSign.Api.EnvelopeCustomFields do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :envelope_custom_fields (EnvelopeCustomFields): 
+    - :envelope_custom_fields (EnvelopeCustomFields):
 
   ## Returns
 
@@ -31,12 +31,12 @@ defmodule DocuSign.Api.EnvelopeCustomFields do
           {:ok, DocuSign.Model.EnvelopeCustomFields.t()} | {:error, Tesla.Env.t()}
   def custom_fields_delete_custom_fields(connection, account_id, envelope_id, opts \\ []) do
     optional_params = %{
-      EnvelopeCustomFields: :body
+      :EnvelopeCustomFields => :body
     }
 
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/custom_fields")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/custom_fields")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -50,8 +50,8 @@ defmodule DocuSign.Api.EnvelopeCustomFields do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -64,23 +64,23 @@ defmodule DocuSign.Api.EnvelopeCustomFields do
   def custom_fields_get_custom_fields(connection, account_id, envelope_id, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/custom_fields")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/custom_fields")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.CustomFieldsEnvelope{})
   end
 
   @doc """
-  Updates envelope custom fields for an envelope.
-  Updates the envelope custom fields for draft and in-process envelopes.  Each custom field used in an envelope must have a unique name.
+  Creates envelope custom fields for an envelope.
+  Updates the envelope custom fields for draft and in-process envelopes.  You may assign up to three envelope custom fields to an envelope. This limit does not include account (document) custom fields. Each custom field used in an envelope must have a unique name.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :envelope_custom_fields (EnvelopeCustomFields): 
+    - :envelope_custom_fields (EnvelopeCustomFields):
 
   ## Returns
 
@@ -91,12 +91,12 @@ defmodule DocuSign.Api.EnvelopeCustomFields do
           {:ok, DocuSign.Model.EnvelopeCustomFields.t()} | {:error, Tesla.Env.t()}
   def custom_fields_post_custom_fields(connection, account_id, envelope_id, opts \\ []) do
     optional_params = %{
-      EnvelopeCustomFields: :body
+      :EnvelopeCustomFields => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/custom_fields")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/custom_fields")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -105,15 +105,15 @@ defmodule DocuSign.Api.EnvelopeCustomFields do
 
   @doc """
   Updates envelope custom fields in an envelope.
-  Updates the envelope custom fields in draft and in-process envelopes.  Each custom field used in an envelope must have a unique name. 
+  Updates the envelope custom fields in draft and in-process envelopes.  Each custom field used in an envelope must have a unique name.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :envelope_custom_fields (EnvelopeCustomFields): 
+    - :envelope_custom_fields (EnvelopeCustomFields):
 
   ## Returns
 
@@ -124,12 +124,12 @@ defmodule DocuSign.Api.EnvelopeCustomFields do
           {:ok, DocuSign.Model.EnvelopeCustomFields.t()} | {:error, Tesla.Env.t()}
   def custom_fields_put_custom_fields(connection, account_id, envelope_id, opts \\ []) do
     optional_params = %{
-      EnvelopeCustomFields: :body
+      :EnvelopeCustomFields => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/custom_fields")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/custom_fields")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()

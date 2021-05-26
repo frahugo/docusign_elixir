@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.PropertyMetadata do
   @moduledoc """
-
+  Metadata about a property.
   """
 
   @derive [Poison.Encoder]

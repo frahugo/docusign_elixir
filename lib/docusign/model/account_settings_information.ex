@@ -4,16 +4,1088 @@
 
 defmodule DocuSign.Model.AccountSettingsInformation do
   @moduledoc """
-  Contains account settings information.
+  Contains account settings information. Used in requests to set property values. Used in responses to report property values.
   """
 
   @derive [Poison.Encoder]
   defstruct [
-    :accountSettings
+    :accessCodeFormat,
+    :accountDateTimeFormat,
+    :accountDateTimeFormatMetadata,
+    :accountDefaultLanguage,
+    :accountDefaultLanguageMetadata,
+    :accountName,
+    :accountNameMetadata,
+    :accountNotification,
+    :accountUISettings,
+    :adoptSigConfig,
+    :adoptSigConfigMetadata,
+    :advancedCorrect,
+    :advancedCorrectMetadata,
+    :allowAccessCodeFormat,
+    :allowAccessCodeFormatMetadata,
+    :allowAccountManagementGranular,
+    :allowAccountManagementGranularMetadata,
+    :allowAccountMemberNameChange,
+    :allowAccountMemberNameChangeMetadata,
+    :allowAdvancedRecipientRoutingConditional,
+    :allowAdvancedRecipientRoutingConditionalMetadata,
+    :allowAgentNameEmailEdit,
+    :allowAgentNameEmailEditMetadata,
+    :allowAgreementActions,
+    :allowAgreementActionsMetadata,
+    :allowAutoNavSettings,
+    :allowAutoNavSettingsMetadata,
+    :allowAutoTagging,
+    :allowAutoTaggingMetadata,
+    :allowBulkSend,
+    :allowBulkSendMetadata,
+    :allowCDWithdraw,
+    :allowCDWithdrawMetadata,
+    :allowConnectHttpListenerConfigs,
+    :allowConnectSendFinishLater,
+    :allowConnectSendFinishLaterMetadata,
+    :allowConnectUnifiedPayloadUI,
+    :allowConsumerDisclosureOverride,
+    :allowConsumerDisclosureOverrideMetadata,
+    :allowDataDownload,
+    :allowDataDownloadMetadata,
+    :allowDocumentDisclosures,
+    :allowDocumentDisclosuresMetadata,
+    :allowDocumentsOnSignedEnvelopes,
+    :allowDocumentsOnSignedEnvelopesMetadata,
+    :allowDocumentVisibility,
+    :allowDocumentVisibilityMetadata,
+    :allowEHankoStamps,
+    :allowEHankoStampsMetadata,
+    :allowENoteEOriginal,
+    :allowENoteEOriginalMetadata,
+    :allowEnvelopeCorrect,
+    :allowEnvelopeCorrectMetadata,
+    :allowEnvelopeCustodyTransfer,
+    :allowEnvelopeCustodyTransferMetadata,
+    :allowEnvelopeCustomFields,
+    :allowEnvelopeCustomFieldsMetadata,
+    :allowEnvelopePublishReporting,
+    :allowEnvelopePublishReportingMetadata,
+    :allowEnvelopeReporting,
+    :allowEnvelopeReportingMetadata,
+    :allowExpression,
+    :allowExpressionMetadata,
+    :allowExpressSignerCertificate,
+    :allowExpressSignerCertificateMetadata,
+    :allowExtendedSendingResourceFile,
+    :allowExtendedSendingResourceFileMetadata,
+    :allowExternalSignaturePad,
+    :allowExternalSignaturePadMetadata,
+    :allowIDVLevel1,
+    :allowIDVLevel1Metadata,
+    :allowIDVLevel2,
+    :allowIDVLevel2Metadata,
+    :allowIDVLevel3,
+    :allowIDVLevel3Metadata,
+    :allowIDVPlatform,
+    :allowIDVPlatformMetadata,
+    :allowInPerson,
+    :allowInPersonMetadata,
+    :allowManagedStamps,
+    :allowManagedStampsMetadata,
+    :allowMarkup,
+    :allowMarkupMetadata,
+    :allowMemberTimeZone,
+    :allowMemberTimeZoneMetadata,
+    :allowMergeFields,
+    :allowMergeFieldsMetadata,
+    :allowMultipleBrandProfiles,
+    :allowMultipleBrandProfilesMetadata,
+    :allowMultipleSignerAttachments,
+    :allowMultipleSignerAttachmentsMetadata,
+    :allowNonUSPhoneAuth,
+    :allowNonUSPhoneAuthMetadata,
+    :allowOcrOfEnvelopeDocuments,
+    :allowOcrOfEnvelopeDocumentsMetadata,
+    :allowOfflineSigning,
+    :allowOfflineSigningMetadata,
+    :allowOpenTrustSignerCertificate,
+    :allowOpenTrustSignerCertificateMetadata,
+    :allowOrganizations,
+    :allowOrganizationsMetadata,
+    :allowPaymentProcessing,
+    :allowPaymentProcessingMetadata,
+    :allowPersonalSignerCertificate,
+    :allowPersonalSignerCertificateMetadata,
+    :allowPhoneAuthentication,
+    :allowPhoneAuthenticationMetadata,
+    :allowPhoneAuthOverride,
+    :allowPhoneAuthOverrideMetadata,
+    :allowPrivateSigningGroups,
+    :allowPrivateSigningGroupsMetadata,
+    :allowRecipientConnect,
+    :allowRecipientConnectMetadata,
+    :allowReminders,
+    :allowRemindersMetadata,
+    :allowRemoteNotary,
+    :allowRemoteNotaryMetadata,
+    :allowResourceFileBranding,
+    :allowResourceFileBrandingMetadata,
+    :allowSafeBioPharmaSignerCertificate,
+    :allowSafeBioPharmaSignerCertificateMetadata,
+    :allowSecurityAppliance,
+    :allowSecurityApplianceMetadata,
+    :allowSendToCertifiedDelivery,
+    :allowSendToCertifiedDeliveryMetadata,
+    :allowSendToIntermediary,
+    :allowSendToIntermediaryMetadata,
+    :allowServerTemplates,
+    :allowServerTemplatesMetadata,
+    :allowSetEmbeddedRecipientStartURL,
+    :allowSetEmbeddedRecipientStartURLMetadata,
+    :allowSharedTabs,
+    :allowSharedTabsMetadata,
+    :allowSignatureStamps,
+    :allowSignatureStampsMetadata,
+    :allowSignDocumentFromHomePage,
+    :allowSignDocumentFromHomePageMetadata,
+    :allowSignerReassign,
+    :allowSignerReassignMetadata,
+    :allowSignerReassignOverride,
+    :allowSignerReassignOverrideMetadata,
+    :allowSigningExtensions,
+    :allowSigningExtensionsMetadata,
+    :allowSigningGroups,
+    :allowSigningGroupsMetadata,
+    :allowSigningInsights,
+    :allowSigningInsightsMetadata,
+    :allowSigningRadioDeselect,
+    :allowSigningRadioDeselectMetadata,
+    :allowSignNow,
+    :allowSignNowMetadata,
+    :allowSMSDelivery,
+    :allowSMSDeliveryMetadata,
+    :allowSocialIdLogin,
+    :allowSocialIdLoginMetadata,
+    :allowSupplementalDocuments,
+    :allowSupplementalDocumentsMetadata,
+    :allowUsersToAccessDirectory,
+    :allowUsersToAccessDirectoryMetadata,
+    :allowValueInsights,
+    :allowValueInsightsMetadata,
+    :anchorPopulationScope,
+    :anchorPopulationScopeMetadata,
+    :anchorTagVersionedPlacementEnabled,
+    :anchorTagVersionedPlacementMetadataEnabled,
+    :attachCompletedEnvelope,
+    :attachCompletedEnvelopeMetadata,
+    :authenticationCheck,
+    :authenticationCheckMetadata,
+    :autoNavRule,
+    :autoNavRuleMetadata,
+    :autoProvisionSignerAccount,
+    :autoProvisionSignerAccountMetadata,
+    :bccEmailArchive,
+    :bccEmailArchiveMetadata,
+    :betaSwitchConfiguration,
+    :betaSwitchConfigurationMetadata,
+    :billingAddress,
+    :billingAddressMetadata,
+    :bulkSend,
+    :bulkSendMaxCopiesInBatch,
+    :bulkSendMaxUnprocessedEnvelopesCount,
+    :bulkSendMetadata,
+    :canSelfBrandSend,
+    :canSelfBrandSendMetadata,
+    :canSelfBrandSign,
+    :canSelfBrandSignMetadata,
+    :canUseSalesforceOAuth,
+    :canUseSalesforceOAuthMetadata,
+    :captureVoiceRecording,
+    :captureVoiceRecordingMetadata,
+    :cfrUseWideImage,
+    :cfrUseWideImageMetadata,
+    :checkForMultipleAdminsOnAccount,
+    :checkForMultipleAdminsOnAccountMetadata,
+    :chromeSignatureEnabled,
+    :chromeSignatureEnabledMetadata,
+    :commentEmailShowMessageText,
+    :commentEmailShowMessageTextMetadata,
+    :commentsAllowEnvelopeOverride,
+    :commentsAllowEnvelopeOverrideMetadata,
+    :conditionalFieldsEnabled,
+    :conditionalFieldsEnabledMetadata,
+    :consumerDisclosureFrequency,
+    :consumerDisclosureFrequencyMetadata,
+    :convertPdfFields,
+    :convertPdfFieldsMetadata,
+    :dataPopulationScope,
+    :dataPopulationScopeMetadata,
+    :disableAutoTemplateMatching,
+    :disableAutoTemplateMatchingMetadata,
+    :disableMobileApp,
+    :disableMobileAppMetadata,
+    :disableMobilePushNotifications,
+    :disableMobilePushNotificationsMetadata,
+    :disableMobileSending,
+    :disableMobileSendingMetadata,
+    :disableMultipleSessions,
+    :disableMultipleSessionsMetadata,
+    :disablePurgeNotificationsForSenderMetadata,
+    :disableSignerCertView,
+    :disableSignerCertViewMetadata,
+    :disableSignerHistoryView,
+    :disableSignerHistoryViewMetadata,
+    :disableStyleSignature,
+    :disableStyleSignatureMetadata,
+    :disableUploadSignature,
+    :disableUploadSignatureMetadata,
+    :disableUserSharing,
+    :disableUserSharingMetadata,
+    :displayBetaSwitch,
+    :displayBetaSwitchMetadata,
+    :documentConversionRestrictions,
+    :documentConversionRestrictionsMetadata,
+    :documentRetention,
+    :documentRetentionMetadata,
+    :documentRetentionPurgeTabs,
+    :documentVisibility,
+    :documentVisibilityMetadata,
+    :emailTemplateVersion,
+    :emailTemplateVersionMetadata,
+    :enableAccessCodeGenerator,
+    :enableAccessCodeGeneratorMetadata,
+    :enableAdvancedPayments,
+    :enableAdvancedPaymentsMetadata,
+    :enableAdvancedPowerForms,
+    :enableAdvancedPowerFormsMetadata,
+    :enableAgreementActionsForCLM,
+    :enableAgreementActionsForCLMMetadata,
+    :enableAgreementActionsForESign,
+    :enableAgreementActionsForESignMetadata,
+    :enableAutoNav,
+    :enableAutoNavMetadata,
+    :enableCalculatedFields,
+    :enableCalculatedFieldsMetadata,
+    :enableClickwraps,
+    :enableClickwrapsMetadata,
+    :enableCommentsHistoryDownloadInSigning,
+    :enableCommentsHistoryDownloadInSigningMetadata,
+    :enableCustomerSatisfactionMetricTracking,
+    :enableCustomerSatisfactionMetricTrackingMetadata,
+    :enableDSPro,
+    :enableDSProMetadata,
+    :enableEnvelopeStampingByAccountAdmin,
+    :enableEnvelopeStampingByAccountAdminMetadata,
+    :enableEnvelopeStampingByDSAdmin,
+    :enableEnvelopeStampingByDSAdminMetadata,
+    :enableEsignCommunities,
+    :enableEsignCommunitiesMetadata,
+    :enableInBrowserEditor,
+    :enableInBrowserEditorMetadata,
+    :enablePaymentProcessing,
+    :enablePaymentProcessingMetadata,
+    :enablePowerForm,
+    :enablePowerFormDirect,
+    :enablePowerFormDirectMetadata,
+    :enablePowerFormMetadata,
+    :enableRecipientDomainValidation,
+    :enableRecipientDomainValidationMetadata,
+    :enableReportLinks,
+    :enableReportLinksMetadata,
+    :enableRequireSignOnPaper,
+    :enableRequireSignOnPaperMetadata,
+    :enableReservedDomain,
+    :enableReservedDomainMetadata,
+    :enableResponsiveSigning,
+    :enableResponsiveSigningMetadata,
+    :enableScheduledRelease,
+    :enableScheduledReleaseMetadata,
+    :enableSearch,
+    :enableSearchMetadata,
+    :enableSearchUI,
+    :enableSearchUIMetadata,
+    :enableSendingTagsFontSettings,
+    :enableSendingTagsFontSettingsMetadata,
+    :enableSendToAgent,
+    :enableSendToAgentMetadata,
+    :enableSendToIntermediary,
+    :enableSendToIntermediaryMetadata,
+    :enableSendToManage,
+    :enableSendToManageMetadata,
+    :enableSequentialSigningAPI,
+    :enableSequentialSigningAPIMetadata,
+    :enableSequentialSigningUI,
+    :enableSequentialSigningUIMetadata,
+    :enableSignerAttachments,
+    :enableSignerAttachmentsMetadata,
+    :enableSigningExtensionComments,
+    :enableSigningExtensionCommentsMetadata,
+    :enableSigningExtensionConversations,
+    :enableSigningExtensionConversationsMetadata,
+    :enableSigningOrderSettingsForAccount,
+    :enableSigningOrderSettingsForAccountMetadata,
+    :enableSignOnPaper,
+    :enableSignOnPaperMetadata,
+    :enableSignOnPaperOverride,
+    :enableSignOnPaperOverrideMetadata,
+    :enableSignWithNotary,
+    :enableSignWithNotaryMetadata,
+    :enableSmartContracts,
+    :enableSmartContractsMetadata,
+    :enableSMSAuthentication,
+    :enableSMSAuthenticationMetadata,
+    :enableSocialIdLogin,
+    :enableSocialIdLoginMetadata,
+    :enableStrikeThrough,
+    :enableStrikeThroughMetadata,
+    :enableTransactionPoint,
+    :enableTransactionPointMetadata,
+    :enableVaulting,
+    :enableVaultingMetadata,
+    :enableWitnessing,
+    :enableWitnessingMetadata,
+    :enforceTemplateNameUniqueness,
+    :enforceTemplateNameUniquenessMetadata,
+    :envelopeIntegrationAllowed,
+    :envelopeIntegrationAllowedMetadata,
+    :envelopeIntegrationEnabled,
+    :envelopeIntegrationEnabledMetadata,
+    :envelopeStampingDefaultValue,
+    :envelopeStampingDefaultValueMetadata,
+    :expressSend,
+    :expressSendAllowTabs,
+    :expressSendAllowTabsMetadata,
+    :expressSendMetadata,
+    :externalDocumentSources,
+    :externalSignaturePadType,
+    :externalSignaturePadTypeMetadata,
+    :faxOutEnabled,
+    :faxOutEnabledMetadata,
+    :guidedFormsHtmlAllowed,
+    :guidedFormsHtmlAllowedMetadata,
+    :hideAccountAddressInCoC,
+    :hideAccountAddressInCoCMetadata,
+    :hidePricing,
+    :hidePricingMetadata,
+    :idCheckConfigurations,
+    :idCheckExpire,
+    :idCheckExpireDays,
+    :idCheckExpireDaysMetadata,
+    :idCheckExpireMetadata,
+    :idCheckExpireMinutes,
+    :idCheckExpireMinutesMetadata,
+    :idCheckRequired,
+    :idCheckRequiredMetadata,
+    :identityVerification,
+    :identityVerificationMetadata,
+    :ignoreErrorIfAnchorTabNotFound,
+    :ignoreErrorIfAnchorTabNotFoundMetadataEnabled,
+    :inPersonIDCheckQuestion,
+    :inPersonIDCheckQuestionMetadata,
+    :inPersonSigningEnabled,
+    :inPersonSigningEnabledMetadata,
+    :inSessionEnabled,
+    :inSessionEnabledMetadata,
+    :inSessionSuppressEmails,
+    :inSessionSuppressEmailsMetadata,
+    :maximumSigningGroups,
+    :maximumSigningGroupsMetadata,
+    :maximumUsersPerSigningGroup,
+    :maximumUsersPerSigningGroupMetadata,
+    :maxNumberOfCustomStamps,
+    :mobileSessionTimeout,
+    :mobileSessionTimeoutMetadata,
+    :numberOfActiveCustomStamps,
+    :optInMobileSigningV02,
+    :optInMobileSigningV02Metadata,
+    :optOutAutoNavTextAndTabColorUpdates,
+    :optOutAutoNavTextAndTabColorUpdatesMetadata,
+    :optOutNewPlatformSeal,
+    :optOutNewPlatformSealPlatformMetadata,
+    :phoneAuthRecipientMayProvidePhoneNumber,
+    :phoneAuthRecipientMayProvidePhoneNumberMetadata,
+    :pkiSignDownloadedPDFDocs,
+    :pkiSignDownloadedPDFDocsMetadata,
+    :recipientsCanSignOffline,
+    :recipientsCanSignOfflineMetadata,
+    :recipientSigningAutoNavigationControl,
+    :recipientSigningAutoNavigationControlMetadata,
+    :require21CFRpt11Compliance,
+    :require21CFRpt11ComplianceMetadata,
+    :requireDeclineReason,
+    :requireDeclineReasonMetadata,
+    :requireExternalUserManagement,
+    :requireExternalUserManagementMetadata,
+    :requireSignerCertificateType,
+    :requireSignerCertificateTypeMetadata,
+    :rsaVeridAccountName,
+    :rsaVeridPassword,
+    :rsaVeridRuleset,
+    :rsaVeridUserId,
+    :selfSignedRecipientEmailDocument,
+    :selfSignedRecipientEmailDocumentMetadata,
+    :selfSignedRecipientEmailDocumentUserOverride,
+    :selfSignedRecipientEmailDocumentUserOverrideMetadata,
+    :senderCanSignInEachLocation,
+    :senderCanSignInEachLocationMetadata,
+    :senderMustAuthenticateSigning,
+    :senderMustAuthenticateSigningMetadata,
+    :sendingTagsFontColor,
+    :sendingTagsFontColorMetadata,
+    :sendingTagsFontName,
+    :sendingTagsFontNameMetadata,
+    :sendingTagsFontSize,
+    :sendingTagsFontSizeMetadata,
+    :sendToCertifiedDeliveryEnabled,
+    :sendToCertifiedDeliveryEnabledMetadata,
+    :sessionTimeout,
+    :sessionTimeoutMetadata,
+    :setRecipEmailLang,
+    :setRecipEmailLangMetadata,
+    :setRecipSignLang,
+    :setRecipSignLangMetadata,
+    :sharedTemplateFolders,
+    :sharedTemplateFoldersMetadata,
+    :showCompleteDialogInEmbeddedSession,
+    :showCompleteDialogInEmbeddedSessionMetadata,
+    :showConditionalRoutingOnSend,
+    :showConditionalRoutingOnSendMetadata,
+    :showInitialConditionalFields,
+    :showInitialConditionalFieldsMetadata,
+    :showLocalizedWatermarks,
+    :showLocalizedWatermarksMetadata,
+    :showTutorials,
+    :showTutorialsMetadata,
+    :signatureProviders,
+    :signatureProvidersMetadata,
+    :signDateFormat,
+    :signDateFormatMetadata,
+    :signerAttachCertificateToEnvelopePDF,
+    :signerAttachCertificateToEnvelopePDFMetadata,
+    :signerAttachConcat,
+    :signerAttachConcatMetadata,
+    :signerCanCreateAccount,
+    :signerCanCreateAccountMetadata,
+    :signerCanSignOnMobile,
+    :signerCanSignOnMobileMetadata,
+    :signerInSessionUseEnvelopeCompleteEmail,
+    :signerInSessionUseEnvelopeCompleteEmailMetadata,
+    :signerLoginRequirements,
+    :signerLoginRequirementsMetadata,
+    :signerMustHaveAccount,
+    :signerMustHaveAccountMetadata,
+    :signerMustLoginToSign,
+    :signerMustLoginToSignMetadata,
+    :signerShowSecureFieldInitialValues,
+    :signerShowSecureFieldInitialValuesMetadata,
+    :signingSessionTimeout,
+    :signingSessionTimeoutMetadata,
+    :signingUiVersion,
+    :signingUiVersionMetadata,
+    :signTimeFormat,
+    :signTimeFormatMetadata,
+    :signTimeShowAmPm,
+    :signTimeShowAmPmMetadata,
+    :simplifiedSendingEnabled,
+    :simplifiedSendingEnabledMetadata,
+    :singleSignOnEnabled,
+    :singleSignOnEnabledMetadata,
+    :skipAuthCompletedEnvelopes,
+    :skipAuthCompletedEnvelopesMetadata,
+    :socialIdRecipAuth,
+    :socialIdRecipAuthMetadata,
+    :specifyDocumentVisibility,
+    :specifyDocumentVisibilityMetadata,
+    :startInAdvancedCorrect,
+    :startInAdvancedCorrectMetadata,
+    :supplementalDocumentsMustAccept,
+    :supplementalDocumentsMustAcceptMetadata,
+    :supplementalDocumentsMustRead,
+    :supplementalDocumentsMustReadMetadata,
+    :supplementalDocumentsMustView,
+    :supplementalDocumentsMustViewMetadata,
+    :suppressCertificateEnforcement,
+    :suppressCertificateEnforcementMetadata,
+    :tabAccountSettings,
+    :timezoneOffsetAPI,
+    :timezoneOffsetAPIMetadata,
+    :timezoneOffsetUI,
+    :timezoneOffsetUIMetadata,
+    :universalSignatureOptIn,
+    :useAccountLevelEmail,
+    :useAccountLevelEmailMetadata,
+    :useConsumerDisclosure,
+    :useConsumerDisclosureMetadata,
+    :useConsumerDisclosureWithinAccount,
+    :useConsumerDisclosureWithinAccountMetadata,
+    :useDerivedKeys,
+    :useDerivedKeysMetadata,
+    :useDocuSignExpressSignerCertificate,
+    :useDocuSignExpressSignerCertificateMetadata,
+    :useMultiAppGroupsData,
+    :useMultiAppGroupsDataMetadata,
+    :useNewBlobForPdf,
+    :useNewBlobForPdfMetadata,
+    :useSAFESignerCertificates,
+    :useSAFESignerCertificatesMetadata,
+    :usesAPI,
+    :usesAPIMetadata,
+    :useSignatureProviderPlatform,
+    :useSignatureProviderPlatformMetadata,
+    :validationsAllowed,
+    :validationsAllowedMetadata,
+    :validationsBrand,
+    :validationsBrandMetadata,
+    :validationsCadence,
+    :validationsCadenceMetadata,
+    :validationsEnabled,
+    :validationsEnabledMetadata,
+    :validationsReport,
+    :validationsReportMetadata,
+    :waterMarkEnabled,
+    :waterMarkEnabledMetadata,
+    :writeReminderToEnvelopeHistory,
+    :writeReminderToEnvelopeHistoryMetadata,
+    :wurflMinAllowableScreenSize,
+    :wurflMinAllowableScreenSizeMetadata
   ]
 
   @type t :: %__MODULE__{
-          :accountSettings => [NameValue]
+          :accessCodeFormat => AccessCodeFormat,
+          :accountDateTimeFormat => String.t(),
+          :accountDateTimeFormatMetadata => SettingsMetadata,
+          :accountDefaultLanguage => String.t(),
+          :accountDefaultLanguageMetadata => SettingsMetadata,
+          :accountName => String.t(),
+          :accountNameMetadata => SettingsMetadata,
+          :accountNotification => AccountNotification,
+          :accountUISettings => AccountUiSettings,
+          :adoptSigConfig => String.t(),
+          :adoptSigConfigMetadata => SettingsMetadata,
+          :advancedCorrect => String.t(),
+          :advancedCorrectMetadata => SettingsMetadata,
+          :allowAccessCodeFormat => String.t(),
+          :allowAccessCodeFormatMetadata => SettingsMetadata,
+          :allowAccountManagementGranular => String.t(),
+          :allowAccountManagementGranularMetadata => SettingsMetadata,
+          :allowAccountMemberNameChange => String.t(),
+          :allowAccountMemberNameChangeMetadata => SettingsMetadata,
+          :allowAdvancedRecipientRoutingConditional => String.t(),
+          :allowAdvancedRecipientRoutingConditionalMetadata => SettingsMetadata,
+          :allowAgentNameEmailEdit => String.t(),
+          :allowAgentNameEmailEditMetadata => SettingsMetadata,
+          :allowAgreementActions => String.t(),
+          :allowAgreementActionsMetadata => SettingsMetadata,
+          :allowAutoNavSettings => String.t(),
+          :allowAutoNavSettingsMetadata => SettingsMetadata,
+          :allowAutoTagging => String.t(),
+          :allowAutoTaggingMetadata => SettingsMetadata,
+          :allowBulkSend => String.t(),
+          :allowBulkSendMetadata => SettingsMetadata,
+          :allowCDWithdraw => String.t(),
+          :allowCDWithdrawMetadata => SettingsMetadata,
+          :allowConnectHttpListenerConfigs => String.t(),
+          :allowConnectSendFinishLater => String.t(),
+          :allowConnectSendFinishLaterMetadata => SettingsMetadata,
+          :allowConnectUnifiedPayloadUI => String.t(),
+          :allowConsumerDisclosureOverride => String.t(),
+          :allowConsumerDisclosureOverrideMetadata => SettingsMetadata,
+          :allowDataDownload => String.t(),
+          :allowDataDownloadMetadata => SettingsMetadata,
+          :allowDocumentDisclosures => String.t(),
+          :allowDocumentDisclosuresMetadata => SettingsMetadata,
+          :allowDocumentsOnSignedEnvelopes => String.t(),
+          :allowDocumentsOnSignedEnvelopesMetadata => SettingsMetadata,
+          :allowDocumentVisibility => String.t(),
+          :allowDocumentVisibilityMetadata => SettingsMetadata,
+          :allowEHankoStamps => String.t(),
+          :allowEHankoStampsMetadata => SettingsMetadata,
+          :allowENoteEOriginal => String.t(),
+          :allowENoteEOriginalMetadata => SettingsMetadata,
+          :allowEnvelopeCorrect => String.t(),
+          :allowEnvelopeCorrectMetadata => SettingsMetadata,
+          :allowEnvelopeCustodyTransfer => String.t(),
+          :allowEnvelopeCustodyTransferMetadata => SettingsMetadata,
+          :allowEnvelopeCustomFields => String.t(),
+          :allowEnvelopeCustomFieldsMetadata => SettingsMetadata,
+          :allowEnvelopePublishReporting => String.t(),
+          :allowEnvelopePublishReportingMetadata => SettingsMetadata,
+          :allowEnvelopeReporting => String.t(),
+          :allowEnvelopeReportingMetadata => SettingsMetadata,
+          :allowExpression => String.t(),
+          :allowExpressionMetadata => SettingsMetadata,
+          :allowExpressSignerCertificate => String.t(),
+          :allowExpressSignerCertificateMetadata => SettingsMetadata,
+          :allowExtendedSendingResourceFile => String.t(),
+          :allowExtendedSendingResourceFileMetadata => SettingsMetadata,
+          :allowExternalSignaturePad => String.t(),
+          :allowExternalSignaturePadMetadata => SettingsMetadata,
+          :allowIDVLevel1 => String.t(),
+          :allowIDVLevel1Metadata => SettingsMetadata,
+          :allowIDVLevel2 => String.t(),
+          :allowIDVLevel2Metadata => SettingsMetadata,
+          :allowIDVLevel3 => String.t(),
+          :allowIDVLevel3Metadata => SettingsMetadata,
+          :allowIDVPlatform => String.t(),
+          :allowIDVPlatformMetadata => SettingsMetadata,
+          :allowInPerson => String.t(),
+          :allowInPersonMetadata => SettingsMetadata,
+          :allowManagedStamps => String.t(),
+          :allowManagedStampsMetadata => SettingsMetadata,
+          :allowMarkup => String.t(),
+          :allowMarkupMetadata => SettingsMetadata,
+          :allowMemberTimeZone => String.t(),
+          :allowMemberTimeZoneMetadata => SettingsMetadata,
+          :allowMergeFields => String.t(),
+          :allowMergeFieldsMetadata => SettingsMetadata,
+          :allowMultipleBrandProfiles => String.t(),
+          :allowMultipleBrandProfilesMetadata => SettingsMetadata,
+          :allowMultipleSignerAttachments => String.t(),
+          :allowMultipleSignerAttachmentsMetadata => SettingsMetadata,
+          :allowNonUSPhoneAuth => String.t(),
+          :allowNonUSPhoneAuthMetadata => SettingsMetadata,
+          :allowOcrOfEnvelopeDocuments => String.t(),
+          :allowOcrOfEnvelopeDocumentsMetadata => SettingsMetadata,
+          :allowOfflineSigning => String.t(),
+          :allowOfflineSigningMetadata => SettingsMetadata,
+          :allowOpenTrustSignerCertificate => String.t(),
+          :allowOpenTrustSignerCertificateMetadata => SettingsMetadata,
+          :allowOrganizations => String.t(),
+          :allowOrganizationsMetadata => SettingsMetadata,
+          :allowPaymentProcessing => String.t(),
+          :allowPaymentProcessingMetadata => SettingsMetadata,
+          :allowPersonalSignerCertificate => String.t(),
+          :allowPersonalSignerCertificateMetadata => SettingsMetadata,
+          :allowPhoneAuthentication => String.t(),
+          :allowPhoneAuthenticationMetadata => SettingsMetadata,
+          :allowPhoneAuthOverride => String.t(),
+          :allowPhoneAuthOverrideMetadata => SettingsMetadata,
+          :allowPrivateSigningGroups => String.t(),
+          :allowPrivateSigningGroupsMetadata => SettingsMetadata,
+          :allowRecipientConnect => String.t(),
+          :allowRecipientConnectMetadata => SettingsMetadata,
+          :allowReminders => String.t(),
+          :allowRemindersMetadata => SettingsMetadata,
+          :allowRemoteNotary => String.t(),
+          :allowRemoteNotaryMetadata => SettingsMetadata,
+          :allowResourceFileBranding => String.t(),
+          :allowResourceFileBrandingMetadata => SettingsMetadata,
+          :allowSafeBioPharmaSignerCertificate => String.t(),
+          :allowSafeBioPharmaSignerCertificateMetadata => SettingsMetadata,
+          :allowSecurityAppliance => String.t(),
+          :allowSecurityApplianceMetadata => SettingsMetadata,
+          :allowSendToCertifiedDelivery => String.t(),
+          :allowSendToCertifiedDeliveryMetadata => SettingsMetadata,
+          :allowSendToIntermediary => String.t(),
+          :allowSendToIntermediaryMetadata => SettingsMetadata,
+          :allowServerTemplates => String.t(),
+          :allowServerTemplatesMetadata => SettingsMetadata,
+          :allowSetEmbeddedRecipientStartURL => String.t(),
+          :allowSetEmbeddedRecipientStartURLMetadata => SettingsMetadata,
+          :allowSharedTabs => String.t(),
+          :allowSharedTabsMetadata => SettingsMetadata,
+          :allowSignatureStamps => String.t(),
+          :allowSignatureStampsMetadata => SettingsMetadata,
+          :allowSignDocumentFromHomePage => String.t(),
+          :allowSignDocumentFromHomePageMetadata => SettingsMetadata,
+          :allowSignerReassign => String.t(),
+          :allowSignerReassignMetadata => SettingsMetadata,
+          :allowSignerReassignOverride => String.t(),
+          :allowSignerReassignOverrideMetadata => SettingsMetadata,
+          :allowSigningExtensions => String.t(),
+          :allowSigningExtensionsMetadata => SettingsMetadata,
+          :allowSigningGroups => String.t(),
+          :allowSigningGroupsMetadata => SettingsMetadata,
+          :allowSigningInsights => String.t(),
+          :allowSigningInsightsMetadata => SettingsMetadata,
+          :allowSigningRadioDeselect => String.t(),
+          :allowSigningRadioDeselectMetadata => SettingsMetadata,
+          :allowSignNow => String.t(),
+          :allowSignNowMetadata => String.t(),
+          :allowSMSDelivery => String.t(),
+          :allowSMSDeliveryMetadata => SettingsMetadata,
+          :allowSocialIdLogin => String.t(),
+          :allowSocialIdLoginMetadata => SettingsMetadata,
+          :allowSupplementalDocuments => String.t(),
+          :allowSupplementalDocumentsMetadata => SettingsMetadata,
+          :allowUsersToAccessDirectory => String.t(),
+          :allowUsersToAccessDirectoryMetadata => SettingsMetadata,
+          :allowValueInsights => String.t(),
+          :allowValueInsightsMetadata => SettingsMetadata,
+          :anchorPopulationScope => String.t(),
+          :anchorPopulationScopeMetadata => SettingsMetadata,
+          :anchorTagVersionedPlacementEnabled => String.t(),
+          :anchorTagVersionedPlacementMetadataEnabled => SettingsMetadata,
+          :attachCompletedEnvelope => String.t(),
+          :attachCompletedEnvelopeMetadata => SettingsMetadata,
+          :authenticationCheck => String.t(),
+          :authenticationCheckMetadata => SettingsMetadata,
+          :autoNavRule => String.t(),
+          :autoNavRuleMetadata => SettingsMetadata,
+          :autoProvisionSignerAccount => String.t(),
+          :autoProvisionSignerAccountMetadata => SettingsMetadata,
+          :bccEmailArchive => String.t(),
+          :bccEmailArchiveMetadata => SettingsMetadata,
+          :betaSwitchConfiguration => String.t(),
+          :betaSwitchConfigurationMetadata => SettingsMetadata,
+          :billingAddress => AddressInformation,
+          :billingAddressMetadata => SettingsMetadata,
+          :bulkSend => String.t(),
+          :bulkSendMaxCopiesInBatch => String.t(),
+          :bulkSendMaxUnprocessedEnvelopesCount => String.t(),
+          :bulkSendMetadata => SettingsMetadata,
+          :canSelfBrandSend => String.t(),
+          :canSelfBrandSendMetadata => SettingsMetadata,
+          :canSelfBrandSign => String.t(),
+          :canSelfBrandSignMetadata => SettingsMetadata,
+          :canUseSalesforceOAuth => String.t(),
+          :canUseSalesforceOAuthMetadata => SettingsMetadata,
+          :captureVoiceRecording => String.t(),
+          :captureVoiceRecordingMetadata => SettingsMetadata,
+          :cfrUseWideImage => String.t(),
+          :cfrUseWideImageMetadata => SettingsMetadata,
+          :checkForMultipleAdminsOnAccount => String.t(),
+          :checkForMultipleAdminsOnAccountMetadata => SettingsMetadata,
+          :chromeSignatureEnabled => String.t(),
+          :chromeSignatureEnabledMetadata => SettingsMetadata,
+          :commentEmailShowMessageText => String.t(),
+          :commentEmailShowMessageTextMetadata => SettingsMetadata,
+          :commentsAllowEnvelopeOverride => String.t(),
+          :commentsAllowEnvelopeOverrideMetadata => SettingsMetadata,
+          :conditionalFieldsEnabled => String.t(),
+          :conditionalFieldsEnabledMetadata => SettingsMetadata,
+          :consumerDisclosureFrequency => String.t(),
+          :consumerDisclosureFrequencyMetadata => SettingsMetadata,
+          :convertPdfFields => String.t(),
+          :convertPdfFieldsMetadata => SettingsMetadata,
+          :dataPopulationScope => String.t(),
+          :dataPopulationScopeMetadata => SettingsMetadata,
+          :disableAutoTemplateMatching => String.t(),
+          :disableAutoTemplateMatchingMetadata => SettingsMetadata,
+          :disableMobileApp => String.t(),
+          :disableMobileAppMetadata => SettingsMetadata,
+          :disableMobilePushNotifications => String.t(),
+          :disableMobilePushNotificationsMetadata => SettingsMetadata,
+          :disableMobileSending => String.t(),
+          :disableMobileSendingMetadata => SettingsMetadata,
+          :disableMultipleSessions => String.t(),
+          :disableMultipleSessionsMetadata => SettingsMetadata,
+          :disablePurgeNotificationsForSenderMetadata => SettingsMetadata,
+          :disableSignerCertView => String.t(),
+          :disableSignerCertViewMetadata => SettingsMetadata,
+          :disableSignerHistoryView => String.t(),
+          :disableSignerHistoryViewMetadata => SettingsMetadata,
+          :disableStyleSignature => String.t(),
+          :disableStyleSignatureMetadata => SettingsMetadata,
+          :disableUploadSignature => String.t(),
+          :disableUploadSignatureMetadata => SettingsMetadata,
+          :disableUserSharing => String.t(),
+          :disableUserSharingMetadata => SettingsMetadata,
+          :displayBetaSwitch => String.t(),
+          :displayBetaSwitchMetadata => SettingsMetadata,
+          :documentConversionRestrictions => String.t(),
+          :documentConversionRestrictionsMetadata => SettingsMetadata,
+          :documentRetention => String.t(),
+          :documentRetentionMetadata => SettingsMetadata,
+          :documentRetentionPurgeTabs => String.t(),
+          :documentVisibility => String.t(),
+          :documentVisibilityMetadata => SettingsMetadata,
+          :emailTemplateVersion => String.t(),
+          :emailTemplateVersionMetadata => SettingsMetadata,
+          :enableAccessCodeGenerator => String.t(),
+          :enableAccessCodeGeneratorMetadata => SettingsMetadata,
+          :enableAdvancedPayments => String.t(),
+          :enableAdvancedPaymentsMetadata => SettingsMetadata,
+          :enableAdvancedPowerForms => String.t(),
+          :enableAdvancedPowerFormsMetadata => SettingsMetadata,
+          :enableAgreementActionsForCLM => String.t(),
+          :enableAgreementActionsForCLMMetadata => SettingsMetadata,
+          :enableAgreementActionsForESign => String.t(),
+          :enableAgreementActionsForESignMetadata => SettingsMetadata,
+          :enableAutoNav => String.t(),
+          :enableAutoNavMetadata => SettingsMetadata,
+          :enableCalculatedFields => String.t(),
+          :enableCalculatedFieldsMetadata => SettingsMetadata,
+          :enableClickwraps => String.t(),
+          :enableClickwrapsMetadata => SettingsMetadata,
+          :enableCommentsHistoryDownloadInSigning => String.t(),
+          :enableCommentsHistoryDownloadInSigningMetadata => SettingsMetadata,
+          :enableCustomerSatisfactionMetricTracking => String.t(),
+          :enableCustomerSatisfactionMetricTrackingMetadata => SettingsMetadata,
+          :enableDSPro => String.t(),
+          :enableDSProMetadata => SettingsMetadata,
+          :enableEnvelopeStampingByAccountAdmin => String.t(),
+          :enableEnvelopeStampingByAccountAdminMetadata => SettingsMetadata,
+          :enableEnvelopeStampingByDSAdmin => String.t(),
+          :enableEnvelopeStampingByDSAdminMetadata => SettingsMetadata,
+          :enableEsignCommunities => String.t(),
+          :enableEsignCommunitiesMetadata => SettingsMetadata,
+          :enableInBrowserEditor => String.t(),
+          :enableInBrowserEditorMetadata => SettingsMetadata,
+          :enablePaymentProcessing => String.t(),
+          :enablePaymentProcessingMetadata => SettingsMetadata,
+          :enablePowerForm => String.t(),
+          :enablePowerFormDirect => String.t(),
+          :enablePowerFormDirectMetadata => SettingsMetadata,
+          :enablePowerFormMetadata => SettingsMetadata,
+          :enableRecipientDomainValidation => String.t(),
+          :enableRecipientDomainValidationMetadata => SettingsMetadata,
+          :enableReportLinks => String.t(),
+          :enableReportLinksMetadata => SettingsMetadata,
+          :enableRequireSignOnPaper => String.t(),
+          :enableRequireSignOnPaperMetadata => SettingsMetadata,
+          :enableReservedDomain => String.t(),
+          :enableReservedDomainMetadata => SettingsMetadata,
+          :enableResponsiveSigning => String.t(),
+          :enableResponsiveSigningMetadata => SettingsMetadata,
+          :enableScheduledRelease => String.t(),
+          :enableScheduledReleaseMetadata => SettingsMetadata,
+          :enableSearch => String.t(),
+          :enableSearchMetadata => SettingsMetadata,
+          :enableSearchUI => String.t(),
+          :enableSearchUIMetadata => SettingsMetadata,
+          :enableSendingTagsFontSettings => String.t(),
+          :enableSendingTagsFontSettingsMetadata => SettingsMetadata,
+          :enableSendToAgent => String.t(),
+          :enableSendToAgentMetadata => SettingsMetadata,
+          :enableSendToIntermediary => String.t(),
+          :enableSendToIntermediaryMetadata => SettingsMetadata,
+          :enableSendToManage => String.t(),
+          :enableSendToManageMetadata => SettingsMetadata,
+          :enableSequentialSigningAPI => String.t(),
+          :enableSequentialSigningAPIMetadata => SettingsMetadata,
+          :enableSequentialSigningUI => String.t(),
+          :enableSequentialSigningUIMetadata => SettingsMetadata,
+          :enableSignerAttachments => String.t(),
+          :enableSignerAttachmentsMetadata => SettingsMetadata,
+          :enableSigningExtensionComments => String.t(),
+          :enableSigningExtensionCommentsMetadata => SettingsMetadata,
+          :enableSigningExtensionConversations => String.t(),
+          :enableSigningExtensionConversationsMetadata => SettingsMetadata,
+          :enableSigningOrderSettingsForAccount => String.t(),
+          :enableSigningOrderSettingsForAccountMetadata => SettingsMetadata,
+          :enableSignOnPaper => String.t(),
+          :enableSignOnPaperMetadata => SettingsMetadata,
+          :enableSignOnPaperOverride => String.t(),
+          :enableSignOnPaperOverrideMetadata => SettingsMetadata,
+          :enableSignWithNotary => String.t(),
+          :enableSignWithNotaryMetadata => SettingsMetadata,
+          :enableSmartContracts => String.t(),
+          :enableSmartContractsMetadata => SettingsMetadata,
+          :enableSMSAuthentication => String.t(),
+          :enableSMSAuthenticationMetadata => SettingsMetadata,
+          :enableSocialIdLogin => String.t(),
+          :enableSocialIdLoginMetadata => SettingsMetadata,
+          :enableStrikeThrough => String.t(),
+          :enableStrikeThroughMetadata => SettingsMetadata,
+          :enableTransactionPoint => String.t(),
+          :enableTransactionPointMetadata => SettingsMetadata,
+          :enableVaulting => String.t(),
+          :enableVaultingMetadata => SettingsMetadata,
+          :enableWitnessing => String.t(),
+          :enableWitnessingMetadata => SettingsMetadata,
+          :enforceTemplateNameUniqueness => String.t(),
+          :enforceTemplateNameUniquenessMetadata => SettingsMetadata,
+          :envelopeIntegrationAllowed => String.t(),
+          :envelopeIntegrationAllowedMetadata => SettingsMetadata,
+          :envelopeIntegrationEnabled => String.t(),
+          :envelopeIntegrationEnabledMetadata => SettingsMetadata,
+          :envelopeStampingDefaultValue => String.t(),
+          :envelopeStampingDefaultValueMetadata => SettingsMetadata,
+          :expressSend => String.t(),
+          :expressSendAllowTabs => String.t(),
+          :expressSendAllowTabsMetadata => SettingsMetadata,
+          :expressSendMetadata => SettingsMetadata,
+          :externalDocumentSources => ExternalDocumentSources,
+          :externalSignaturePadType => String.t(),
+          :externalSignaturePadTypeMetadata => SettingsMetadata,
+          :faxOutEnabled => String.t(),
+          :faxOutEnabledMetadata => SettingsMetadata,
+          :guidedFormsHtmlAllowed => String.t(),
+          :guidedFormsHtmlAllowedMetadata => SettingsMetadata,
+          :hideAccountAddressInCoC => String.t(),
+          :hideAccountAddressInCoCMetadata => SettingsMetadata,
+          :hidePricing => String.t(),
+          :hidePricingMetadata => SettingsMetadata,
+          :idCheckConfigurations => [IdCheckConfiguration],
+          :idCheckExpire => String.t(),
+          :idCheckExpireDays => String.t(),
+          :idCheckExpireDaysMetadata => SettingsMetadata,
+          :idCheckExpireMetadata => SettingsMetadata,
+          :idCheckExpireMinutes => String.t(),
+          :idCheckExpireMinutesMetadata => SettingsMetadata,
+          :idCheckRequired => String.t(),
+          :idCheckRequiredMetadata => SettingsMetadata,
+          :identityVerification => [AccountIdentityVerificationWorkflow],
+          :identityVerificationMetadata => SettingsMetadata,
+          :ignoreErrorIfAnchorTabNotFound => String.t(),
+          :ignoreErrorIfAnchorTabNotFoundMetadataEnabled => SettingsMetadata,
+          :inPersonIDCheckQuestion => String.t(),
+          :inPersonIDCheckQuestionMetadata => SettingsMetadata,
+          :inPersonSigningEnabled => String.t(),
+          :inPersonSigningEnabledMetadata => SettingsMetadata,
+          :inSessionEnabled => String.t(),
+          :inSessionEnabledMetadata => SettingsMetadata,
+          :inSessionSuppressEmails => String.t(),
+          :inSessionSuppressEmailsMetadata => SettingsMetadata,
+          :maximumSigningGroups => String.t(),
+          :maximumSigningGroupsMetadata => SettingsMetadata,
+          :maximumUsersPerSigningGroup => String.t(),
+          :maximumUsersPerSigningGroupMetadata => SettingsMetadata,
+          :maxNumberOfCustomStamps => String.t(),
+          :mobileSessionTimeout => String.t(),
+          :mobileSessionTimeoutMetadata => SettingsMetadata,
+          :numberOfActiveCustomStamps => String.t(),
+          :optInMobileSigningV02 => String.t(),
+          :optInMobileSigningV02Metadata => SettingsMetadata,
+          :optOutAutoNavTextAndTabColorUpdates => String.t(),
+          :optOutAutoNavTextAndTabColorUpdatesMetadata => SettingsMetadata,
+          :optOutNewPlatformSeal => String.t(),
+          :optOutNewPlatformSealPlatformMetadata => SettingsMetadata,
+          :phoneAuthRecipientMayProvidePhoneNumber => String.t(),
+          :phoneAuthRecipientMayProvidePhoneNumberMetadata => SettingsMetadata,
+          :pkiSignDownloadedPDFDocs => String.t(),
+          :pkiSignDownloadedPDFDocsMetadata => SettingsMetadata,
+          :recipientsCanSignOffline => String.t(),
+          :recipientsCanSignOfflineMetadata => SettingsMetadata,
+          :recipientSigningAutoNavigationControl => String.t(),
+          :recipientSigningAutoNavigationControlMetadata => SettingsMetadata,
+          :require21CFRpt11Compliance => String.t(),
+          :require21CFRpt11ComplianceMetadata => SettingsMetadata,
+          :requireDeclineReason => String.t(),
+          :requireDeclineReasonMetadata => SettingsMetadata,
+          :requireExternalUserManagement => String.t(),
+          :requireExternalUserManagementMetadata => SettingsMetadata,
+          :requireSignerCertificateType => String.t(),
+          :requireSignerCertificateTypeMetadata => SettingsMetadata,
+          :rsaVeridAccountName => String.t(),
+          :rsaVeridPassword => String.t(),
+          :rsaVeridRuleset => String.t(),
+          :rsaVeridUserId => String.t(),
+          :selfSignedRecipientEmailDocument => String.t(),
+          :selfSignedRecipientEmailDocumentMetadata => SettingsMetadata,
+          :selfSignedRecipientEmailDocumentUserOverride => String.t(),
+          :selfSignedRecipientEmailDocumentUserOverrideMetadata => SettingsMetadata,
+          :senderCanSignInEachLocation => String.t(),
+          :senderCanSignInEachLocationMetadata => SettingsMetadata,
+          :senderMustAuthenticateSigning => String.t(),
+          :senderMustAuthenticateSigningMetadata => SettingsMetadata,
+          :sendingTagsFontColor => String.t(),
+          :sendingTagsFontColorMetadata => SettingsMetadata,
+          :sendingTagsFontName => String.t(),
+          :sendingTagsFontNameMetadata => SettingsMetadata,
+          :sendingTagsFontSize => String.t(),
+          :sendingTagsFontSizeMetadata => SettingsMetadata,
+          :sendToCertifiedDeliveryEnabled => String.t(),
+          :sendToCertifiedDeliveryEnabledMetadata => SettingsMetadata,
+          :sessionTimeout => String.t(),
+          :sessionTimeoutMetadata => SettingsMetadata,
+          :setRecipEmailLang => String.t(),
+          :setRecipEmailLangMetadata => SettingsMetadata,
+          :setRecipSignLang => String.t(),
+          :setRecipSignLangMetadata => SettingsMetadata,
+          :sharedTemplateFolders => String.t(),
+          :sharedTemplateFoldersMetadata => SettingsMetadata,
+          :showCompleteDialogInEmbeddedSession => String.t(),
+          :showCompleteDialogInEmbeddedSessionMetadata => SettingsMetadata,
+          :showConditionalRoutingOnSend => String.t(),
+          :showConditionalRoutingOnSendMetadata => SettingsMetadata,
+          :showInitialConditionalFields => String.t(),
+          :showInitialConditionalFieldsMetadata => SettingsMetadata,
+          :showLocalizedWatermarks => String.t(),
+          :showLocalizedWatermarksMetadata => SettingsMetadata,
+          :showTutorials => String.t(),
+          :showTutorialsMetadata => SettingsMetadata,
+          :signatureProviders => [String.t()],
+          :signatureProvidersMetadata => SettingsMetadata,
+          :signDateFormat => String.t(),
+          :signDateFormatMetadata => SettingsMetadata,
+          :signerAttachCertificateToEnvelopePDF => String.t(),
+          :signerAttachCertificateToEnvelopePDFMetadata => SettingsMetadata,
+          :signerAttachConcat => String.t(),
+          :signerAttachConcatMetadata => SettingsMetadata,
+          :signerCanCreateAccount => String.t(),
+          :signerCanCreateAccountMetadata => SettingsMetadata,
+          :signerCanSignOnMobile => String.t(),
+          :signerCanSignOnMobileMetadata => SettingsMetadata,
+          :signerInSessionUseEnvelopeCompleteEmail => String.t(),
+          :signerInSessionUseEnvelopeCompleteEmailMetadata => SettingsMetadata,
+          :signerLoginRequirements => String.t(),
+          :signerLoginRequirementsMetadata => SettingsMetadata,
+          :signerMustHaveAccount => String.t(),
+          :signerMustHaveAccountMetadata => SettingsMetadata,
+          :signerMustLoginToSign => String.t(),
+          :signerMustLoginToSignMetadata => SettingsMetadata,
+          :signerShowSecureFieldInitialValues => String.t(),
+          :signerShowSecureFieldInitialValuesMetadata => SettingsMetadata,
+          :signingSessionTimeout => String.t(),
+          :signingSessionTimeoutMetadata => SettingsMetadata,
+          :signingUiVersion => String.t(),
+          :signingUiVersionMetadata => SettingsMetadata,
+          :signTimeFormat => String.t(),
+          :signTimeFormatMetadata => SettingsMetadata,
+          :signTimeShowAmPm => String.t(),
+          :signTimeShowAmPmMetadata => SettingsMetadata,
+          :simplifiedSendingEnabled => String.t(),
+          :simplifiedSendingEnabledMetadata => SettingsMetadata,
+          :singleSignOnEnabled => String.t(),
+          :singleSignOnEnabledMetadata => SettingsMetadata,
+          :skipAuthCompletedEnvelopes => String.t(),
+          :skipAuthCompletedEnvelopesMetadata => SettingsMetadata,
+          :socialIdRecipAuth => String.t(),
+          :socialIdRecipAuthMetadata => SettingsMetadata,
+          :specifyDocumentVisibility => String.t(),
+          :specifyDocumentVisibilityMetadata => SettingsMetadata,
+          :startInAdvancedCorrect => String.t(),
+          :startInAdvancedCorrectMetadata => SettingsMetadata,
+          :supplementalDocumentsMustAccept => String.t(),
+          :supplementalDocumentsMustAcceptMetadata => SettingsMetadata,
+          :supplementalDocumentsMustRead => String.t(),
+          :supplementalDocumentsMustReadMetadata => SettingsMetadata,
+          :supplementalDocumentsMustView => String.t(),
+          :supplementalDocumentsMustViewMetadata => SettingsMetadata,
+          :suppressCertificateEnforcement => String.t(),
+          :suppressCertificateEnforcementMetadata => SettingsMetadata,
+          :tabAccountSettings => TabAccountSettings,
+          :timezoneOffsetAPI => String.t(),
+          :timezoneOffsetAPIMetadata => SettingsMetadata,
+          :timezoneOffsetUI => String.t(),
+          :timezoneOffsetUIMetadata => SettingsMetadata,
+          :universalSignatureOptIn => String.t(),
+          :useAccountLevelEmail => String.t(),
+          :useAccountLevelEmailMetadata => SettingsMetadata,
+          :useConsumerDisclosure => String.t(),
+          :useConsumerDisclosureMetadata => SettingsMetadata,
+          :useConsumerDisclosureWithinAccount => String.t(),
+          :useConsumerDisclosureWithinAccountMetadata => SettingsMetadata,
+          :useDerivedKeys => String.t(),
+          :useDerivedKeysMetadata => SettingsMetadata,
+          :useDocuSignExpressSignerCertificate => String.t(),
+          :useDocuSignExpressSignerCertificateMetadata => SettingsMetadata,
+          :useMultiAppGroupsData => String.t(),
+          :useMultiAppGroupsDataMetadata => SettingsMetadata,
+          :useNewBlobForPdf => String.t(),
+          :useNewBlobForPdfMetadata => SettingsMetadata,
+          :useSAFESignerCertificates => String.t(),
+          :useSAFESignerCertificatesMetadata => SettingsMetadata,
+          :usesAPI => String.t(),
+          :usesAPIMetadata => SettingsMetadata,
+          :useSignatureProviderPlatform => String.t(),
+          :useSignatureProviderPlatformMetadata => SettingsMetadata,
+          :validationsAllowed => String.t(),
+          :validationsAllowedMetadata => SettingsMetadata,
+          :validationsBrand => String.t(),
+          :validationsBrandMetadata => SettingsMetadata,
+          :validationsCadence => String.t(),
+          :validationsCadenceMetadata => SettingsMetadata,
+          :validationsEnabled => String.t(),
+          :validationsEnabledMetadata => SettingsMetadata,
+          :validationsReport => String.t(),
+          :validationsReportMetadata => SettingsMetadata,
+          :waterMarkEnabled => String.t(),
+          :waterMarkEnabledMetadata => SettingsMetadata,
+          :writeReminderToEnvelopeHistory => String.t(),
+          :writeReminderToEnvelopeHistoryMetadata => SettingsMetadata,
+          :wurflMinAllowableScreenSize => String.t(),
+          :wurflMinAllowableScreenSizeMetadata => SettingsMetadata
         }
 end
 
@@ -22,6 +1094,1552 @@ defimpl Poison.Decoder, for: DocuSign.Model.AccountSettingsInformation do
 
   def decode(value, options) do
     value
-    |> deserialize(:accountSettings, :list, DocuSign.Model.NameValue, options)
+    |> deserialize(:accessCodeFormat, :struct, DocuSign.Model.AccessCodeFormat, options)
+    |> deserialize(
+      :accountDateTimeFormatMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :accountDefaultLanguageMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(:accountNameMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
+    |> deserialize(
+      :accountNotification,
+      :struct,
+      DocuSign.Model.AccountNotification,
+      options
+    )
+    |> deserialize(:accountUISettings, :struct, DocuSign.Model.AccountUiSettings, options)
+    |> deserialize(
+      :adoptSigConfigMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :advancedCorrectMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowAccessCodeFormatMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowAccountManagementGranularMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowAccountMemberNameChangeMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowAdvancedRecipientRoutingConditionalMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowAgentNameEmailEditMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowAgreementActionsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowAutoNavSettingsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowAutoTaggingMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowBulkSendMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowCDWithdrawMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowConnectSendFinishLaterMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowConsumerDisclosureOverrideMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowDataDownloadMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowDocumentDisclosuresMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowDocumentsOnSignedEnvelopesMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowDocumentVisibilityMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowEHankoStampsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowENoteEOriginalMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowEnvelopeCorrectMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowEnvelopeCustodyTransferMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowEnvelopeCustomFieldsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowEnvelopePublishReportingMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowEnvelopeReportingMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowExpressionMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowExpressSignerCertificateMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowExtendedSendingResourceFileMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowExternalSignaturePadMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowIDVLevel1Metadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowIDVLevel2Metadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowIDVLevel3Metadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowIDVPlatformMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowInPersonMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowManagedStampsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(:allowMarkupMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
+    |> deserialize(
+      :allowMemberTimeZoneMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowMergeFieldsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowMultipleBrandProfilesMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowMultipleSignerAttachmentsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowNonUSPhoneAuthMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowOcrOfEnvelopeDocumentsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowOfflineSigningMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowOpenTrustSignerCertificateMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowOrganizationsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowPaymentProcessingMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowPersonalSignerCertificateMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowPhoneAuthenticationMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowPhoneAuthOverrideMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowPrivateSigningGroupsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowRecipientConnectMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowRemindersMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowRemoteNotaryMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowResourceFileBrandingMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowSafeBioPharmaSignerCertificateMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowSecurityApplianceMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowSendToCertifiedDeliveryMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowSendToIntermediaryMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowServerTemplatesMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowSetEmbeddedRecipientStartURLMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowSharedTabsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowSignatureStampsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowSignDocumentFromHomePageMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowSignerReassignMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowSignerReassignOverrideMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowSigningExtensionsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowSigningGroupsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowSigningInsightsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowSigningRadioDeselectMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowSMSDeliveryMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowSocialIdLoginMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowSupplementalDocumentsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowUsersToAccessDirectoryMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowValueInsightsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :anchorPopulationScopeMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :anchorTagVersionedPlacementMetadataEnabled,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :attachCompletedEnvelopeMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :authenticationCheckMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(:autoNavRuleMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
+    |> deserialize(
+      :autoProvisionSignerAccountMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :bccEmailArchiveMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :betaSwitchConfigurationMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(:billingAddress, :struct, DocuSign.Model.AddressInformation, options)
+    |> deserialize(
+      :billingAddressMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(:bulkSendMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
+    |> deserialize(
+      :canSelfBrandSendMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :canSelfBrandSignMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :canUseSalesforceOAuthMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :captureVoiceRecordingMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :cfrUseWideImageMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :checkForMultipleAdminsOnAccountMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :chromeSignatureEnabledMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :commentEmailShowMessageTextMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :commentsAllowEnvelopeOverrideMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :conditionalFieldsEnabledMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :consumerDisclosureFrequencyMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :convertPdfFieldsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :dataPopulationScopeMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :disableAutoTemplateMatchingMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :disableMobileAppMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :disableMobilePushNotificationsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :disableMobileSendingMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :disableMultipleSessionsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :disablePurgeNotificationsForSenderMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :disableSignerCertViewMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :disableSignerHistoryViewMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :disableStyleSignatureMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :disableUploadSignatureMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :disableUserSharingMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :displayBetaSwitchMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :documentConversionRestrictionsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :documentRetentionMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :documentVisibilityMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :emailTemplateVersionMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableAccessCodeGeneratorMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableAdvancedPaymentsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableAdvancedPowerFormsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableAgreementActionsForCLMMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableAgreementActionsForESignMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableAutoNavMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableCalculatedFieldsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableClickwrapsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableCommentsHistoryDownloadInSigningMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableCustomerSatisfactionMetricTrackingMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(:enableDSProMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
+    |> deserialize(
+      :enableEnvelopeStampingByAccountAdminMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableEnvelopeStampingByDSAdminMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableEsignCommunitiesMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableInBrowserEditorMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enablePaymentProcessingMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enablePowerFormDirectMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enablePowerFormMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableRecipientDomainValidationMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableReportLinksMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableRequireSignOnPaperMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableReservedDomainMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableResponsiveSigningMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableScheduledReleaseMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableSearchMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableSearchUIMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableSendingTagsFontSettingsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableSendToAgentMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableSendToIntermediaryMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableSendToManageMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableSequentialSigningAPIMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableSequentialSigningUIMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableSignerAttachmentsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableSigningExtensionCommentsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableSigningExtensionConversationsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableSigningOrderSettingsForAccountMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableSignOnPaperMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableSignOnPaperOverrideMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableSignWithNotaryMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableSmartContractsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableSMSAuthenticationMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableSocialIdLoginMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableStrikeThroughMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableTransactionPointMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableVaultingMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableWitnessingMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enforceTemplateNameUniquenessMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :envelopeIntegrationAllowedMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :envelopeIntegrationEnabledMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :envelopeStampingDefaultValueMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :expressSendAllowTabsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(:expressSendMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
+    |> deserialize(
+      :externalDocumentSources,
+      :struct,
+      DocuSign.Model.ExternalDocumentSources,
+      options
+    )
+    |> deserialize(
+      :externalSignaturePadTypeMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :faxOutEnabledMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :guidedFormsHtmlAllowedMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :hideAccountAddressInCoCMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(:hidePricingMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
+    |> deserialize(
+      :idCheckConfigurations,
+      :list,
+      DocuSign.Model.IdCheckConfiguration,
+      options
+    )
+    |> deserialize(
+      :idCheckExpireDaysMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :idCheckExpireMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :idCheckExpireMinutesMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :idCheckRequiredMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :identityVerification,
+      :list,
+      DocuSign.Model.AccountIdentityVerificationWorkflow,
+      options
+    )
+    |> deserialize(
+      :identityVerificationMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :ignoreErrorIfAnchorTabNotFoundMetadataEnabled,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :inPersonIDCheckQuestionMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :inPersonSigningEnabledMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :inSessionEnabledMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :inSessionSuppressEmailsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :maximumSigningGroupsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :maximumUsersPerSigningGroupMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :mobileSessionTimeoutMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :optInMobileSigningV02Metadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :optOutAutoNavTextAndTabColorUpdatesMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :optOutNewPlatformSealPlatformMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :phoneAuthRecipientMayProvidePhoneNumberMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :pkiSignDownloadedPDFDocsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :recipientsCanSignOfflineMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :recipientSigningAutoNavigationControlMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :require21CFRpt11ComplianceMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :requireDeclineReasonMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :requireExternalUserManagementMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :requireSignerCertificateTypeMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :selfSignedRecipientEmailDocumentMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :selfSignedRecipientEmailDocumentUserOverrideMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :senderCanSignInEachLocationMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :senderMustAuthenticateSigningMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :sendingTagsFontColorMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :sendingTagsFontNameMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :sendingTagsFontSizeMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :sendToCertifiedDeliveryEnabledMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :sessionTimeoutMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :setRecipEmailLangMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :setRecipSignLangMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :sharedTemplateFoldersMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :showCompleteDialogInEmbeddedSessionMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :showConditionalRoutingOnSendMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :showInitialConditionalFieldsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :showLocalizedWatermarksMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :showTutorialsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :signatureProvidersMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :signDateFormatMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :signerAttachCertificateToEnvelopePDFMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :signerAttachConcatMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :signerCanCreateAccountMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :signerCanSignOnMobileMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :signerInSessionUseEnvelopeCompleteEmailMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :signerLoginRequirementsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :signerMustHaveAccountMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :signerMustLoginToSignMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :signerShowSecureFieldInitialValuesMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :signingSessionTimeoutMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :signingUiVersionMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :signTimeFormatMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :signTimeShowAmPmMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :simplifiedSendingEnabledMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :singleSignOnEnabledMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :skipAuthCompletedEnvelopesMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :socialIdRecipAuthMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :specifyDocumentVisibilityMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :startInAdvancedCorrectMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :supplementalDocumentsMustAcceptMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :supplementalDocumentsMustReadMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :supplementalDocumentsMustViewMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :suppressCertificateEnforcementMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :tabAccountSettings,
+      :struct,
+      DocuSign.Model.TabAccountSettings,
+      options
+    )
+    |> deserialize(
+      :timezoneOffsetAPIMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :timezoneOffsetUIMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :useAccountLevelEmailMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :useConsumerDisclosureMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :useConsumerDisclosureWithinAccountMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :useDerivedKeysMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :useDocuSignExpressSignerCertificateMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :useMultiAppGroupsDataMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :useNewBlobForPdfMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :useSAFESignerCertificatesMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(:usesAPIMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
+    |> deserialize(
+      :useSignatureProviderPlatformMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :validationsAllowedMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :validationsBrandMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :validationsCadenceMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :validationsEnabledMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :validationsReportMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :waterMarkEnabledMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :writeReminderToEnvelopeHistoryMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :wurflMinAllowableScreenSizeMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
   end
 end

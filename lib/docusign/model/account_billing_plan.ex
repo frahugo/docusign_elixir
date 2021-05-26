@@ -10,13 +10,17 @@ defmodule DocuSign.Model.AccountBillingPlan do
   @derive [Poison.Encoder]
   defstruct [
     :addOns,
+    :appStoreReceiptExpirationDate,
+    :appStoreReceiptPurchaseDate,
     :canCancelRenewal,
     :canUpgrade,
     :currencyCode,
+    :downgradePlanInformation,
     :enableSupport,
     :includedSeats,
     :incrementalSeats,
     :isDowngrade,
+    :notificationType,
     :otherDiscountPercent,
     :paymentCycle,
     :paymentMethod,
@@ -33,13 +37,17 @@ defmodule DocuSign.Model.AccountBillingPlan do
 
   @type t :: %__MODULE__{
           :addOns => [AddOn],
+          :appStoreReceiptExpirationDate => String.t(),
+          :appStoreReceiptPurchaseDate => String.t(),
           :canCancelRenewal => String.t(),
           :canUpgrade => String.t(),
           :currencyCode => String.t(),
+          :downgradePlanInformation => DowngradePlanUpdateResponse,
           :enableSupport => String.t(),
           :includedSeats => String.t(),
           :incrementalSeats => String.t(),
           :isDowngrade => String.t(),
+          :notificationType => String.t(),
           :otherDiscountPercent => String.t(),
           :paymentCycle => String.t(),
           :paymentMethod => String.t(),
@@ -61,6 +69,12 @@ defimpl Poison.Decoder, for: DocuSign.Model.AccountBillingPlan do
   def decode(value, options) do
     value
     |> deserialize(:addOns, :list, DocuSign.Model.AddOn, options)
+    |> deserialize(
+      :downgradePlanInformation,
+      :struct,
+      DocuSign.Model.DowngradePlanUpdateResponse,
+      options
+    )
     |> deserialize(:planFeatureSets, :list, DocuSign.Model.FeatureSet, options)
     |> deserialize(:seatDiscounts, :list, DocuSign.Model.SeatDiscount, options)
   end

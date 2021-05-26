@@ -18,8 +18,8 @@ defmodule DocuSign.Model.UsageHistory do
   @type t :: %__MODULE__{
           :lastSentDateTime => String.t(),
           :lastSignedDateTime => String.t(),
-          :sentCount => integer(),
-          :signedCount => integer()
+          :sentCount => String.t(),
+          :signedCount => String.t()
         }
 end
 

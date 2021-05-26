@@ -24,7 +24,7 @@ defmodule DocuSign.Model.UserProfiles do
   ]
 
   @type t :: %__MODULE__{
-          :address => AddressInformationV2,
+          :address => AddressInformation,
           :authenticationMethods => [AuthenticationMethod],
           :companyName => String.t(),
           :displayOrganizationInfo => String.t(),
@@ -34,7 +34,7 @@ defmodule DocuSign.Model.UserProfiles do
           :profileImageUri => String.t(),
           :title => String.t(),
           :usageHistory => UsageHistory,
-          :userDetails => Users,
+          :userDetails => UserInformation,
           :userProfileLastModifiedDate => String.t()
         }
 end
@@ -44,9 +44,14 @@ defimpl Poison.Decoder, for: DocuSign.Model.UserProfiles do
 
   def decode(value, options) do
     value
-    |> deserialize(:address, :struct, DocuSign.Model.AddressInformationV2, options)
-    |> deserialize(:authenticationMethods, :list, DocuSign.Model.AuthenticationMethod, options)
+    |> deserialize(:address, :struct, DocuSign.Model.AddressInformation, options)
+    |> deserialize(
+      :authenticationMethods,
+      :list,
+      DocuSign.Model.AuthenticationMethod,
+      options
+    )
     |> deserialize(:usageHistory, :struct, DocuSign.Model.UsageHistory, options)
-    |> deserialize(:userDetails, :struct, DocuSign.Model.Users, options)
+    |> deserialize(:userDetails, :struct, DocuSign.Model.UserInformation, options)
   end
 end

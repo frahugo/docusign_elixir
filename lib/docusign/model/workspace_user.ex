@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.WorkspaceUser do
   @moduledoc """
-  A workspaceUser representing the user. This property is only returned in response to user specific GET call. 
+  This object represents the workspace user. This property is only returned in response to user specific GET call.
   """
 
   @derive [Poison.Encoder]
@@ -16,6 +16,8 @@ defmodule DocuSign.Model.WorkspaceUser do
     :createdById,
     :email,
     :errorDetails,
+    :invitationEmailBlurb,
+    :invitationEmailSubject,
     :lastModified,
     :lastModifiedById,
     :status,
@@ -24,7 +26,8 @@ defmodule DocuSign.Model.WorkspaceUser do
     :userName,
     :workspaceId,
     :workspaceUserBaseUrl,
-    :workspaceUserId
+    :workspaceUserId,
+    :workspaceUserUri
   ]
 
   @type t :: %__MODULE__{
@@ -35,6 +38,8 @@ defmodule DocuSign.Model.WorkspaceUser do
           :createdById => String.t(),
           :email => String.t(),
           :errorDetails => ErrorDetails,
+          :invitationEmailBlurb => String.t(),
+          :invitationEmailSubject => String.t(),
           :lastModified => String.t(),
           :lastModifiedById => String.t(),
           :status => String.t(),
@@ -43,7 +48,8 @@ defmodule DocuSign.Model.WorkspaceUser do
           :userName => String.t(),
           :workspaceId => String.t(),
           :workspaceUserBaseUrl => String.t(),
-          :workspaceUserId => String.t()
+          :workspaceUserId => String.t(),
+          :workspaceUserUri => String.t()
         }
 end
 

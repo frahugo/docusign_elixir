@@ -9,22 +9,24 @@ defmodule DocuSign.Model.EnvelopesInformation do
 
   @derive [Poison.Encoder]
   defstruct [
+    :continuationToken,
     :endPosition,
     :envelopes,
     :envelopeTransactionStatuses,
-    :nextUri,
-    :previousUri,
+    :folders,
+    :lastQueriedDateTime,
     :resultSetSize,
     :startPosition,
     :totalSetSize
   ]
 
   @type t :: %__MODULE__{
+          :continuationToken => String.t(),
           :endPosition => String.t(),
-          :envelopes => [Envelopes],
+          :envelopes => [Envelope],
           :envelopeTransactionStatuses => [EnvelopeTransactionStatus],
-          :nextUri => String.t(),
-          :previousUri => String.t(),
+          :folders => [Folder],
+          :lastQueriedDateTime => String.t(),
           :resultSetSize => String.t(),
           :startPosition => String.t(),
           :totalSetSize => String.t()
@@ -36,12 +38,13 @@ defimpl Poison.Decoder, for: DocuSign.Model.EnvelopesInformation do
 
   def decode(value, options) do
     value
-    |> deserialize(:envelopes, :list, DocuSign.Model.Envelopes, options)
+    |> deserialize(:envelopes, :list, DocuSign.Model.Envelope, options)
     |> deserialize(
       :envelopeTransactionStatuses,
       :list,
       DocuSign.Model.EnvelopeTransactionStatus,
       options
     )
+    |> deserialize(:folders, :list, DocuSign.Model.Folder, options)
   end
 end

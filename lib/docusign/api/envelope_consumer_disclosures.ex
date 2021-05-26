@@ -11,21 +11,21 @@ defmodule DocuSign.Api.EnvelopeConsumerDisclosures do
   import DocuSign.RequestBuilder
 
   @doc """
-  Gets the Electronic Record and Signature Disclosure associated with the account.
-  Retrieves the Electronic Record and Signature Disclosure, with html formatting, associated with the account. You can use an optional query string to set the language for the disclosure.
+  Gets the default Electronic Record and Signature Disclosure for an envelope.
+  Retrieves the default, HTML-formatted Electronic Record and Signature Disclosure (ERSD) for the envelope that you specify.   This is the default ERSD disclosure that DocuSign provides for the convenience of U.S.-based customers only. This default disclosure is only valid for transactions between U.S.-based parties.  To set the language of the disclosure that you want to retrieve, use the optional &#x60;langCode&#x60; query parameter.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
-  - recipient_id (String.t): The &#x60;recipientId&#x60; used when the envelope or template was created.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
+  - recipient_id (String.t): A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each &#x60;recipientId&#x60; must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a &#x60;recipientId&#x60; of &#x60;1&#x60;.
   - opts (KeywordList): [optional] Optional parameters
-    - :lang_code (String.t): 
+    - :lang_code (String.t): (Optional) The code for the signer language version of the disclosure that you want to retrieve. The following languages are supported:  - Arabic (&#x60;ar&#x60;) - Bulgarian (&#x60;bg&#x60;) - Czech (&#x60;cs&#x60;) - Chinese Simplified (&#x60;zh_CN&#x60;) - Chinese Traditional (&#x60;zh_TW&#x60;) - Croatian (&#x60;hr&#x60;) - Danish (&#x60;da&#x60;) - Dutch (&#x60;nl&#x60;) - English US (&#x60;en&#x60;) - English UK (&#x60;en_GB&#x60;) - Estonian (&#x60;et&#x60;) - Farsi (&#x60;fa&#x60;) - Finnish (&#x60;fi&#x60;) - French (&#x60;fr&#x60;) - French Canadian (&#x60;fr_CA&#x60;) - German (&#x60;de&#x60;) - Greek (&#x60;el&#x60;) - Hebrew (&#x60;he&#x60;) - Hindi (&#x60;hi&#x60;) - Hungarian (&#x60;hu&#x60;) - Bahasa Indonesian (&#x60;id&#x60;) - Italian (&#x60;it&#x60;) - Japanese (&#x60;ja&#x60;) - Korean (&#x60;ko&#x60;) - Latvian (&#x60;lv&#x60;) - Lithuanian (&#x60;lt&#x60;) - Bahasa Melayu (&#x60;ms&#x60;) - Norwegian (&#x60;no&#x60;) - Polish (&#x60;pl&#x60;) - Portuguese (&#x60;pt&#x60;) - Portuguese Brazil (&#x60;pt_BR&#x60;) - Romanian (&#x60;ro&#x60;) - Russian (&#x60;ru&#x60;) - Serbian (&#x60;sr&#x60;) - Slovak (&#x60;sk&#x60;) - Slovenian (&#x60;sl&#x60;) - Spanish (&#x60;es&#x60;) - Spanish Latin America (&#x60;es_MX&#x60;) - Swedish (&#x60;sv&#x60;) - Thai (&#x60;th&#x60;) - Turkish (&#x60;tr&#x60;) - Ukrainian (&#x60;uk&#x60;)  - Vietnamese (&#x60;vi&#x60;)  Additionally, you can automatically detect the browser language being used by the viewer and display the disclosure in that language by setting the value to &#x60;browser&#x60;.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.EnvelopeConsumerDisclosures{}} on success
+  {:ok, %DocuSign.Model.ConsumerDisclosure{}} on success
   {:error, info} on failure
   """
   @spec consumer_disclosure_get_consumer_disclosure_envelope_id_recipient_id(
@@ -34,7 +34,7 @@ defmodule DocuSign.Api.EnvelopeConsumerDisclosures do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.EnvelopeConsumerDisclosures.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.ConsumerDisclosure.t()} | {:error, Tesla.Env.t()}
   def consumer_disclosure_get_consumer_disclosure_envelope_id_recipient_id(
         connection,
         account_id,
@@ -43,37 +43,37 @@ defmodule DocuSign.Api.EnvelopeConsumerDisclosures do
         opts \\ []
       ) do
     optional_params = %{
-      langCode: :query
+      :langCode => :query
     }
 
     %{}
     |> method(:get)
     |> url(
-      "/v2/accounts/#{account_id}/envelopes/#{envelope_id}/recipients/#{recipient_id}/consumer_disclosure"
+      "/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/recipients/#{recipient_id}/consumer_disclosure"
     )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.EnvelopeConsumerDisclosures{})
+    |> decode(%DocuSign.Model.ConsumerDisclosure{})
   end
 
   @doc """
-  Reserved: Gets the Electronic Record and Signature Disclosure associated with the account.
-  Reserved: Retrieves the Electronic Record and Signature Disclosure, with HTML formatting, associated with the account.
+  Gets the Electronic Record and Signature Disclosure for a specific envelope recipient.
+  Retrieves the HTML-formatted Electronic Record and Signature Disclosure (ERSD) for the envelope recipient that you specify. This disclosure might differ from the account-level disclosure, based on the signing brand applied to the envelope and the recipient&#39;s language settings.  To set the language of the disclosure that you want to retrieve, specify the &#x60;langCode&#x60; as either a path or query parameter.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
-  - lang_code (String.t): The simple type enumeration the language used in the response. The supported languages, with the language value shown in parenthesis, are:Arabic (ar), Bulgarian (bg), Czech (cs), Chinese Simplified (zh_CN), Chinese Traditional (zh_TW), Croatian (hr), Danish (da), Dutch (nl), English US (en), English UK (en_GB), Estonian (et), Farsi (fa), Finnish (fi), French (fr), French Canada (fr_CA), German (de), Greek (el), Hebrew (he), Hindi (hi), Hungarian (hu), Bahasa Indonesia (id), Italian (it), Japanese (ja), Korean (ko), Latvian (lv), Lithuanian (lt), Bahasa Melayu (ms), Norwegian (no), Polish (pl), Portuguese (pt), Portuguese Brazil (pt_BR), Romanian (ro), Russian (ru), Serbian (sr), Slovak (sk), Slovenian (sl), Spanish (es),Spanish Latin America (es_MX), Swedish (sv), Thai (th), Turkish (tr), Ukrainian (uk) and Vietnamese (vi). Additionally, the value can be set to \&quot;browser\&quot; to automatically detect the browser language being used by the viewer and display the disclosure in that language.
-  - recipient_id (String.t): The &#x60;recipientId&#x60; used when the envelope or template was created.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
+  - lang_code (String.t): (Optional) The code for the signer language version of the disclosure that you want to retrieve, as a path parameter. The following languages are supported:  - Arabic (&#x60;ar&#x60;) - Bulgarian (&#x60;bg&#x60;) - Czech (&#x60;cs&#x60;) - Chinese Simplified (&#x60;zh_CN&#x60;) - Chinese Traditional (&#x60;zh_TW&#x60;) - Croatian (&#x60;hr&#x60;) - Danish (&#x60;da&#x60;) - Dutch (&#x60;nl&#x60;) - English US (&#x60;en&#x60;) - English UK (&#x60;en_GB&#x60;) - Estonian (&#x60;et&#x60;) - Farsi (&#x60;fa&#x60;) - Finnish (&#x60;fi&#x60;) - French (&#x60;fr&#x60;) - French Canadian (&#x60;fr_CA&#x60;) - German (&#x60;de&#x60;) - Greek (&#x60;el&#x60;) - Hebrew (&#x60;he&#x60;) - Hindi (&#x60;hi&#x60;) - Hungarian (&#x60;hu&#x60;) - Bahasa Indonesian (&#x60;id&#x60;) - Italian (&#x60;it&#x60;) - Japanese (&#x60;ja&#x60;) - Korean (&#x60;ko&#x60;) - Latvian (&#x60;lv&#x60;) - Lithuanian (&#x60;lt&#x60;) - Bahasa Melayu (&#x60;ms&#x60;) - Norwegian (&#x60;no&#x60;) - Polish (&#x60;pl&#x60;) - Portuguese (&#x60;pt&#x60;) - Portuguese Brazil (&#x60;pt_BR&#x60;) - Romanian (&#x60;ro&#x60;) - Russian (&#x60;ru&#x60;) - Serbian (&#x60;sr&#x60;) - Slovak (&#x60;sk&#x60;) - Slovenian (&#x60;sl&#x60;) - Spanish (&#x60;es&#x60;) - Spanish Latin America (&#x60;es_MX&#x60;) - Swedish (&#x60;sv&#x60;) - Thai (&#x60;th&#x60;) - Turkish (&#x60;tr&#x60;) - Ukrainian (&#x60;uk&#x60;)  - Vietnamese (&#x60;vi&#x60;)  Additionally, you can automatically detect the browser language being used by the viewer and display the disclosure in that language by setting the value to &#x60;browser&#x60;.
+  - recipient_id (String.t): A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each &#x60;recipientId&#x60; must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a &#x60;recipientId&#x60; of &#x60;1&#x60;.
   - opts (KeywordList): [optional] Optional parameters
-    - :lang_code2 (String.t): 
+    - :lang_code2 (String.t): (Optional) The code for the signer language version of the disclosure that you want to retrieve, as a query parameter. The following languages are supported:  - Arabic (&#x60;ar&#x60;) - Bulgarian (&#x60;bg&#x60;) - Czech (&#x60;cs&#x60;) - Chinese Simplified (&#x60;zh_CN&#x60;) - Chinese Traditional (&#x60;zh_TW&#x60;) - Croatian (&#x60;hr&#x60;) - Danish (&#x60;da&#x60;) - Dutch (&#x60;nl&#x60;) - English US (&#x60;en&#x60;) - English UK (&#x60;en_GB&#x60;) - Estonian (&#x60;et&#x60;) - Farsi (&#x60;fa&#x60;) - Finnish (&#x60;fi&#x60;) - French (&#x60;fr&#x60;) - French Canadian (&#x60;fr_CA&#x60;) - German (&#x60;de&#x60;) - Greek (&#x60;el&#x60;) - Hebrew (&#x60;he&#x60;) - Hindi (&#x60;hi&#x60;) - Hungarian (&#x60;hu&#x60;) - Bahasa Indonesian (&#x60;id&#x60;) - Italian (&#x60;it&#x60;) - Japanese (&#x60;ja&#x60;) - Korean (&#x60;ko&#x60;) - Latvian (&#x60;lv&#x60;) - Lithuanian (&#x60;lt&#x60;) - Bahasa Melayu (&#x60;ms&#x60;) - Norwegian (&#x60;no&#x60;) - Polish (&#x60;pl&#x60;) - Portuguese (&#x60;pt&#x60;) - Portuguese Brazil (&#x60;pt_BR&#x60;) - Romanian (&#x60;ro&#x60;) - Russian (&#x60;ru&#x60;) - Serbian (&#x60;sr&#x60;) - Slovak (&#x60;sk&#x60;) - Slovenian (&#x60;sl&#x60;) - Spanish (&#x60;es&#x60;) - Spanish Latin America (&#x60;es_MX&#x60;) - Swedish (&#x60;sv&#x60;) - Thai (&#x60;th&#x60;) - Turkish (&#x60;tr&#x60;) - Ukrainian (&#x60;uk&#x60;)  - Vietnamese (&#x60;vi&#x60;)  Additionally, you can automatically detect the browser language being used by the viewer and display the disclosure in that language by setting the value to &#x60;browser&#x60;.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.EnvelopeConsumerDisclosures{}} on success
+  {:ok, %DocuSign.Model.ConsumerDisclosure{}} on success
   {:error, info} on failure
   """
   @spec consumer_disclosure_get_consumer_disclosure_envelope_id_recipient_id_lang_code(
@@ -83,7 +83,7 @@ defmodule DocuSign.Api.EnvelopeConsumerDisclosures do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.EnvelopeConsumerDisclosures.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.ConsumerDisclosure.t()} | {:error, Tesla.Env.t()}
   def consumer_disclosure_get_consumer_disclosure_envelope_id_recipient_id_lang_code(
         connection,
         account_id,
@@ -93,19 +93,19 @@ defmodule DocuSign.Api.EnvelopeConsumerDisclosures do
         opts \\ []
       ) do
     optional_params = %{
-      langCode: :query
+      :langCode => :query
     }
 
     %{}
     |> method(:get)
     |> url(
-      "/v2/accounts/#{account_id}/envelopes/#{envelope_id}/recipients/#{recipient_id}/consumer_disclosure/#{
+      "/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/recipients/#{recipient_id}/consumer_disclosure/#{
         lang_code
       }"
     )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.EnvelopeConsumerDisclosures{})
+    |> decode(%DocuSign.Model.ConsumerDisclosure{})
   end
 end

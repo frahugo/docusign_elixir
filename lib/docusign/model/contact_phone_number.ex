@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.ContactPhoneNumber do
   @moduledoc """
-
+  Details about the phone numbers associated with a specific contact.
   """
 
   @derive [Poison.Encoder]

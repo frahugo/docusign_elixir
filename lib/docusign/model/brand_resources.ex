@@ -4,13 +4,14 @@
 
 defmodule DocuSign.Model.BrandResources do
   @moduledoc """
-
+  Information about the resource files that the brand uses for the email, signing, sending, and captive (embedded) signing experiences.
   """
 
   @derive [Poison.Encoder]
   defstruct [
     :createdByUserInfo,
     :createdDate,
+    :dataNotSavedNotInMaster,
     :modifiedByUserInfo,
     :modifiedDate,
     :modifiedTemplates,
@@ -21,6 +22,7 @@ defmodule DocuSign.Model.BrandResources do
   @type t :: %__MODULE__{
           :createdByUserInfo => UserInfo,
           :createdDate => String.t(),
+          :dataNotSavedNotInMaster => [String.t()],
           :modifiedByUserInfo => UserInfo,
           :modifiedDate => String.t(),
           :modifiedTemplates => [String.t()],

@@ -11,15 +11,48 @@ defmodule DocuSign.Api.EnvelopeViews do
   import DocuSign.RequestBuilder
 
   @doc """
-  Returns a URL to the authentication view UI.
-  Returns a URL that allows you to embed the authentication view of the DocuSign UI in your applications.
+  Revokes the correction view URL to the Envelope UI.
+
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :console_view_request (ConsoleViewRequest): 
+    - :correct_view_request (CorrectViewRequest):
+
+  ## Returns
+
+  {:ok, %{}} on success
+  {:error, info} on failure
+  """
+  @spec views_delete_envelope_correct_view(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
+          {:ok, nil} | {:error, Tesla.Env.t()}
+  def views_delete_envelope_correct_view(connection, account_id, envelope_id, opts \\ []) do
+    optional_params = %{
+      :correctViewRequest => :body
+    }
+
+    %{}
+    |> method(:delete)
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/views/correct")
+    |> add_optional_params(optional_params, opts)
+    |> Enum.into([])
+    |> (&Connection.request(connection, &1)).()
+    |> decode(false)
+  end
+
+  @doc """
+  Returns a URL to the authentication view UI.
+  Returns a URL that enables you to embed the authentication view of the DocuSign UI in your applications.  **Note**: You can revoke this URL by making the DELETE call to the same URL with no request body.   &lt;blockquote&gt; &lt;p&gt;&lt;b&gt;Information Security notice&lt;/b&gt;: This method provides full administrator access to the account.&lt;/p&gt;
+
+  ## Parameters
+
+  - connection (DocuSign.Connection): Connection to server
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - opts (KeywordList): [optional] Optional parameters
+    - :console_view_request (ConsoleViewRequest):
 
   ## Returns
 
@@ -30,12 +63,12 @@ defmodule DocuSign.Api.EnvelopeViews do
           {:ok, DocuSign.Model.EnvelopeViews.t()} | {:error, Tesla.Env.t()}
   def views_post_account_console_view(connection, account_id, opts \\ []) do
     optional_params = %{
-      consoleViewRequest: :body
+      :consoleViewRequest => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/views/console")
+    |> url("/v2.1/accounts/#{account_id}/views/console")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -44,15 +77,15 @@ defmodule DocuSign.Api.EnvelopeViews do
 
   @doc """
   Returns a URL to the envelope correction UI.
-  Returns a URL that allows you to embed the envelope correction view of the DocuSign UI in your applications.  Important: iFrames should not be used for embedded operations on mobile devices due to screen space issues. For iOS devices DocuSign recommends using a WebView. 
+  Returns a URL that allows you to embed the envelope correction view of the DocuSign UI in your applications.  **Important**: Due to screen space issues, iFrames should not be used for embedded operations on mobile devices. For iOS devices, DocuSign recommends using a WebView.   **Note**: You can revoke this URL by making the DELETE call to the same URL with no request body.   &lt;blockquote&gt; &lt;p&gt;&lt;b&gt;Information Security notice&lt;/b&gt;: This method provides full access to the sending account. When you use this view, the current user has full access to the account. If the account has administrative privileges, then this method also provides administrator access.&lt;/p&gt;  &lt;p&gt;If your use case needs to enable a sender to update a draft envelope before it is sent or make other changes, take one of the following steps:&lt;/p&gt;  &lt;ul&gt; &lt;li&gt;Configure each sender to have their own individual user account to use this API method.&lt;/li&gt; &lt;li&gt;Enhance your API integration so that this method is not needed. Your integration can create the tabs, recipients, and other envelope settings as needed.&lt;/li&gt; &lt;/ul&gt; &lt;/blockquote&gt;
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :correct_view_request (CorrectViewRequest): 
+    - :correct_view_request (CorrectViewRequest):
 
   ## Returns
 
@@ -63,12 +96,12 @@ defmodule DocuSign.Api.EnvelopeViews do
           {:ok, DocuSign.Model.EnvelopeViews.t()} | {:error, Tesla.Env.t()}
   def views_post_envelope_correct_view(connection, account_id, envelope_id, opts \\ []) do
     optional_params = %{
-      correctViewRequest: :body
+      :correctViewRequest => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/views/correct")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/views/correct")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -77,15 +110,15 @@ defmodule DocuSign.Api.EnvelopeViews do
 
   @doc """
   Returns a URL to the edit view UI.
-  Returns a URL that allows you to embed the edit view of the DocuSign UI in your applications. This is a one-time use login token that allows the user to be placed into the DocuSign editing view.   Upon sending completion, the user is returned to the return URL provided by the API application.  Important: iFrames should not be used for embedded operations on mobile devices due to screen space issues. For iOS devices DocuSign recommends using a WebView. 
+  Returns a URL that enables you to embed the edit view of the DocuSign UI in your applications. This is a one-time use login token that allows the user to be placed into the DocuSign editing view.   Upon sending completion, the user is returned to the return URL provided by the API application.  **Important**: Due to screen space issues, iFrames should not be used for embedded operations on mobile devices. For iOS devices, DocuSign recommends using a WebView.   **Note**: You can revoke this URL by making the DELETE call to the same URL with no request body.   &lt;blockquote&gt; &lt;p&gt;&lt;b&gt;Information Security notice&lt;/b&gt;: This method provides full access to the sending account. When you use this view, the current user has full access to the account. If the account has administrative privileges, then this method also provides administrator access.&lt;/p&gt;  &lt;p&gt;If your use case needs to enable a sender to update a draft envelope before it is sent or make other changes, take one of the following steps:&lt;/p&gt;  &lt;ul&gt; &lt;li&gt;Configure each sender to have their own individual user account to use this API method.&lt;/li&gt; &lt;li&gt;Enhance your API integration so that this method is not needed. Your integration can create the tabs, recipients, and other envelope settings as needed.&lt;/li&gt; &lt;/ul&gt; &lt;/blockquote&gt;
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :return_url_request (ReturnUrlRequest): 
+    - :return_url_request (ReturnUrlRequest):
 
   ## Returns
 
@@ -96,12 +129,12 @@ defmodule DocuSign.Api.EnvelopeViews do
           {:ok, DocuSign.Model.EnvelopeViews.t()} | {:error, Tesla.Env.t()}
   def views_post_envelope_edit_view(connection, account_id, envelope_id, opts \\ []) do
     optional_params = %{
-      returnUrlRequest: :body
+      :returnUrlRequest => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/views/edit")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/views/edit")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -109,20 +142,20 @@ defmodule DocuSign.Api.EnvelopeViews do
   end
 
   @doc """
-
-
+  Returns a URL to the shared recipient view UI for an envelope.
+  Returns a URL that enables you to embed the DocuSign UI recipient view of a [shared envelope](https://support.docusign.com/en/guides/ndse-admin-guide-share-envelopes) in your applications. This is the view that a user sees of an envelope that a recipient on the same account has shared with them.  **Important**: Due to screen space issues, iFrames should not be used for embedded operations on mobile devices. For iOS devices, DocuSign recommends using a WebView.  **Note**: You can revoke this URL by making the DELETE call to the same URL with no request body.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :recipient_view_request (RecipientViewRequest): 
+    - :recipient_view_request (RecipientViewRequest):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.TemplateViews{}} on success
+  {:ok, %DocuSign.Model.ViewUrl{}} on success
   {:error, info} on failure
   """
   @spec views_post_envelope_recipient_shared_view(
@@ -130,32 +163,32 @@ defmodule DocuSign.Api.EnvelopeViews do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.TemplateViews.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.ViewUrl.t()} | {:error, Tesla.Env.t()}
   def views_post_envelope_recipient_shared_view(connection, account_id, envelope_id, opts \\ []) do
     optional_params = %{
-      recipientViewRequest: :body
+      :recipientViewRequest => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/views/shared")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/views/shared")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.TemplateViews{})
+    |> decode(%DocuSign.Model.ViewUrl{})
   end
 
   @doc """
   Returns a URL to the recipient view UI.
-  Returns a URL that enables you to embed the recipient view of the DocuSign UI in your applications. If the recipient is a signer, then the view will provide the signing ceremony.  ###### Note: Please redirect the client to the URL. iFrames should not be used, especially if the recipient may be using a mobile or tablet.   This method is only used with envelopes in the &#x60;sent&#x60; status.  Your application is responsible for authenticating the identity of the recipient or signer when you use this method. Use the parameters &#x60;assertionId&#x60;, &#x60;authenticationInstant&#x60;, &#x60;authenticationMethod&#x60;, &#x60;clientUserId&#x60;, and &#x60;securityDomain&#x60; to record information on how the recipient was authenticated. At a minimum, &#x60;authenticationMethod&#x60; and &#x60;clientUserId&#x60; are required. The information that you provide is included in the envelope&#39;s certificate of completion.  ## The event status parameter After the signer completes or ends the signing ceremony, DocuSign will redirect the user&#39;s browser back to your app via the &#x60;returnUrl&#x60; that you supply. DocuSIgn appends an &#x60;event&#x60; query parameter to the URL with the outcome of the signing ceremony. Your app should use the event parameter to determine the next step for the envelope. Don&#39;t fetch the envelope&#39;s status via Envelopes: get or a similar method; that could break the DocuSign rule against polling.  ## The URL is time-limited The URL returned by this method is valid for one use. It must be used/displayed within a couple of minutes after being generated. Once the recipient is redirected to the recipient view, they must interact with the DocuSign system periodically or their session will time out.  Because the URL is time-limited, it should not be stored or sent via email. Immediately redirect the user&#39;s browser to the URL after you receive it.  If you want to invite someone to an embedded signing session via email, the email invitation&#39;s URL must be to your application. When invoked, your app should request a recipientView URL from DocuSign and then redirect the signer to that URL.  ## Maintaining State After the recipient completes the recipient view (or signing ceremony), they are redirected to your application. Your application can recover state information about the transaction by storing information in a cookie, or by including query parameters in the &#x60;returnUrl&#x60; field. Eg, &#x60;https://myapp.eg.com/docusign_return?myState&#x3D;12345&#x60; When the user is redirected to your app, the &#x60;event&#x60; query parameter will be appended. In this example, prevent spoofing by not using a guessable value as the state value.
+  Returns a URL that enables you to embed the recipient view of the DocuSign UI in your applications. If the recipient is a signer, then the view will provide the signing ceremony.  **Note**: Please redirect the client to the URL. iFrames should not be used, especially if the recipient is using a mobile or tablet.   This method is only used with envelopes in the &#x60;sent&#x60; status.  Your application is responsible for authenticating the identity of the recipient or signer when you use this method. Use the parameters &#x60;assertionId&#x60;, &#x60;authenticationInstant&#x60;, &#x60;authenticationMethod&#x60;, &#x60;clientUserId&#x60;, and &#x60;securityDomain&#x60; to record information on how the recipient was authenticated. At a minimum, &#x60;authenticationMethod&#x60; and &#x60;clientUserId&#x60; are required. The information that you provide is included in the envelope&#39;s certificate of completion.  ## Redirects After the signer completes or ends the signing ceremony, DocuSign will redirect the user&#39;s browser back to your app via the &#x60;returnUrl&#x60; that you supply. (The user is redirected through a different subdomain, depending on the region of the account sending the envelope. Please [verify your domain whitelist](https://www.docusign.com/trust/security/whitelists).)   ### The event status parameter DocuSign appends an &#x60;event&#x60; query parameter to the URL with the outcome of the signing ceremony. Your app can use this event parameter to determine the next step for the envelope. Do not fetch the envelope status by using Envelopes::get or a similar method because doing so could break the DocuSign rule against polling.  **Note**: Because a user can cancel redirection, close their browser after signing, or spoof the landing URL. Hitting the &#x60;ReturnUrl&#x60; should not be the single source of truth for envelope status for your integration.  ## The URL is time-limited The URL returned by this method is valid for one use, and you must use or display it within a couple of minutes after it is generated. AFter the recipient is redirected to the recipient view, they must interact with the DocuSign system periodically or their session will time out.  Because the URL is time-limited, it should not be stored or sent through email. After you receive it, immediately redirect the user&#39;s browser to the URL.  If you want to invite someone to an embedded signing session via email, the email invitation&#39;s URL must be to your application. When invoked, your app should request a recipientView URL from DocuSign and then redirect the signer to that URL.  ## Maintaining State After the recipient completes the recipient view (or signing ceremony), they are redirected to your application. Your application can recover state information about the transaction by storing information in a cookie, or by including query parameters in the &#x60;returnUrl&#x60; field. Eg, &#x60;https://myapp.eg.com/docusign_return?myState&#x3D;12345&#x60; When the user is redirected to your app, the &#x60;event&#x60; query parameter will be appended. In this example, prevent spoofing by not using a guessable value as the state value.  **Note**: You can revoke the URL by making the DELETE call to the same URL with no request body.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :recipient_view_request (RecipientViewRequest): 
+    - :recipient_view_request (RecipientViewRequest):
 
   ## Returns
 
@@ -166,12 +199,12 @@ defmodule DocuSign.Api.EnvelopeViews do
           {:ok, DocuSign.Model.EnvelopeViews.t()} | {:error, Tesla.Env.t()}
   def views_post_envelope_recipient_view(connection, account_id, envelope_id, opts \\ []) do
     optional_params = %{
-      recipientViewRequest: :body
+      :recipientViewRequest => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/views/recipient")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/views/recipient")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -180,15 +213,15 @@ defmodule DocuSign.Api.EnvelopeViews do
 
   @doc """
   Returns a URL to the sender view UI.
-  Returns a URL that enables you to embed the sender view of the DocuSign UI in your applications.   The returned URL can only be redirected to immediately after it is generated. It can only be used once. Therefore, request the URL immediately before you redirect your user to it.  For the best user experience, don&#39;t use an iFrame. For iOS devices DocuSign recommends using a WebView.  Multiple solutions are available for maintaining your client state. See the \&quot;Maintaining State\&quot; section of the [Embedded Signing introduction.](https://developers.docusign.com/esign-rest-api/guides/embedded-signing)  After the user has completed the sending view, their browser is redirected to the &#x60;returnUrl&#x60; you supplied.  By default, if the envelope already contains one or more documents, DocuSign will initially show the document tagging view when you redirect to the URL.   To start with the envelope&#39;s recipients and documents view instead, examine the URL in the method&#39;s response.  Then change the query parameter from &#x60;send&#x3D;1&#x60; to &#x60;send&#x3D;0&#x60; to start with the recipients/documents view.
+  Returns a URL that enables you to embed the sender view of the DocuSign UI in your applications.  The returned URL can only be redirected to immediately after it is generated. It can only be used once. Therefore, request the URL immediately before you redirect your user to it.  For the best user experience, don&#39;t use an iFrame. For iOS devices DocuSign recommends using a WebView.  Multiple solutions are available for maintaining your client state. See the **Maintaining State** section of the [Embedded Signing introduction.](https://developers.docusign.com/esign-rest-api/guides/embedded-signing)  After the user has completed the sending view, the browser is redirected to the &#x60;returnUrl&#x60; supplied.  By default, if the envelope already contains one or more documents, DocuSign will initially show the document tagging view when you redirect to the URL.   To start with the envelope&#39;s recipients and documents view instead, examine the URL in the method&#39;s response.  Then change the query parameter from &#x60;send&#x3D;1&#x60; to &#x60;send&#x3D;0&#x60; to start with the recipients/documents view.  **Note**: You can revoke the URL by making the DELETE call to the same URL with no request body.   &lt;blockquote&gt; &lt;p&gt;&lt;b&gt;Information Security notice&lt;/b&gt;: This method provides full access to the sending account. When you use this view, the current user has full access to the account. If the account has administrative privileges, then this method also provides administrator access.&lt;/p&gt;  &lt;p&gt;If your use case needs to enable a sender to update a draft envelope before it is sent or make other changes, take one of the following steps:&lt;/p&gt;  &lt;ul&gt; &lt;li&gt;Configure each sender to have their own individual user account to use this API method.&lt;/li&gt; &lt;li&gt;Enhance your API integration so that this method is not needed. Your integration can create the tabs, recipients, and other envelope settings as needed.&lt;/li&gt; &lt;/ul&gt; &lt;/blockquote&gt;
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :return_url_request (ReturnUrlRequest): 
+    - :return_url_request (ReturnUrlRequest):
 
   ## Returns
 
@@ -199,12 +232,12 @@ defmodule DocuSign.Api.EnvelopeViews do
           {:ok, DocuSign.Model.EnvelopeViews.t()} | {:error, Tesla.Env.t()}
   def views_post_envelope_sender_view(connection, account_id, envelope_id, opts \\ []) do
     optional_params = %{
-      returnUrlRequest: :body
+      :returnUrlRequest => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/views/sender")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/views/sender")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()

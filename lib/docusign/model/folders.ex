@@ -9,11 +9,25 @@ defmodule DocuSign.Model.Folders do
 
   @derive [Poison.Encoder]
   defstruct [
-    :folders
+    :endPosition,
+    :envelopes,
+    :folders,
+    :nextUri,
+    :previousUri,
+    :resultSetSize,
+    :startPosition,
+    :totalSetSize
   ]
 
   @type t :: %__MODULE__{
-          :folders => [Folder]
+          :endPosition => String.t(),
+          :envelopes => [EnvelopeSummary],
+          :folders => [Folder],
+          :nextUri => String.t(),
+          :previousUri => String.t(),
+          :resultSetSize => String.t(),
+          :startPosition => String.t(),
+          :totalSetSize => String.t()
         }
 end
 
@@ -22,6 +36,7 @@ defimpl Poison.Decoder, for: DocuSign.Model.Folders do
 
   def decode(value, options) do
     value
+    |> deserialize(:envelopes, :list, DocuSign.Model.EnvelopeSummary, options)
     |> deserialize(:folders, :list, DocuSign.Model.Folder, options)
   end
 end

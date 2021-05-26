@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.CloudStorageProviders do
   @moduledoc """
-  Cloud storage providers
+  The CloudStorageProviders resource provides methods that allow you to manage the cloud storage providers associate with an account.
   """
 
   @derive [Poison.Encoder]

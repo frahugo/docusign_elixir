@@ -11,14 +11,14 @@ defmodule DocuSign.Api.Contacts do
   import DocuSign.RequestBuilder
 
   @doc """
-  Replaces a particular contact associated with an account for the DocuSign service.
-
+  Deletes a contact.
+  This method deletes a contact associated with an account.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - contact_id (String.t): The unique identifier of a person in the contacts address book.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - contact_id (String.t): The id of a contact person in the account&#39;s address book.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -31,22 +31,22 @@ defmodule DocuSign.Api.Contacts do
   def contacts_delete_contact_with_id(connection, account_id, contact_id, _opts \\ []) do
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/contacts/#{contact_id}")
+    |> url("/v2.1/accounts/#{account_id}/contacts/#{contact_id}")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.ContactUpdateResponse{})
   end
 
   @doc """
-  Delete contacts associated with an account for the DocuSign service.
-
+  Deletes multiple contacts from an account.
+  This method deletes multiple contacts associated with an account.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :contact_mod_request (ContactModRequest): 
+    - :contact_mod_request (ContactModRequest):
 
   ## Returns
 
@@ -57,12 +57,12 @@ defmodule DocuSign.Api.Contacts do
           {:ok, DocuSign.Model.ContactUpdateResponse.t()} | {:error, Tesla.Env.t()}
   def contacts_delete_contacts(connection, account_id, opts \\ []) do
     optional_params = %{
-      contactModRequest: :body
+      :contactModRequest => :body
     }
 
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/contacts")
+    |> url("/v2.1/accounts/#{account_id}/contacts")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -70,15 +70,16 @@ defmodule DocuSign.Api.Contacts do
   end
 
   @doc """
-  Gets a particular contact associated with the user&#39;s account.
-
+  Gets one or more contacts.
+  This method returns one or more contacts associated with a DocuSign account. You can also retrieve contacts from connected [cloud storage][CloudStorage] providers by using the &#x60;cloud_provider&#x60; query parameter. By default, contacts are retrieved from the DocuSign account&#39;s default address book.  To return a specific contact, use the &#x60;contactId&#x60; query parameter. To return all contacts associated with an account, omit this parameter.  [CloudStorage]: https://developers.docusign.com/docs/esign-rest-api/reference/CloudStorage
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - contact_id (String.t): The unique identifier of a person in the contacts address book.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - contact_id (String.t): The id of a contact person in the account&#39;s address book.
   - opts (KeywordList): [optional] Optional parameters
+    - :cloud_provider (String.t): (Optional) The cloud provider from which to retrieve the contacts. Valid values are:  - &#x60;rooms&#x60; - &#x60;docusignCore&#x60; (default)
 
   ## Returns
 
@@ -87,25 +88,30 @@ defmodule DocuSign.Api.Contacts do
   """
   @spec contacts_get_contact_by_id(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
           {:ok, DocuSign.Model.ContactGetResponse.t()} | {:error, Tesla.Env.t()}
-  def contacts_get_contact_by_id(connection, account_id, contact_id, _opts \\ []) do
+  def contacts_get_contact_by_id(connection, account_id, contact_id, opts \\ []) do
+    optional_params = %{
+      :cloud_provider => :query
+    }
+
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/contacts/#{contact_id}")
+    |> url("/v2.1/accounts/#{account_id}/contacts/#{contact_id}")
+    |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.ContactGetResponse{})
   end
 
   @doc """
-  Imports multiple new contacts into the contacts collection from CSV, JSON, or XML (based on content type).
-
+  Imports new contacts into a contacts list.
+  This method imports multiple new contacts into a contact list from a CSV, JSON, or XML file.  To use this method, you must provide a request body in one of the supported formats and include a &#x60;content-type&#x60; header with the appropriate value.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :contact_mod_request (ContactModRequest): 
+    - :contact_mod_request (ContactModRequest):
 
   ## Returns
 
@@ -116,12 +122,12 @@ defmodule DocuSign.Api.Contacts do
           {:ok, DocuSign.Model.ContactUpdateResponse.t()} | {:error, Tesla.Env.t()}
   def contacts_post_contacts(connection, account_id, opts \\ []) do
     optional_params = %{
-      contactModRequest: :body
+      :contactModRequest => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/contacts")
+    |> url("/v2.1/accounts/#{account_id}/contacts")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -129,15 +135,15 @@ defmodule DocuSign.Api.Contacts do
   end
 
   @doc """
-  Replaces contacts associated with an account for the DocuSign service.
-
+  Updates one or more contacts.
+  This method updates one or more contacts associated with an account.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :contact_mod_request (ContactModRequest): 
+    - :contact_mod_request (ContactModRequest):
 
   ## Returns
 
@@ -148,12 +154,12 @@ defmodule DocuSign.Api.Contacts do
           {:ok, DocuSign.Model.ContactUpdateResponse.t()} | {:error, Tesla.Env.t()}
   def contacts_put_contacts(connection, account_id, opts \\ []) do
     optional_params = %{
-      contactModRequest: :body
+      :contactModRequest => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/contacts")
+    |> url("/v2.1/accounts/#{account_id}/contacts")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()

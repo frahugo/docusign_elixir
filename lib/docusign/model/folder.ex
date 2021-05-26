@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.Folder do
   @moduledoc """
-
+  This object contains details about a folder.
   """
 
   @derive [Poison.Encoder]
@@ -12,13 +12,16 @@ defmodule DocuSign.Model.Folder do
     :errorDetails,
     :filter,
     :folderId,
+    :folderItems,
     :folders,
+    :hasAccess,
+    :hasSubFolders,
+    :itemCount,
     :name,
-    :ownerEmail,
-    :ownerUserId,
-    :ownerUserName,
+    :owner,
     :parentFolderId,
     :parentFolderUri,
+    :subFolderCount,
     :type,
     :uri
   ]
@@ -27,13 +30,16 @@ defmodule DocuSign.Model.Folder do
           :errorDetails => ErrorDetails,
           :filter => Filter,
           :folderId => String.t(),
+          :folderItems => [FolderItemV2],
           :folders => [Folder],
+          :hasAccess => String.t(),
+          :hasSubFolders => String.t(),
+          :itemCount => String.t(),
           :name => String.t(),
-          :ownerEmail => String.t(),
-          :ownerUserId => String.t(),
-          :ownerUserName => String.t(),
+          :owner => UserInfo,
           :parentFolderId => String.t(),
           :parentFolderUri => String.t(),
+          :subFolderCount => String.t(),
           :type => String.t(),
           :uri => String.t()
         }
@@ -46,6 +52,8 @@ defimpl Poison.Decoder, for: DocuSign.Model.Folder do
     value
     |> deserialize(:errorDetails, :struct, DocuSign.Model.ErrorDetails, options)
     |> deserialize(:filter, :struct, DocuSign.Model.Filter, options)
+    |> deserialize(:folderItems, :list, DocuSign.Model.FolderItemV2, options)
     |> deserialize(:folders, :list, DocuSign.Model.Folder, options)
+    |> deserialize(:owner, :struct, DocuSign.Model.UserInfo, options)
   end
 end

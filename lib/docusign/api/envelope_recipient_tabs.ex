@@ -17,11 +17,11 @@ defmodule DocuSign.Api.EnvelopeRecipientTabs do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
-  - recipient_id (String.t): The &#x60;recipientId&#x60; used when the envelope or template was created.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
+  - recipient_id (String.t): A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each &#x60;recipientId&#x60; must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a &#x60;recipientId&#x60; of &#x60;1&#x60;.
   - opts (KeywordList): [optional] Optional parameters
-    - :envelope_recipient_tabs (EnvelopeRecipientTabs): 
+    - :envelope_recipient_tabs (EnvelopeRecipientTabs):
 
   ## Returns
 
@@ -43,12 +43,14 @@ defmodule DocuSign.Api.EnvelopeRecipientTabs do
         opts \\ []
       ) do
     optional_params = %{
-      EnvelopeRecipientTabs: :body
+      :EnvelopeRecipientTabs => :body
     }
 
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/recipients/#{recipient_id}/tabs")
+    |> url(
+      "/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/recipients/#{recipient_id}/tabs"
+    )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -57,17 +59,17 @@ defmodule DocuSign.Api.EnvelopeRecipientTabs do
 
   @doc """
   Gets the tabs information for a signer or sign-in-person recipient in an envelope.
-  Retrieves information about the tabs associated with a recipient in a draft envelope.
+  Retrieves information about the tabs associated with a recipient. You can make a single API call to get all the tab values and information from a given, completed envelope in addition to draft ones.  Tab values can be retrieved by using the [EnvelopeRecipients:list method](https://developers.docusign.com/docs/esign-rest-api/reference/Envelopes/EnvelopeRecipients/list/) with query parameter &#x60;include_tabs&#x60; set to **true**.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
-  - recipient_id (String.t): The &#x60;recipientId&#x60; used when the envelope or template was created.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
+  - recipient_id (String.t): A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each &#x60;recipientId&#x60; must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a &#x60;recipientId&#x60; of &#x60;1&#x60;.
   - opts (KeywordList): [optional] Optional parameters
-    - :include_anchor_tab_locations (String.t): When set to **true**, all tabs with anchor tab properties are included in the response. 
-    - :include_metadata (String.t): Reserved for DocuSign. 
+    - :include_anchor_tab_locations (String.t): When set to **true**, all tabs with anchor tab properties are included in the response. The default value is **false**.
+    - :include_metadata (String.t): When set to **true**, the response includes metadata indicating which properties are editable.
 
   ## Returns
 
@@ -83,13 +85,15 @@ defmodule DocuSign.Api.EnvelopeRecipientTabs do
         ) :: {:ok, DocuSign.Model.EnvelopeRecipientTabs.t()} | {:error, Tesla.Env.t()}
   def recipients_get_recipient_tabs(connection, account_id, envelope_id, recipient_id, opts \\ []) do
     optional_params = %{
-      include_anchor_tab_locations: :query,
-      include_metadata: :query
+      :include_anchor_tab_locations => :query,
+      :include_metadata => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/recipients/#{recipient_id}/tabs")
+    |> url(
+      "/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/recipients/#{recipient_id}/tabs"
+    )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -103,11 +107,11 @@ defmodule DocuSign.Api.EnvelopeRecipientTabs do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
-  - recipient_id (String.t): The &#x60;recipientId&#x60; used when the envelope or template was created.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
+  - recipient_id (String.t): A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each &#x60;recipientId&#x60; must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a &#x60;recipientId&#x60; of &#x60;1&#x60;.
   - opts (KeywordList): [optional] Optional parameters
-    - :envelope_recipient_tabs (EnvelopeRecipientTabs): 
+    - :envelope_recipient_tabs (EnvelopeRecipientTabs):
 
   ## Returns
 
@@ -129,12 +133,14 @@ defmodule DocuSign.Api.EnvelopeRecipientTabs do
         opts \\ []
       ) do
     optional_params = %{
-      EnvelopeRecipientTabs: :body
+      :EnvelopeRecipientTabs => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/recipients/#{recipient_id}/tabs")
+    |> url(
+      "/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/recipients/#{recipient_id}/tabs"
+    )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -142,17 +148,17 @@ defmodule DocuSign.Api.EnvelopeRecipientTabs do
   end
 
   @doc """
-  Updates the tabs for a recipient.  
+  Updates the tabs for a recipient.
   Updates one or more tabs for a recipient in a draft envelope.  **Note**: The Update method can be used if the envelope is not yet complete. To update an existing tab, the request body must include the &#x60;tabId&#x60;.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
-  - recipient_id (String.t): The &#x60;recipientId&#x60; used when the envelope or template was created.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
+  - recipient_id (String.t): A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each &#x60;recipientId&#x60; must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a &#x60;recipientId&#x60; of &#x60;1&#x60;.
   - opts (KeywordList): [optional] Optional parameters
-    - :envelope_recipient_tabs (EnvelopeRecipientTabs): 
+    - :envelope_recipient_tabs (EnvelopeRecipientTabs):
 
   ## Returns
 
@@ -168,12 +174,14 @@ defmodule DocuSign.Api.EnvelopeRecipientTabs do
         ) :: {:ok, DocuSign.Model.EnvelopeRecipientTabs.t()} | {:error, Tesla.Env.t()}
   def recipients_put_recipient_tabs(connection, account_id, envelope_id, recipient_id, opts \\ []) do
     optional_params = %{
-      EnvelopeRecipientTabs: :body
+      :EnvelopeRecipientTabs => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/recipients/#{recipient_id}/tabs")
+    |> url(
+      "/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/recipients/#{recipient_id}/tabs"
+    )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()

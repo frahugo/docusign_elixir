@@ -13,7 +13,7 @@ defmodule DocuSign.Model.PaymentGatewayAccountsInfo do
   ]
 
   @type t :: %__MODULE__{
-          :paymentGatewayAccounts => [PaymentGatewayAccounts]
+          :paymentGatewayAccounts => [PaymentGatewayAccount]
         }
 end
 
@@ -22,6 +22,11 @@ defimpl Poison.Decoder, for: DocuSign.Model.PaymentGatewayAccountsInfo do
 
   def decode(value, options) do
     value
-    |> deserialize(:paymentGatewayAccounts, :list, DocuSign.Model.PaymentGatewayAccounts, options)
+    |> deserialize(
+      :paymentGatewayAccounts,
+      :list,
+      DocuSign.Model.PaymentGatewayAccount,
+      options
+    )
   end
 end

@@ -17,8 +17,8 @@ defmodule DocuSign.Api.CustomTabs do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - custom_tab_id (String.t): 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - custom_tab_id (String.t): The DocuSign-generated custom tab id for the custom tab to be applied. This can only be used when adding new tabs for a recipient. When used, the new tab inherits all the custom tab properties.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -31,7 +31,7 @@ defmodule DocuSign.Api.CustomTabs do
   def tab_delete_custom_tab(connection, account_id, custom_tab_id, _opts \\ []) do
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/tab_definitions/#{custom_tab_id}")
+    |> url("/v2.1/accounts/#{account_id}/tab_definitions/#{custom_tab_id}")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(false)
@@ -44,57 +44,57 @@ defmodule DocuSign.Api.CustomTabs do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - custom_tab_id (String.t): 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - custom_tab_id (String.t): The DocuSign-generated custom tab id for the custom tab to be applied. This can only be used when adding new tabs for a recipient. When used, the new tab inherits all the custom tab properties.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
 
-  {:ok, %DocuSign.Model.CustomTabs{}} on success
+  {:ok, %DocuSign.Model.TabMetadata{}} on success
   {:error, info} on failure
   """
   @spec tab_get_custom_tab(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.CustomTabs.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.TabMetadata.t()} | {:error, Tesla.Env.t()}
   def tab_get_custom_tab(connection, account_id, custom_tab_id, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/tab_definitions/#{custom_tab_id}")
+    |> url("/v2.1/accounts/#{account_id}/tab_definitions/#{custom_tab_id}")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.CustomTabs{})
+    |> decode(%DocuSign.Model.TabMetadata{})
   end
 
   @doc """
-  Updates custom tab information.  
+  Updates custom tab information.
   Updates the information in a custom tab for the specified account.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - custom_tab_id (String.t): 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - custom_tab_id (String.t): The DocuSign-generated custom tab id for the custom tab to be applied. This can only be used when adding new tabs for a recipient. When used, the new tab inherits all the custom tab properties.
   - opts (KeywordList): [optional] Optional parameters
-    - :custom_tabs (CustomTabs): 
+    - :tab_metadata (TabMetadata):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.CustomTabs{}} on success
+  {:ok, %DocuSign.Model.TabMetadata{}} on success
   {:error, info} on failure
   """
   @spec tab_put_custom_tab(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.CustomTabs.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.TabMetadata.t()} | {:error, Tesla.Env.t()}
   def tab_put_custom_tab(connection, account_id, custom_tab_id, opts \\ []) do
     optional_params = %{
-      CustomTabs: :body
+      :tabMetadata => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/tab_definitions/#{custom_tab_id}")
+    |> url("/v2.1/accounts/#{account_id}/tab_definitions/#{custom_tab_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.CustomTabs{})
+    |> decode(%DocuSign.Model.TabMetadata{})
   end
 
   @doc """
@@ -104,9 +104,9 @@ defmodule DocuSign.Api.CustomTabs do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :custom_tab_only (String.t): When set to **true**, only custom tabs are returned in the response. 
+    - :custom_tab_only (String.t): When set to **true**, only custom tabs are returned in the response.
 
   ## Returns
 
@@ -117,12 +117,12 @@ defmodule DocuSign.Api.CustomTabs do
           {:ok, DocuSign.Model.TabMetadataList.t()} | {:error, Tesla.Env.t()}
   def tabs_get_tab_definitions(connection, account_id, opts \\ []) do
     optional_params = %{
-      custom_tab_only: :query
+      :custom_tab_only => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/tab_definitions")
+    |> url("/v2.1/accounts/#{account_id}/tab_definitions")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -136,28 +136,28 @@ defmodule DocuSign.Api.CustomTabs do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :custom_tabs (CustomTabs): 
+    - :tab_metadata (TabMetadata):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.CustomTabs{}} on success
+  {:ok, %DocuSign.Model.TabMetadata{}} on success
   {:error, info} on failure
   """
   @spec tabs_post_tab_definitions(Tesla.Env.client(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.CustomTabs.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.TabMetadata.t()} | {:error, Tesla.Env.t()}
   def tabs_post_tab_definitions(connection, account_id, opts \\ []) do
     optional_params = %{
-      CustomTabs: :body
+      :tabMetadata => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/tab_definitions")
+    |> url("/v2.1/accounts/#{account_id}/tab_definitions")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.CustomTabs{})
+    |> decode(%DocuSign.Model.TabMetadata{})
   end
 end

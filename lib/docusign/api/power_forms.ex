@@ -11,14 +11,14 @@ defmodule DocuSign.Api.PowerForms do
   import DocuSign.RequestBuilder
 
   @doc """
-  Delete a PowerForm.
-
+  Deletes a PowerForm.
+  This method deletes a PowerForm.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - power_form_id (String.t): 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - power_form_id (String.t): The id of the PowerForm.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -31,22 +31,22 @@ defmodule DocuSign.Api.PowerForms do
   def power_forms_delete_power_form(connection, account_id, power_form_id, _opts \\ []) do
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/powerforms/#{power_form_id}")
+    |> url("/v2.1/accounts/#{account_id}/powerforms/#{power_form_id}")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(false)
   end
 
   @doc """
-  Deletes one or more PowerForms
-
+  Deletes one or more PowerForms.
+  This method deletes one or more PowerForms. The request body takes an array of PowerForm objects that are deleted based on the &#x60;powerFormId&#x60;.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :power_forms_request (PowerFormsRequest): 
+    - :power_forms_request (PowerFormsRequest):
 
   ## Returns
 
@@ -57,12 +57,12 @@ defmodule DocuSign.Api.PowerForms do
           {:ok, DocuSign.Model.PowerFormsResponse.t()} | {:error, Tesla.Env.t()}
   def power_forms_delete_power_forms_list(connection, account_id, opts \\ []) do
     optional_params = %{
-      powerFormsRequest: :body
+      :powerFormsRequest => :body
     }
 
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/powerforms")
+    |> url("/v2.1/accounts/#{account_id}/powerforms")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -71,44 +71,44 @@ defmodule DocuSign.Api.PowerForms do
 
   @doc """
   Returns a single PowerForm.
-
+  This method returns detailed information about a specific PowerForm.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - power_form_id (String.t): 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - power_form_id (String.t): The id of the PowerForm.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
 
-  {:ok, %DocuSign.Model.PowerForms{}} on success
+  {:ok, %DocuSign.Model.PowerForm{}} on success
   {:error, info} on failure
   """
   @spec power_forms_get_power_form(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.PowerForms.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.PowerForm.t()} | {:error, Tesla.Env.t()}
   def power_forms_get_power_form(connection, account_id, power_form_id, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/powerforms/#{power_form_id}")
+    |> url("/v2.1/accounts/#{account_id}/powerforms/#{power_form_id}")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.PowerForms{})
+    |> decode(%DocuSign.Model.PowerForm{})
   end
 
   @doc """
-  Returns the list of PowerForms available to the user.
-
+  Returns a list of PowerForms.
+  This method returns a list of PowerForms that are available to the user.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :from_date (String.t): Start of the search date range. Only returns templates created on or after this date/time. If no value is specified, there is no limit on the earliest date created.
-    - :order (String.t): An optional value that sets the direction order used to sort the item list.   Valid values are:   * asc &#x3D; ascending sort order * desc &#x3D; descending sort order 
-    - :order_by (String.t): An optional value that sets the file attribute used to sort the item list.   Valid values are:   * modified * name  
-    - :to_date (String.t): End of the search date range. Only returns templates created up to this date/time. If no value is provided, this defaults to the current date.
+    - :from_date (String.t): (Optional) The start date for a date range.  **Note**: If no value is provided, no date filtering is applied.
+    - :order (String.t): (Optional) The order in which to sort the results.  Valid values are:    * &#x60;asc&#x60;: Ascending order. * &#x60;desc&#x60;: Descending order.
+    - :order_by (String.t): (Optional) The file attribute to use to sort the results.  Valid values are:   * &#x60;modified&#x60; * &#x60;name&#x60;
+    - :to_date (String.t): (Optional) The end date for a date range.  **Note**: If no value is provided, this property defaults to the current date.
 
   ## Returns
 
@@ -119,15 +119,15 @@ defmodule DocuSign.Api.PowerForms do
           {:ok, DocuSign.Model.PowerFormsResponse.t()} | {:error, Tesla.Env.t()}
   def power_forms_get_power_forms_list(connection, account_id, opts \\ []) do
     optional_params = %{
-      from_date: :query,
-      order: :query,
-      order_by: :query,
-      to_date: :query
+      :from_date => :query,
+      :order => :query,
+      :order_by => :query,
+      :to_date => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/powerforms")
+    |> url("/v2.1/accounts/#{account_id}/powerforms")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -135,13 +135,13 @@ defmodule DocuSign.Api.PowerForms do
   end
 
   @doc """
-  Returns the list of PowerForms available to the user.
-
+  Gets PowerForm senders.
+  This method returns a list of users who have sent PowerForms.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
     - :start_position (String.t): The position within the total result set from which to start returning values. The value **thumbnail** may be used to return the page image.
 
@@ -154,12 +154,12 @@ defmodule DocuSign.Api.PowerForms do
           {:ok, DocuSign.Model.PowerFormSendersResponse.t()} | {:error, Tesla.Env.t()}
   def power_forms_get_power_forms_senders(connection, account_id, opts \\ []) do
     optional_params = %{
-      start_position: :query
+      :start_position => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/powerforms/senders")
+    |> url("/v2.1/accounts/#{account_id}/powerforms/senders")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -167,67 +167,67 @@ defmodule DocuSign.Api.PowerForms do
   end
 
   @doc """
-  Creates a new PowerForm.
-
+  Creates a new PowerForm
+  This method creates a new PowerForm.  You create a PowerForm from an existing DocuSign [template](https://developers.docusign.com/docs/esign-rest-api/reference/templates/templates/create/), based on the &#x60;templateId&#x60; in the request body.   PowerForms that you create from a template are referred to as *web PowerForms*.  **Note**: The RADmin console also supports creating a PowerForm by uploading a PDF file that has active form fields (referred to as a *PDF PowerForm*). However, PDF PowerForms are deprecated and are not supported in the API.  **Note**: A PowerForm can have only one sender. (Because PowerForms are not necessarily sent by email, this user is also referred to as the PowerForm *initiator*.) If you need to associate multiple senders with a PowerForm, create multiple copies of the PowerForm by using the same template (one copy for each sender). By default, the sender is the PowerForm Administrator who creates the PowerForm.   ### Signing modes  You can use one of the following signing modes for a PowerForm:  **&#x60;email&#x60;**  This mode verifies the recipient&#39;s identity by using email authentication before the recipient can sign a document. The recipient enters their email address on the landing page and then clicks **Begin Signing** to begin the signing process. The system then sends an email message with a validation code to the recipient. If the recipient does not provide a valid email address, they do not receive the email message containing the access code and are not able to open and sign the document.  Alternatively, you can make the process easier for signers by using email authentication only and omitting the access code. To do this, you append the &#x60;activateonly&#x60; flag to the PowerForm URL and set it to true by passing in the value &#x60;1&#x60;.  When the flag is active, the first recipient receives an email with a link that initiates the signing session without having to enter access code.  Example: &#x60;activateonly&#x3D;1&#x60;  **&#x60;direct&#x60;**  This mode does not require any verification. After a recipient enters their email address on the landing page and clicks **Begin Signing**, a new browser tab opens and the recipient can immediately begin the signing process.  Because the &#x60;direct&#x60; signing mode does not verify the recipient&#39;s identity by using email authentication, we strongly recommend that you use this mode only when the PowerForm is accessible behind a secure portal where the recipient&#39;s identity is already authenticated, or where another form of authentication is specified for the recipient in the DocuSign template (for example, an access code, phone authentication, or ID check).  **Note**: In the account settings, &#x60;enablePowerFormDirect&#x60; must be **true** to use &#x60;direct&#x60; as the &#x60;signingMode&#x60;.  ### Redirect URLs  You can control the URL to which signers are redirected after signing your PowerForm. However, the URL is specified elsewhere, outside of the PowerForm creation process. For details, see [How do I specify a URL to redirect to when a PowerForm is completed?](https://support.docusign.com/en/articles/How-do-I-specify-a-URL-to-redirect-to-when-a-Powerform-is-completed).  ### More information  For more information about creating PowerForms, see [Create a PowerForm](https://support.docusign.com/en/guides/ndse-user-guide-create-a-powerform).
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :power_forms (PowerForms): 
+    - :power_form (PowerForm): Information about any PowerForms that are included in the envelope.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.PowerForms{}} on success
+  {:ok, %DocuSign.Model.PowerForm{}} on success
   {:error, info} on failure
   """
   @spec power_forms_post_power_form(Tesla.Env.client(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.PowerForms.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.PowerForm.t()} | {:error, Tesla.Env.t()}
   def power_forms_post_power_form(connection, account_id, opts \\ []) do
     optional_params = %{
-      PowerForms: :body
+      :powerForm => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/powerforms")
+    |> url("/v2.1/accounts/#{account_id}/powerforms")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.PowerForms{})
+    |> decode(%DocuSign.Model.PowerForm{})
   end
 
   @doc """
-  Creates a new PowerForm.
-
+  Updates an existing PowerForm.
+  This method updates an existing PowerForm.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - power_form_id (String.t): 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - power_form_id (String.t): The id of the PowerForm.
   - opts (KeywordList): [optional] Optional parameters
-    - :power_forms (PowerForms): 
+    - :power_form (PowerForm): Information about any PowerForms that are included in the envelope.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.PowerForms{}} on success
+  {:ok, %DocuSign.Model.PowerForm{}} on success
   {:error, info} on failure
   """
   @spec power_forms_put_power_form(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.PowerForms.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.PowerForm.t()} | {:error, Tesla.Env.t()}
   def power_forms_put_power_form(connection, account_id, power_form_id, opts \\ []) do
     optional_params = %{
-      PowerForms: :body
+      :powerForm => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/powerforms/#{power_form_id}")
+    |> url("/v2.1/accounts/#{account_id}/powerforms/#{power_form_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.PowerForms{})
+    |> decode(%DocuSign.Model.PowerForm{})
   end
 end

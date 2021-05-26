@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.AccountRoleSettings do
   @moduledoc """
-
+  This object defines account permissions for users who are associated with the account permission profile.
   """
 
   @derive [Poison.Encoder]
@@ -19,12 +19,16 @@ defmodule DocuSign.Model.AccountRoleSettings do
     :allowApiSendingOnBehalfOfOthersMetadata,
     :allowApiSequentialSigning,
     :allowApiSequentialSigningMetadata,
+    :allowAutoTagging,
+    :allowAutoTaggingMetadata,
     :allowBulkSending,
     :allowBulkSendingMetadata,
     :allowDocuSignDesktopClient,
     :allowDocuSignDesktopClientMetadata,
     :allowedAddressBookAccess,
     :allowedAddressBookAccessMetadata,
+    :allowedClickwrapsAccess,
+    :allowedClickwrapsAccessMetadata,
     :allowedTemplateAccess,
     :allowedTemplateAccessMetadata,
     :allowedToBeEnvelopeTransferRecipient,
@@ -65,6 +69,7 @@ defmodule DocuSign.Model.AccountRoleSettings do
     :powerFormRoleMetadata,
     :receiveCompletedSelfSignedDocumentsAsEmailLinks,
     :receiveCompletedSelfSignedDocumentsAsEmailLinksMetadata,
+    :signingUiVersionMetadata,
     :supplementalDocumentsMustAccept,
     :supplementalDocumentsMustAcceptMetadata,
     :supplementalDocumentsMustRead,
@@ -90,12 +95,16 @@ defmodule DocuSign.Model.AccountRoleSettings do
           :allowApiSendingOnBehalfOfOthersMetadata => SettingsMetadata,
           :allowApiSequentialSigning => String.t(),
           :allowApiSequentialSigningMetadata => SettingsMetadata,
+          :allowAutoTagging => String.t(),
+          :allowAutoTaggingMetadata => SettingsMetadata,
           :allowBulkSending => String.t(),
           :allowBulkSendingMetadata => SettingsMetadata,
           :allowDocuSignDesktopClient => String.t(),
           :allowDocuSignDesktopClientMetadata => SettingsMetadata,
           :allowedAddressBookAccess => String.t(),
           :allowedAddressBookAccessMetadata => SettingsMetadata,
+          :allowedClickwrapsAccess => String.t(),
+          :allowedClickwrapsAccessMetadata => SettingsMetadata,
           :allowedTemplateAccess => String.t(),
           :allowedTemplateAccessMetadata => SettingsMetadata,
           :allowedToBeEnvelopeTransferRecipient => String.t(),
@@ -136,6 +145,7 @@ defmodule DocuSign.Model.AccountRoleSettings do
           :powerFormRoleMetadata => SettingsMetadata,
           :receiveCompletedSelfSignedDocumentsAsEmailLinks => String.t(),
           :receiveCompletedSelfSignedDocumentsAsEmailLinksMetadata => SettingsMetadata,
+          :signingUiVersionMetadata => SettingsMetadata,
           :supplementalDocumentsMustAccept => String.t(),
           :supplementalDocumentsMustAcceptMetadata => SettingsMetadata,
           :supplementalDocumentsMustRead => String.t(),
@@ -162,7 +172,12 @@ defimpl Poison.Decoder, for: DocuSign.Model.AccountRoleSettings do
       DocuSign.Model.SettingsMetadata,
       options
     )
-    |> deserialize(:allowApiAccessMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
+    |> deserialize(
+      :allowApiAccessMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
     |> deserialize(
       :allowApiAccessToAccountMetadata,
       :struct,
@@ -181,7 +196,18 @@ defimpl Poison.Decoder, for: DocuSign.Model.AccountRoleSettings do
       DocuSign.Model.SettingsMetadata,
       options
     )
-    |> deserialize(:allowBulkSendingMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
+    |> deserialize(
+      :allowAutoTaggingMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowBulkSendingMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
     |> deserialize(
       :allowDocuSignDesktopClientMetadata,
       :struct,
@@ -190,6 +216,12 @@ defimpl Poison.Decoder, for: DocuSign.Model.AccountRoleSettings do
     )
     |> deserialize(
       :allowedAddressBookAccessMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowedClickwrapsAccessMetadata,
       :struct,
       DocuSign.Model.SettingsMetadata,
       options
@@ -248,7 +280,12 @@ defimpl Poison.Decoder, for: DocuSign.Model.AccountRoleSettings do
       DocuSign.Model.SettingsMetadata,
       options
     )
-    |> deserialize(:allowVaultingMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
+    |> deserialize(
+      :allowVaultingMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
     |> deserialize(
       :allowWetSigningOverrideMetadata,
       :struct,
@@ -297,9 +334,20 @@ defimpl Poison.Decoder, for: DocuSign.Model.AccountRoleSettings do
       DocuSign.Model.SettingsMetadata,
       options
     )
-    |> deserialize(:powerFormRoleMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
+    |> deserialize(
+      :powerFormRoleMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
     |> deserialize(
       :receiveCompletedSelfSignedDocumentsAsEmailLinksMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :signingUiVersionMetadata,
       :struct,
       DocuSign.Model.SettingsMetadata,
       options
@@ -334,6 +382,11 @@ defimpl Poison.Decoder, for: DocuSign.Model.AccountRoleSettings do
       DocuSign.Model.SettingsMetadata,
       options
     )
-    |> deserialize(:vaultingModeMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
+    |> deserialize(
+      :vaultingModeMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
   end
 end

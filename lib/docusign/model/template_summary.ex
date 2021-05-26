@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.TemplateSummary do
   @moduledoc """
-
+  Summary of a template request.
   """
 
   @derive [Poison.Encoder]
@@ -12,6 +12,7 @@ defmodule DocuSign.Model.TemplateSummary do
     :applied,
     :documentId,
     :documentName,
+    :errorDetails,
     :name,
     :templateId,
     :templateMatch,
@@ -22,6 +23,7 @@ defmodule DocuSign.Model.TemplateSummary do
           :applied => String.t(),
           :documentId => String.t(),
           :documentName => String.t(),
+          :errorDetails => ErrorDetails,
           :name => String.t(),
           :templateId => String.t(),
           :templateMatch => TemplateMatch,
@@ -34,6 +36,7 @@ defimpl Poison.Decoder, for: DocuSign.Model.TemplateSummary do
 
   def decode(value, options) do
     value
+    |> deserialize(:errorDetails, :struct, DocuSign.Model.ErrorDetails, options)
     |> deserialize(:templateMatch, :struct, DocuSign.Model.TemplateMatch, options)
   end
 end

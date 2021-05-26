@@ -11,17 +11,57 @@ defmodule DocuSign.Api.EnvelopeDocumentTabs do
   import DocuSign.RequestBuilder
 
   @doc """
-  Returns tabs on the document.
+  Deletes tabs from an envelope document.
 
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :page_numbers (String.t): 
+    - :tabs (Tabs): A list of tabs, which are represented graphically as symbols on documents at the time of signing. Tabs show recipients where to sign, initial, or enter data. They may also display data to the recipients.
+
+  ## Returns
+
+  {:ok, %DocuSign.Model.Tabs{}} on success
+  {:error, info} on failure
+  """
+  @spec tabs_delete_document_tabs(
+          Tesla.Env.client(),
+          String.t(),
+          String.t(),
+          String.t(),
+          keyword()
+        ) :: {:ok, DocuSign.Model.Tabs.t()} | {:error, Tesla.Env.t()}
+  def tabs_delete_document_tabs(connection, account_id, document_id, envelope_id, opts \\ []) do
+    optional_params = %{
+      :tabs => :body
+    }
+
+    %{}
+    |> method(:delete)
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/tabs")
+    |> add_optional_params(optional_params, opts)
+    |> Enum.into([])
+    |> (&Connection.request(connection, &1)).()
+    |> decode(%DocuSign.Model.Tabs{})
+  end
+
+  @doc """
+  Returns the tabs on a document.
+  This method returns the tabs associated with a document.
+
+  ## Parameters
+
+  - connection (DocuSign.Connection): Connection to server
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
+  - opts (KeywordList): [optional] Optional parameters
+    - :include_metadata (String.t): When set to **true**, the response includes metadata indicating which properties are editable.
+    - :page_numbers (String.t): Filters for tabs that occur on the pages that you specify. Enter as a comma-separated list of page GUIDs.  Example: &#x60;page_numbers&#x3D;2,6&#x60;  Note: You can only enter individual page numbers, and not a page range.
 
   ## Returns
 
@@ -32,12 +72,13 @@ defmodule DocuSign.Api.EnvelopeDocumentTabs do
           {:ok, DocuSign.Model.EnvelopeDocumentTabs.t()} | {:error, Tesla.Env.t()}
   def tabs_get_document_tabs(connection, account_id, document_id, envelope_id, opts \\ []) do
     optional_params = %{
-      page_numbers: :query
+      :include_metadata => :query,
+      :page_numbers => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/tabs")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/tabs")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -51,9 +92,9 @@ defmodule DocuSign.Api.EnvelopeDocumentTabs do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - page_number (String.t): The page number being accessed.
   - opts (KeywordList): [optional] Optional parameters
 
@@ -81,12 +122,80 @@ defmodule DocuSign.Api.EnvelopeDocumentTabs do
     %{}
     |> method(:get)
     |> url(
-      "/v2/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/pages/#{
+      "/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/pages/#{
         page_number
       }/tabs"
     )
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.EnvelopeDocumentTabs{})
+  end
+
+  @doc """
+  Adds the tabs to an envelope document.
+
+
+  ## Parameters
+
+  - connection (DocuSign.Connection): Connection to server
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
+  - opts (KeywordList): [optional] Optional parameters
+    - :tabs (Tabs): A list of tabs, which are represented graphically as symbols on documents at the time of signing. Tabs show recipients where to sign, initial, or enter data. They may also display data to the recipients.
+
+  ## Returns
+
+  {:ok, %DocuSign.Model.Tabs{}} on success
+  {:error, info} on failure
+  """
+  @spec tabs_post_document_tabs(Tesla.Env.client(), String.t(), String.t(), String.t(), keyword()) ::
+          {:ok, DocuSign.Model.Tabs.t()} | {:error, Tesla.Env.t()}
+  def tabs_post_document_tabs(connection, account_id, document_id, envelope_id, opts \\ []) do
+    optional_params = %{
+      :tabs => :body
+    }
+
+    %{}
+    |> method(:post)
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/tabs")
+    |> add_optional_params(optional_params, opts)
+    |> Enum.into([])
+    |> (&Connection.request(connection, &1)).()
+    |> decode(%DocuSign.Model.Tabs{})
+  end
+
+  @doc """
+  Updates the tabs for an envelope document.
+
+
+  ## Parameters
+
+  - connection (DocuSign.Connection): Connection to server
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
+  - opts (KeywordList): [optional] Optional parameters
+    - :tabs (Tabs): A list of tabs, which are represented graphically as symbols on documents at the time of signing. Tabs show recipients where to sign, initial, or enter data. They may also display data to the recipients.
+
+  ## Returns
+
+  {:ok, %DocuSign.Model.Tabs{}} on success
+  {:error, info} on failure
+  """
+  @spec tabs_put_document_tabs(Tesla.Env.client(), String.t(), String.t(), String.t(), keyword()) ::
+          {:ok, DocuSign.Model.Tabs.t()} | {:error, Tesla.Env.t()}
+  def tabs_put_document_tabs(connection, account_id, document_id, envelope_id, opts \\ []) do
+    optional_params = %{
+      :tabs => :body
+    }
+
+    %{}
+    |> method(:put)
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}/tabs")
+    |> add_optional_params(optional_params, opts)
+    |> Enum.into([])
+    |> (&Connection.request(connection, &1)).()
+    |> decode(%DocuSign.Model.Tabs{})
   end
 end

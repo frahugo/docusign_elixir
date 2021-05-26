@@ -9,25 +9,27 @@ defmodule DocuSign.Model.AddressInformation do
 
   @derive [Poison.Encoder]
   defstruct [
+    :address1,
+    :address2,
     :city,
     :country,
     :fax,
     :phone,
-    :state,
-    :street1,
-    :street2,
-    :zip
+    :postalCode,
+    :stateOrProvince,
+    :zipPlus4
   ]
 
   @type t :: %__MODULE__{
+          :address1 => String.t(),
+          :address2 => String.t(),
           :city => String.t(),
           :country => String.t(),
           :fax => String.t(),
           :phone => String.t(),
-          :state => String.t(),
-          :street1 => String.t(),
-          :street2 => String.t(),
-          :zip => String.t()
+          :postalCode => String.t(),
+          :stateOrProvince => String.t(),
+          :zipPlus4 => String.t()
         }
 end
 

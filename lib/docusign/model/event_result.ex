@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.EventResult do
   @moduledoc """
-
+  Information about the result of an event.
   """
 
   @derive [Poison.Encoder]

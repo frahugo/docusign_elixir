@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.PowerFormRecipient do
   @moduledoc """
-
+  **Note**: For a self-service PowerForm on a website, you can specify the intended recipients generically (for example, use &#x60;Member&#x60; as the &#x60;Name&#x60;), and omit personal details such as &#x60;email&#x60;.
   """
 
   @derive [Poison.Encoder]

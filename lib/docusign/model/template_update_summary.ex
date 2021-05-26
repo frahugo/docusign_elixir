@@ -14,6 +14,7 @@ defmodule DocuSign.Model.TemplateUpdateSummary do
     :errorDetails,
     :listCustomFieldUpdateResults,
     :lockInformation,
+    :purgeState,
     :recipientUpdateResults,
     :tabUpdateResults,
     :textCustomFieldUpdateResults
@@ -25,6 +26,7 @@ defmodule DocuSign.Model.TemplateUpdateSummary do
           :errorDetails => ErrorDetails,
           :listCustomFieldUpdateResults => [ListCustomField],
           :lockInformation => EnvelopeLocks,
+          :purgeState => String.t(),
           :recipientUpdateResults => [RecipientUpdateResponse],
           :tabUpdateResults => EnvelopeRecipientTabs,
           :textCustomFieldUpdateResults => [TextCustomField]
@@ -36,9 +38,19 @@ defimpl Poison.Decoder, for: DocuSign.Model.TemplateUpdateSummary do
 
   def decode(value, options) do
     value
-    |> deserialize(:bulkEnvelopeStatus, :struct, DocuSign.Model.BulkEnvelopeStatus, options)
+    |> deserialize(
+      :bulkEnvelopeStatus,
+      :struct,
+      DocuSign.Model.BulkEnvelopeStatus,
+      options
+    )
     |> deserialize(:errorDetails, :struct, DocuSign.Model.ErrorDetails, options)
-    |> deserialize(:listCustomFieldUpdateResults, :list, DocuSign.Model.ListCustomField, options)
+    |> deserialize(
+      :listCustomFieldUpdateResults,
+      :list,
+      DocuSign.Model.ListCustomField,
+      options
+    )
     |> deserialize(:lockInformation, :struct, DocuSign.Model.EnvelopeLocks, options)
     |> deserialize(
       :recipientUpdateResults,
@@ -46,7 +58,17 @@ defimpl Poison.Decoder, for: DocuSign.Model.TemplateUpdateSummary do
       DocuSign.Model.RecipientUpdateResponse,
       options
     )
-    |> deserialize(:tabUpdateResults, :struct, DocuSign.Model.EnvelopeRecipientTabs, options)
-    |> deserialize(:textCustomFieldUpdateResults, :list, DocuSign.Model.TextCustomField, options)
+    |> deserialize(
+      :tabUpdateResults,
+      :struct,
+      DocuSign.Model.EnvelopeRecipientTabs,
+      options
+    )
+    |> deserialize(
+      :textCustomFieldUpdateResults,
+      :list,
+      DocuSign.Model.TextCustomField,
+      options
+    )
   end
 end

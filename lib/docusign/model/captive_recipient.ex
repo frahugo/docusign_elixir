@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.CaptiveRecipient do
   @moduledoc """
-
+  This object contains details about a captive (embedded) recipient.
   """
 
   @derive [Poison.Encoder]

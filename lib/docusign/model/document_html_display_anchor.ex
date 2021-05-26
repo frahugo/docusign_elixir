@@ -32,6 +32,11 @@ defimpl Poison.Decoder, for: DocuSign.Model.DocumentHtmlDisplayAnchor do
 
   def decode(value, options) do
     value
-    |> deserialize(:displaySettings, :struct, DocuSign.Model.DocumentHtmlDisplaySettings, options)
+    |> deserialize(
+      :displaySettings,
+      :struct,
+      DocuSign.Model.DocumentHtmlDisplaySettings,
+      options
+    )
   end
 end

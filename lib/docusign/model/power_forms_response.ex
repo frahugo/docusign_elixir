@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.PowerFormsResponse do
   @moduledoc """
-
+  A list of PowerForms.
   """
 
   @derive [Poison.Encoder]
@@ -19,13 +19,13 @@ defmodule DocuSign.Model.PowerFormsResponse do
   ]
 
   @type t :: %__MODULE__{
-          :endPosition => String.t(),
+          :endPosition => integer(),
           :nextUri => String.t(),
-          :powerForms => [PowerForms],
+          :powerForms => [PowerForm],
           :previousUri => String.t(),
-          :resultSetSize => String.t(),
-          :startPosition => String.t(),
-          :totalSetSize => String.t()
+          :resultSetSize => integer(),
+          :startPosition => integer(),
+          :totalSetSize => integer()
         }
 end
 
@@ -34,6 +34,6 @@ defimpl Poison.Decoder, for: DocuSign.Model.PowerFormsResponse do
 
   def decode(value, options) do
     value
-    |> deserialize(:powerForms, :list, DocuSign.Model.PowerForms, options)
+    |> deserialize(:powerForms, :list, DocuSign.Model.PowerForm, options)
   end
 end

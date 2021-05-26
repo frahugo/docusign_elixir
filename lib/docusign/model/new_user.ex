@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.NewUser do
   @moduledoc """
-
+  Object representing a new user.
   """
 
   @derive [Poison.Encoder]
@@ -13,6 +13,7 @@ defmodule DocuSign.Model.NewUser do
     :createdDateTime,
     :email,
     :errorDetails,
+    :membershipId,
     :permissionProfileId,
     :permissionProfileName,
     :uri,
@@ -26,6 +27,7 @@ defmodule DocuSign.Model.NewUser do
           :createdDateTime => String.t(),
           :email => String.t(),
           :errorDetails => ErrorDetails,
+          :membershipId => String.t(),
           :permissionProfileId => String.t(),
           :permissionProfileName => String.t(),
           :uri => String.t(),

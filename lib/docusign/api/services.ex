@@ -21,17 +21,17 @@ defmodule DocuSign.Api.Services do
 
   ## Returns
 
-  {:ok, %DocuSign.Model.Services{}} on success
+  {:ok, %DocuSign.Model.ServiceInformation{}} on success
   {:error, info} on failure
   """
   @spec service_information_get_service_information(Tesla.Env.client(), keyword()) ::
-          {:ok, DocuSign.Model.Services.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.ServiceInformation.t()} | {:error, Tesla.Env.t()}
   def service_information_get_service_information(connection, _opts \\ []) do
     %{}
     |> method(:get)
     |> url("/service_information")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.Services{})
+    |> decode(%DocuSign.Model.ServiceInformation{})
   end
 end

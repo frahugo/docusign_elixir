@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.Filter do
   @moduledoc """
-
+  Use this object to create a filtered view of the items in a folder.
   """
 
   @derive [Poison.Encoder]

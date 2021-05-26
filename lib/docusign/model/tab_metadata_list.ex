@@ -13,7 +13,7 @@ defmodule DocuSign.Model.TabMetadataList do
   ]
 
   @type t :: %__MODULE__{
-          :tabs => [CustomTabs]
+          :tabs => [TabMetadata]
         }
 end
 
@@ -22,6 +22,6 @@ defimpl Poison.Decoder, for: DocuSign.Model.TabMetadataList do
 
   def decode(value, options) do
     value
-    |> deserialize(:tabs, :list, DocuSign.Model.CustomTabs, options)
+    |> deserialize(:tabs, :list, DocuSign.Model.TabMetadata, options)
   end
 end

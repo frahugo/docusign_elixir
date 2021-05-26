@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.AccountIdentityVerificationStep do
   @moduledoc """
-
+  Information about a specific step in an Identity Verification workflow.
   """
 
   @derive [Poison.Encoder]

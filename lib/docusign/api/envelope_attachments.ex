@@ -17,10 +17,10 @@ defmodule DocuSign.Api.EnvelopeAttachments do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :envelope_attachments_request (EnvelopeAttachmentsRequest): 
+    - :envelope_attachments_request (EnvelopeAttachmentsRequest):
 
   ## Returns
 
@@ -31,12 +31,12 @@ defmodule DocuSign.Api.EnvelopeAttachments do
           {:ok, DocuSign.Model.EnvelopeAttachmentsResult.t()} | {:error, Tesla.Env.t()}
   def attachments_delete_attachments(connection, account_id, envelope_id, opts \\ []) do
     optional_params = %{
-      envelopeAttachmentsRequest: :body
+      :envelopeAttachmentsRequest => :body
     }
 
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/attachments")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/attachments")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -50,9 +50,9 @@ defmodule DocuSign.Api.EnvelopeAttachments do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - attachment_id (String.t): 
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - attachment_id (String.t): The unique identifier for the attachment.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -70,7 +70,7 @@ defmodule DocuSign.Api.EnvelopeAttachments do
   def attachments_get_attachment(connection, account_id, attachment_id, envelope_id, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/attachments/#{attachment_id}")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/attachments/#{attachment_id}")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(false)
@@ -83,8 +83,8 @@ defmodule DocuSign.Api.EnvelopeAttachments do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -97,7 +97,7 @@ defmodule DocuSign.Api.EnvelopeAttachments do
   def attachments_get_attachments(connection, account_id, envelope_id, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/attachments")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/attachments")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.EnvelopeAttachmentsResult{})
@@ -110,11 +110,11 @@ defmodule DocuSign.Api.EnvelopeAttachments do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - attachment_id (String.t): 
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - attachment_id (String.t): The unique identifier for the attachment.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :attachment (Attachment): 
+    - :attachment (Attachment):
 
   ## Returns
 
@@ -130,12 +130,12 @@ defmodule DocuSign.Api.EnvelopeAttachments do
         ) :: {:ok, DocuSign.Model.EnvelopeAttachmentsResult.t()} | {:error, Tesla.Env.t()}
   def attachments_put_attachment(connection, account_id, attachment_id, envelope_id, opts \\ []) do
     optional_params = %{
-      attachment: :body
+      :attachment => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/attachments/#{attachment_id}")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/attachments/#{attachment_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -143,16 +143,16 @@ defmodule DocuSign.Api.EnvelopeAttachments do
   end
 
   @doc """
-  Add one or more attachments to a DRAFT or IN-PROCESS envelope.
-  Supported attachment formats include: .asp, .bmp, .csv, .doc, .docm, .docx, .dot, .dotm, .dotx, .gif, .htm, .html, .jpeg, .jpg, .msg, .pdf, .png, .pot, .potx, .pps, .ppt, .pptm, .pptx, .ps, .rtf, .tif, .tiff, .txt, .wpd, .xls, .xlsm, .xlsx, .xml, and .xps. For more information on supported file formats please see [Supported File Formats](https://support.docusign.com/guides/ndse-user-guide-supported-file-formats).
+  Add one or more attachments to a draft or in-process envelope.
+  Supported attachment formats include: .asp, .bmp, .csv, .doc, .docm, .docx, .dot, .dotm, .dotx, .gif, .htm, .html, .jpeg, .jpg, .msg, .pdf, .png, .pot, .potx, .pps, .ppt, .pptm, .pptx, .ps, .rtf, .tif, .tiff, .txt, .wpd, .xls, .xlsm, .xlsx, .xml, and .xps. For more information about supported file formats, see [Supported File Formats](https://support.docusign.com/guides/ndse-user-guide-supported-file-formats).
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :envelope_attachments_request (EnvelopeAttachmentsRequest): 
+    - :envelope_attachments_request (EnvelopeAttachmentsRequest):
 
   ## Returns
 
@@ -163,12 +163,12 @@ defmodule DocuSign.Api.EnvelopeAttachments do
           {:ok, DocuSign.Model.EnvelopeAttachmentsResult.t()} | {:error, Tesla.Env.t()}
   def attachments_put_attachments(connection, account_id, envelope_id, opts \\ []) do
     optional_params = %{
-      envelopeAttachmentsRequest: :body
+      :envelopeAttachmentsRequest => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/attachments")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/attachments")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()

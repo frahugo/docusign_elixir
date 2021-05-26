@@ -9,25 +9,25 @@ defmodule DocuSign.Model.RecipientFormData do
 
   @derive [Poison.Encoder]
   defstruct [
-    :declinedTime,
-    :deliveredTime,
+    :DeclinedTime,
+    :DeliveredTime,
     :email,
     :formData,
     :name,
     :recipientId,
-    :sentTime,
-    :signedTime
+    :SentTime,
+    :SignedTime
   ]
 
   @type t :: %__MODULE__{
-          :declinedTime => String.t(),
-          :deliveredTime => String.t(),
+          :DeclinedTime => String.t(),
+          :DeliveredTime => String.t(),
           :email => String.t(),
-          :formData => [NameValue],
+          :formData => [FormDataItem],
           :name => String.t(),
           :recipientId => String.t(),
-          :sentTime => String.t(),
-          :signedTime => String.t()
+          :SentTime => String.t(),
+          :SignedTime => String.t()
         }
 end
 
@@ -36,6 +36,6 @@ defimpl Poison.Decoder, for: DocuSign.Model.RecipientFormData do
 
   def decode(value, options) do
     value
-    |> deserialize(:formData, :list, DocuSign.Model.NameValue, options)
+    |> deserialize(:formData, :list, DocuSign.Model.FormDataItem, options)
   end
 end

@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.AccountBrands do
   @moduledoc """
-  Brand management for accounts
+  The AccountBrands resource enables you to use account-level brands to customize the styles and text that recipients see.
   """
 
   @derive [Poison.Encoder]

@@ -10,23 +10,26 @@ defmodule DocuSign.Model.Document do
   @derive [Poison.Encoder]
   defstruct [
     :applyAnchorTabs,
-    :authoritativeCopy,
+    :assignTabsToRecipientId,
     :display,
     :documentBase64,
     :documentFields,
-    :documentGroup,
     :documentId,
     :encryptedWithKeyManager,
     :fileExtension,
     :fileFormatHint,
+    :htmlDefinition,
     :includeInDownload,
     :matchBoxes,
     :name,
     :order,
     :pages,
     :password,
+    :pdfFormFieldOption,
     :remoteUrl,
     :signerMustAcknowledge,
+    :signerMustAcknowledgeUseAccountDefault,
+    :tabs,
     :templateLocked,
     :templateRequired,
     :transformPdfFields,
@@ -35,23 +38,26 @@ defmodule DocuSign.Model.Document do
 
   @type t :: %__MODULE__{
           :applyAnchorTabs => String.t(),
-          :authoritativeCopy => boolean(),
+          :assignTabsToRecipientId => String.t(),
           :display => String.t(),
           :documentBase64 => String.t(),
           :documentFields => [NameValue],
-          :documentGroup => String.t(),
           :documentId => String.t(),
           :encryptedWithKeyManager => String.t(),
           :fileExtension => String.t(),
           :fileFormatHint => String.t(),
+          :htmlDefinition => DocumentHtmlDefinition,
           :includeInDownload => String.t(),
           :matchBoxes => [MatchBox],
           :name => String.t(),
           :order => String.t(),
           :pages => String.t(),
           :password => String.t(),
+          :pdfFormFieldOption => String.t(),
           :remoteUrl => String.t(),
           :signerMustAcknowledge => String.t(),
+          :signerMustAcknowledgeUseAccountDefault => boolean(),
+          :tabs => EnvelopeRecipientTabs,
           :templateLocked => String.t(),
           :templateRequired => String.t(),
           :transformPdfFields => String.t(),
@@ -65,6 +71,13 @@ defimpl Poison.Decoder, for: DocuSign.Model.Document do
   def decode(value, options) do
     value
     |> deserialize(:documentFields, :list, DocuSign.Model.NameValue, options)
+    |> deserialize(
+      :htmlDefinition,
+      :struct,
+      DocuSign.Model.DocumentHtmlDefinition,
+      options
+    )
     |> deserialize(:matchBoxes, :list, DocuSign.Model.MatchBox, options)
+    |> deserialize(:tabs, :struct, DocuSign.Model.EnvelopeRecipientTabs, options)
   end
 end

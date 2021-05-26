@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.ExternalFile do
   @moduledoc """
-
+  This object contains information about a file or folder in cloud storage.
   """
 
   @derive [Poison.Encoder]

@@ -12,50 +12,50 @@ defmodule DocuSign.Api.TemplateDocuments do
 
   @doc """
   Deletes documents from a template.
-  Deletes one or more documents from an existing template.
+  This method deletes one or more documents from an existing template.  To delete a document, use only the relevant parts of the [&#x60;envelopeDefinition&#x60;](#envelopeDefinition). For example, this request body specifies that you want to delete the document whose &#x60;documentId&#x60; is \&quot;1\&quot;.   &#x60;&#x60;&#x60;text {   \&quot;documents\&quot;: [     {       \&quot;documentId\&quot;: \&quot;1\&quot;     }   ] } &#x60;&#x60;&#x60;
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :envelope_definition (EnvelopeDefinition): 
+    - :envelope_definition (EnvelopeDefinition):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.TemplateDocuments{}} on success
+  {:ok, %DocuSign.Model.TemplateDocumentsResult{}} on success
   {:error, info} on failure
   """
   @spec documents_delete_template_documents(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.TemplateDocuments.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.TemplateDocumentsResult.t()} | {:error, Tesla.Env.t()}
   def documents_delete_template_documents(connection, account_id, template_id, opts \\ []) do
     optional_params = %{
-      envelopeDefinition: :body
+      :envelopeDefinition => :body
     }
 
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/documents")
+    |> url("/v2.1/accounts/#{account_id}/templates/#{template_id}/documents")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.TemplateDocuments{})
+    |> decode(%DocuSign.Model.TemplateDocumentsResult{})
   end
 
   @doc """
   Gets PDF documents from a template.
-  Retrieves one or more PDF documents from the specified template.  You can specify the ID of the document to retrieve or can specify &#x60;combined&#x60; to retrieve all documents in the template as one pdf.
+  This method retrieves one or more PDF documents from the template that you specify.  You can specify the ID of the document to retrieve, or pass in the value &#x60;combined&#x60; to retrieve all documents in the template as a single PDF file.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :encrypt (String.t): 
-    - :show_changes (String.t): 
+    - :encrypt (String.t): When set to **true**, the PDF bytes returned in the response are encrypted for all the key managers configured on your DocuSign account. You can decrypt the documents by using the Key Manager DecryptDocument API method. For more information about Key Manager, see the DocuSign Security Appliance Installation Guide that your organization received from DocuSign.
+    - :show_changes (String.t): When set to **true**, any document fields that a recipient changed are highlighted in yellow in the returned PDF document, and optional signatures or initials are outlined in red.
 
   ## Returns
 
@@ -77,13 +77,13 @@ defmodule DocuSign.Api.TemplateDocuments do
         opts \\ []
       ) do
     optional_params = %{
-      encrypt: :query,
-      show_changes: :query
+      :encrypt => :query,
+      :show_changes => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/documents/#{document_id}")
+    |> url("/v2.1/accounts/#{account_id}/templates/#{template_id}/documents/#{document_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -97,40 +97,45 @@ defmodule DocuSign.Api.TemplateDocuments do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
+    - :include_tabs (String.t): Reserved for DocuSign.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.TemplateDocuments{}} on success
+  {:ok, %DocuSign.Model.TemplateDocumentsResult{}} on success
   {:error, info} on failure
   """
   @spec documents_get_template_documents(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.TemplateDocuments.t()} | {:error, Tesla.Env.t()}
-  def documents_get_template_documents(connection, account_id, template_id, _opts \\ []) do
+          {:ok, DocuSign.Model.TemplateDocumentsResult.t()} | {:error, Tesla.Env.t()}
+  def documents_get_template_documents(connection, account_id, template_id, opts \\ []) do
+    optional_params = %{
+      :include_tabs => :query
+    }
+
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/documents")
+    |> url("/v2.1/accounts/#{account_id}/templates/#{template_id}/documents")
+    |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.TemplateDocuments{})
+    |> decode(%DocuSign.Model.TemplateDocumentsResult{})
   end
 
   @doc """
-  Adds a document to a template document.
-  Adds the specified document to an existing template document.
+  Updates a template document.
+  This methods updates an existing template document.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :apply_document_fields (String.t): When **true**, document fields can be added or modified while adding or modifying envelope documents. 
-    - :is_envelope_definition (String.t): 
-    - :envelope_definition (EnvelopeDefinition): 
+    - :is_envelope_definition (String.t):
+    - :envelope_definition (EnvelopeDefinition):
 
   ## Returns
 
@@ -152,14 +157,13 @@ defmodule DocuSign.Api.TemplateDocuments do
         opts \\ []
       ) do
     optional_params = %{
-      apply_document_fields: :query,
-      is_envelope_definition: :query,
-      envelopeDefinition: :body
+      :is_envelope_definition => :query,
+      :envelopeDefinition => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/documents/#{document_id}")
+    |> url("/v2.1/accounts/#{account_id}/templates/#{template_id}/documents/#{document_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -173,33 +177,29 @@ defmodule DocuSign.Api.TemplateDocuments do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :apply_document_fields (String.t): When **true**, document fields can be added or modified while adding or modifying envelope documents. 
-    - :persist_tabs (String.t): 
-    - :envelope_definition (EnvelopeDefinition): 
+    - :envelope_definition (EnvelopeDefinition):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.TemplateDocuments{}} on success
+  {:ok, %DocuSign.Model.TemplateDocumentsResult{}} on success
   {:error, info} on failure
   """
   @spec documents_put_template_documents(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.TemplateDocuments.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.TemplateDocumentsResult.t()} | {:error, Tesla.Env.t()}
   def documents_put_template_documents(connection, account_id, template_id, opts \\ []) do
     optional_params = %{
-      apply_document_fields: :query,
-      persist_tabs: :query,
-      envelopeDefinition: :body
+      :envelopeDefinition => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/documents")
+    |> url("/v2.1/accounts/#{account_id}/templates/#{template_id}/documents")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.TemplateDocuments{})
+    |> decode(%DocuSign.Model.TemplateDocumentsResult{})
   end
 end

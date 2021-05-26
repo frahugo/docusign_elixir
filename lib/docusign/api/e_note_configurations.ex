@@ -17,7 +17,7 @@ defmodule DocuSign.Api.ENoteConfigurations do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -33,7 +33,7 @@ defmodule DocuSign.Api.ENoteConfigurations do
   def e_note_configuration_delete_e_note_configuration(connection, account_id, _opts \\ []) do
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/settings/enote_configuration")
+    |> url("/v2.1/accounts/#{account_id}/settings/enote_configuration")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(false)
@@ -46,23 +46,23 @@ defmodule DocuSign.Api.ENoteConfigurations do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
 
-  {:ok, %DocuSign.Model.ENoteConfigurations{}} on success
+  {:ok, %DocuSign.Model.ENoteConfiguration{}} on success
   {:error, info} on failure
   """
   @spec e_note_configuration_get_e_note_configuration(Tesla.Env.client(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.ENoteConfigurations.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.ENoteConfiguration.t()} | {:error, Tesla.Env.t()}
   def e_note_configuration_get_e_note_configuration(connection, account_id, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/settings/enote_configuration")
+    |> url("/v2.1/accounts/#{account_id}/settings/enote_configuration")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.ENoteConfigurations{})
+    |> decode(%DocuSign.Model.ENoteConfiguration{})
   end
 
   @doc """
@@ -72,28 +72,28 @@ defmodule DocuSign.Api.ENoteConfigurations do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :e_note_configurations (ENoteConfigurations): 
+    - :e_note_configuration (ENoteConfiguration):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.ENoteConfigurations{}} on success
+  {:ok, %DocuSign.Model.ENoteConfiguration{}} on success
   {:error, info} on failure
   """
   @spec e_note_configuration_put_e_note_configuration(Tesla.Env.client(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.ENoteConfigurations.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.ENoteConfiguration.t()} | {:error, Tesla.Env.t()}
   def e_note_configuration_put_e_note_configuration(connection, account_id, opts \\ []) do
     optional_params = %{
-      ENoteConfigurations: :body
+      :eNoteConfiguration => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/settings/enote_configuration")
+    |> url("/v2.1/accounts/#{account_id}/settings/enote_configuration")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.ENoteConfigurations{})
+    |> decode(%DocuSign.Model.ENoteConfiguration{})
   end
 end

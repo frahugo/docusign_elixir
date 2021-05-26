@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.TextCustomField do
   @moduledoc """
-
+  This object represents a free text custom field where envelope creators and senders can enter custom data.
   """
 
   @derive [Poison.Encoder]

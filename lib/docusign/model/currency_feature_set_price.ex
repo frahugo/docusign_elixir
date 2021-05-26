@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.CurrencyFeatureSetPrice do
   @moduledoc """
-
+  Information about the price and currency associated with the feature set. Reserved for internal DocuSign use only.
   """
 
   @derive [Poison.Encoder]

@@ -9,22 +9,57 @@ defmodule DocuSign.Model.PaymentGatewayAccounts do
 
   @derive [Poison.Encoder]
   defstruct [
+    :allowCustomMetadata,
+    :config,
     :displayName,
+    :isEnabled,
+    :isLegacy,
+    :lastModified,
     :paymentGateway,
     :paymentGatewayAccountId,
-    :paymentGatewayDisplayName
+    :paymentGatewayDisplayName,
+    :payPalLegacySettings,
+    :supportedCurrencies,
+    :supportedPaymentMethods,
+    :supportedPaymentMethodsWithOptions,
+    :zeroDecimalCurrencies
   ]
 
   @type t :: %__MODULE__{
+          :allowCustomMetadata => boolean(),
+          :config => PaymentGatewayAccountSetting,
           :displayName => String.t(),
+          :isEnabled => String.t(),
+          :isLegacy => String.t(),
+          :lastModified => String.t(),
           :paymentGateway => String.t(),
           :paymentGatewayAccountId => String.t(),
-          :paymentGatewayDisplayName => String.t()
+          :paymentGatewayDisplayName => String.t(),
+          :payPalLegacySettings => PayPalLegacySettings,
+          :supportedCurrencies => [String.t()],
+          :supportedPaymentMethods => [String.t()],
+          :supportedPaymentMethodsWithOptions => [PaymentMethodWithOptions],
+          :zeroDecimalCurrencies => [String.t()]
         }
 end
 
 defimpl Poison.Decoder, for: DocuSign.Model.PaymentGatewayAccounts do
-  def decode(value, _options) do
+  import DocuSign.Deserializer
+
+  def decode(value, options) do
     value
+    |> deserialize(:config, :struct, DocuSign.Model.PaymentGatewayAccountSetting, options)
+    |> deserialize(
+      :payPalLegacySettings,
+      :struct,
+      DocuSign.Model.PayPalLegacySettings,
+      options
+    )
+    |> deserialize(
+      :supportedPaymentMethodsWithOptions,
+      :list,
+      DocuSign.Model.PaymentMethodWithOptions,
+      options
+    )
   end
 end

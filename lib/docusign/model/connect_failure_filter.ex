@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.ConnectFailureFilter do
   @moduledoc """
-
+  A list of failed envelope IDs to retry.
   """
 
   @derive [Poison.Encoder]

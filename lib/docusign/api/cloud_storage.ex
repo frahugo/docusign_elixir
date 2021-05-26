@@ -11,27 +11,28 @@ defmodule DocuSign.Api.CloudStorage do
   import DocuSign.RequestBuilder
 
   @doc """
-  Gets a list of all the items from the specified cloud storage provider.
-  Retrieves a list of all the items in all  the folders associated with the user from the specified cloud storage provider. You can limit the scope of the returned items by providing a comma separated list of folder IDs in the request.
+  Gets a list of items from a cloud storage provider.
+  Retrieves a list of the user&#39;s items from the specified cloud storage provider.   To limit the scope of the items returned, provide a comma-separated list of folder ids in the request.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - folder_id (String.t): The ID of the folder being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - folder_id (String.t): The id of the folder.
   - service_id (String.t): The ID of the service to access.   Valid values are the service name (\&quot;Box\&quot;) or the numerical serviceId (\&quot;4136\&quot;).
-  - user_id (String.t): The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing.
+  - user_id (String.t): The ID of the user to access. Generally this is the ID of the current authenticated user, but if the authenticated user is an Administrator on the account, &#x60;userId&#x60; can represent another user whom the Administrator is accessing.
   - opts (KeywordList): [optional] Optional parameters
-    - :cloud_storage_folder_path (String.t): 
-    - :count (String.t): An optional value that sets how many items are included in the response.   The default setting for this is 25. 
-    - :order (String.t): An optional value that sets the direction order used to sort the item list.   Valid values are:   * asc &#x3D; ascending sort order * desc &#x3D; descending sort order 
-    - :order_by (String.t): An optional value that sets the file attribute used to sort the item list.   Valid values are:   * modified * name  
-    - :search_text (String.t): 
-    - :start_position (String.t): Indicates the starting point of the first item included in the response set. It uses a 0-based index. The default setting for this is 0.  
+    - :cloud_storage_folder_path (String.t): The file path to a cloud storage folder.
+    - :cloud_storage_folderid_plain (String.t): A plain-text folder id that you can use as an alternative to the existing folder id. This property is mainly used for rooms. Enter multiple folder ids as a comma-separated list.
+    - :count (String.t): An optional value that sets how many items are included in the response.   The default setting for this is 25.
+    - :order (String.t): (Optional) The order in which to sort the results.  Valid values are:    * &#x60;asc&#x60;: Ascending order. * &#x60;desc&#x60;: Descending order.
+    - :order_by (String.t): (Optional) The file attribute to use to sort the results.  Valid values are:   * &#x60;modified&#x60; * &#x60;name&#x60;
+    - :search_text (String.t): Use this parameter to search for specific text.
+    - :start_position (String.t): The starting index position in the result set from which to start returning values. The default setting is &#x60;0&#x60;.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.CloudStorage{}} on success
+  {:ok, %DocuSign.Model.ExternalFolder{}} on success
   {:error, info} on failure
   """
   @spec cloud_storage_folder_get_cloud_storage_folder(
@@ -41,7 +42,7 @@ defmodule DocuSign.Api.CloudStorage do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.CloudStorage.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.ExternalFolder.t()} | {:error, Tesla.Env.t()}
   def cloud_storage_folder_get_cloud_storage_folder(
         connection,
         account_id,
@@ -51,48 +52,49 @@ defmodule DocuSign.Api.CloudStorage do
         opts \\ []
       ) do
     optional_params = %{
-      cloud_storage_folder_path: :query,
-      count: :query,
-      order: :query,
-      order_by: :query,
-      search_text: :query,
-      start_position: :query
+      :cloud_storage_folder_path => :query,
+      :cloud_storage_folderid_plain => :query,
+      :count => :query,
+      :order => :query,
+      :order_by => :query,
+      :search_text => :query,
+      :start_position => :query
     }
 
     %{}
     |> method(:get)
     |> url(
-      "/v2/accounts/#{account_id}/users/#{user_id}/cloud_storage/#{service_id}/folders/#{
+      "/v2.1/accounts/#{account_id}/users/#{user_id}/cloud_storage/#{service_id}/folders/#{
         folder_id
       }"
     )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.CloudStorage{})
+    |> decode(%DocuSign.Model.ExternalFolder{})
   end
 
   @doc """
   Retrieves a list of all the items in a specified folder from the specified cloud storage provider.
-  Retrieves a list of all the items in a specified folder from the specified cloud storage provider. 
+  Retrieves a list of all the items in a specified folder from the specified cloud storage provider.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - service_id (String.t): The ID of the service to access.   Valid values are the service name (\&quot;Box\&quot;) or the numerical serviceId (\&quot;4136\&quot;).
-  - user_id (String.t): The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing.
+  - user_id (String.t): The ID of the user to access. Generally this is the ID of the current authenticated user, but if the authenticated user is an Administrator on the account, &#x60;userId&#x60; can represent another user whom the Administrator is accessing.
   - opts (KeywordList): [optional] Optional parameters
-    - :cloud_storage_folder_path (String.t): A comma separated list of folder IDs included in the request. 
-    - :count (String.t): An optional value that sets how many items are included in the response.   The default setting for this is 25. 
-    - :order (String.t): An optional value that sets the direction order used to sort the item list.   Valid values are:   * asc &#x3D; ascending sort order * desc &#x3D; descending sort order 
-    - :order_by (String.t): An optional value that sets the file attribute used to sort the item list.   Valid values are:   * modified * name  
-    - :search_text (String.t): 
-    - :start_position (String.t): Indicates the starting point of the first item included in the response set. It uses a 0-based index. The default setting for this is 0.  
+    - :cloud_storage_folder_path (String.t): A comma separated list of folder IDs included in the request.
+    - :count (String.t): An optional value that sets how many items are included in the response.   The default setting for this is 25.
+    - :order (String.t): (Optional) The order in which to sort the results.  Valid values are:    * &#x60;asc&#x60;: Ascending order. * &#x60;desc&#x60;: Descending order.
+    - :order_by (String.t): (Optional) The file attribute to use to sort the results.  Valid values are:   * &#x60;modified&#x60; * &#x60;name&#x60;
+    - :search_text (String.t): Use this parameter to search for specific text.
+    - :start_position (String.t): Indicates the starting point of the first item included in the response set. It uses a 0-based index. The default setting for this is 0.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.CloudStorage{}} on success
+  {:ok, %DocuSign.Model.ExternalFolder{}} on success
   {:error, info} on failure
   """
   @spec cloud_storage_folder_get_cloud_storage_folder_all(
@@ -101,7 +103,7 @@ defmodule DocuSign.Api.CloudStorage do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.CloudStorage.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.ExternalFolder.t()} | {:error, Tesla.Env.t()}
   def cloud_storage_folder_get_cloud_storage_folder_all(
         connection,
         account_id,
@@ -110,20 +112,20 @@ defmodule DocuSign.Api.CloudStorage do
         opts \\ []
       ) do
     optional_params = %{
-      cloud_storage_folder_path: :query,
-      count: :query,
-      order: :query,
-      order_by: :query,
-      search_text: :query,
-      start_position: :query
+      :cloud_storage_folder_path => :query,
+      :count => :query,
+      :order => :query,
+      :order_by => :query,
+      :search_text => :query,
+      :start_position => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/users/#{user_id}/cloud_storage/#{service_id}/folders")
+    |> url("/v2.1/accounts/#{account_id}/users/#{user_id}/cloud_storage/#{service_id}/folders")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.CloudStorage{})
+    |> decode(%DocuSign.Model.ExternalFolder{})
   end
 end

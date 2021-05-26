@@ -11,13 +11,13 @@ defmodule DocuSign.Api.AccountPasswordRules do
   import DocuSign.RequestBuilder
 
   @doc """
-  Get the password rules
-
+  Gets the password rules for an account.
+  This method retrieves the password rules for an account.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -33,22 +33,22 @@ defmodule DocuSign.Api.AccountPasswordRules do
   def account_password_rules_get_account_password_rules(connection, account_id, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/settings/password_rules")
+    |> url("/v2.1/accounts/#{account_id}/settings/password_rules")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.AccountPasswordRules{})
   end
 
   @doc """
-  Update the password rules
-
+  Updates the password rules for an account.
+  This method updates the password rules for an account.  **Note**: To update the password rules for an account, you must be an account administrator.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :account_password_rules (AccountPasswordRules): 
+    - :account_password_rules (AccountPasswordRules):
 
   ## Returns
 
@@ -62,12 +62,12 @@ defmodule DocuSign.Api.AccountPasswordRules do
         ) :: {:ok, DocuSign.Model.AccountPasswordRules.t()} | {:error, Tesla.Env.t()}
   def account_password_rules_put_account_password_rules(connection, account_id, opts \\ []) do
     optional_params = %{
-      AccountPasswordRules: :body
+      :accountPasswordRules => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/settings/password_rules")
+    |> url("/v2.1/accounts/#{account_id}/settings/password_rules")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -75,7 +75,7 @@ defmodule DocuSign.Api.AccountPasswordRules do
   end
 
   @doc """
-  Get membership account password rules
+  Gets membership account password rules.
 
 
   ## Parameters
@@ -93,7 +93,7 @@ defmodule DocuSign.Api.AccountPasswordRules do
   def password_rules_get_password_rules(connection, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/current_user/password_rules")
+    |> url("/v2.1/current_user/password_rules")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.UserPasswordRules{})

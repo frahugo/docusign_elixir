@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.EnvelopeNotificationRequest do
   @moduledoc """
-
+  A complex element that specifies the notification settings for the envelope.
   """
 
   @derive [Poison.Encoder]

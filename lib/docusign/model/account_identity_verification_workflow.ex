@@ -4,20 +4,26 @@
 
 defmodule DocuSign.Model.AccountIdentityVerificationWorkflow do
   @moduledoc """
-
+  Specifies an Identity Verification workflow.
   """
 
   @derive [Poison.Encoder]
   defstruct [
+    :defaultDescription,
     :defaultName,
-    :steps,
-    :workflowId
+    :inputOptions,
+    :signatureProvider,
+    :workflowId,
+    :workflowResourceKey
   ]
 
   @type t :: %__MODULE__{
+          :defaultDescription => String.t(),
           :defaultName => String.t(),
-          :steps => [AccountIdentityVerificationStep],
-          :workflowId => String.t()
+          :inputOptions => [AccountIdentityInputOption],
+          :signatureProvider => AccountSignatureProvider,
+          :workflowId => String.t(),
+          :workflowResourceKey => String.t()
         }
 end
 
@@ -26,6 +32,17 @@ defimpl Poison.Decoder, for: DocuSign.Model.AccountIdentityVerificationWorkflow 
 
   def decode(value, options) do
     value
-    |> deserialize(:steps, :list, DocuSign.Model.AccountIdentityVerificationStep, options)
+    |> deserialize(
+      :inputOptions,
+      :list,
+      DocuSign.Model.AccountIdentityInputOption,
+      options
+    )
+    |> deserialize(
+      :signatureProvider,
+      :struct,
+      DocuSign.Model.AccountSignatureProvider,
+      options
+    )
   end
 end

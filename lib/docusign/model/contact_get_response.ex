@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.ContactGetResponse do
   @moduledoc """
-
+  This response object contains information about the contacts associated with an account.
   """
 
   @derive [Poison.Encoder]
@@ -19,7 +19,7 @@ defmodule DocuSign.Model.ContactGetResponse do
   ]
 
   @type t :: %__MODULE__{
-          :contacts => [Contacts],
+          :contacts => [Contact],
           :endPosition => String.t(),
           :nextUri => String.t(),
           :previousUri => String.t(),
@@ -34,6 +34,6 @@ defimpl Poison.Decoder, for: DocuSign.Model.ContactGetResponse do
 
   def decode(value, options) do
     value
-    |> deserialize(:contacts, :list, DocuSign.Model.Contacts, options)
+    |> deserialize(:contacts, :list, DocuSign.Model.Contact, options)
   end
 end

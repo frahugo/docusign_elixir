@@ -17,24 +17,24 @@ defmodule DocuSign.Api.UserProfiles do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - user_id (String.t): The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - user_id (String.t): The ID of the user to access. Generally this is the ID of the current authenticated user, but if the authenticated user is an Administrator on the account, &#x60;userId&#x60; can represent another user whom the Administrator is accessing.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
 
-  {:ok, %DocuSign.Model.UserProfiles{}} on success
+  {:ok, %DocuSign.Model.UserProfile{}} on success
   {:error, info} on failure
   """
   @spec user_profile_get_profile(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.UserProfiles.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.UserProfile.t()} | {:error, Tesla.Env.t()}
   def user_profile_get_profile(connection, account_id, user_id, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/users/#{user_id}/profile")
+    |> url("/v2.1/accounts/#{account_id}/users/#{user_id}/profile")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.UserProfiles{})
+    |> decode(%DocuSign.Model.UserProfile{})
   end
 
   @doc """
@@ -44,10 +44,10 @@ defmodule DocuSign.Api.UserProfiles do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - user_id (String.t): The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - user_id (String.t): The ID of the user to access. Generally this is the ID of the current authenticated user, but if the authenticated user is an Administrator on the account, &#x60;userId&#x60; can represent another user whom the Administrator is accessing.
   - opts (KeywordList): [optional] Optional parameters
-    - :user_profiles (UserProfiles): 
+    - :user_profile (UserProfile):
 
   ## Returns
 
@@ -58,12 +58,12 @@ defmodule DocuSign.Api.UserProfiles do
           {:ok, nil} | {:error, Tesla.Env.t()}
   def user_profile_put_profile(connection, account_id, user_id, opts \\ []) do
     optional_params = %{
-      UserProfiles: :body
+      :userProfile => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/users/#{user_id}/profile")
+    |> url("/v2.1/accounts/#{account_id}/users/#{user_id}/profile")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()

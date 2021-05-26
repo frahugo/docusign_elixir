@@ -4,16 +4,19 @@
 
 defmodule DocuSign.Model.Contacts do
   @moduledoc """
-
+  The &#x60;Contacts&#x60; resource enables you to manage the contact in an account&#39;s address book.
   """
 
   @derive [Poison.Encoder]
   defstruct [
+    :cloudProvider,
+    :cloudProviderContainerId,
     :contactId,
     :contactPhoneNumbers,
     :contactUri,
     :emails,
     :errorDetails,
+    :isOwner,
     :name,
     :organization,
     :shared,
@@ -22,11 +25,14 @@ defmodule DocuSign.Model.Contacts do
   ]
 
   @type t :: %__MODULE__{
+          :cloudProvider => String.t(),
+          :cloudProviderContainerId => String.t(),
           :contactId => String.t(),
           :contactPhoneNumbers => [ContactPhoneNumber],
           :contactUri => String.t(),
           :emails => [String.t()],
           :errorDetails => ErrorDetails,
+          :isOwner => boolean(),
           :name => String.t(),
           :organization => String.t(),
           :shared => String.t(),

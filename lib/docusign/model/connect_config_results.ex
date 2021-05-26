@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.ConnectConfigResults do
   @moduledoc """
-
+  This object contains the results of a ConnectConfigurations::GET method.
   """
 
   @derive [Poison.Encoder]
@@ -14,7 +14,7 @@ defmodule DocuSign.Model.ConnectConfigResults do
   ]
 
   @type t :: %__MODULE__{
-          :configurations => [ConnectConfigurations],
+          :configurations => [ConnectCustomConfiguration],
           :totalRecords => String.t()
         }
 end
@@ -24,6 +24,11 @@ defimpl Poison.Decoder, for: DocuSign.Model.ConnectConfigResults do
 
   def decode(value, options) do
     value
-    |> deserialize(:configurations, :list, DocuSign.Model.ConnectConfigurations, options)
+    |> deserialize(
+      :configurations,
+      :list,
+      DocuSign.Model.ConnectCustomConfiguration,
+      options
+    )
   end
 end

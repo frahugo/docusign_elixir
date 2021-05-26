@@ -13,7 +13,7 @@ defmodule DocuSign.Model.PowerFormsRequest do
   ]
 
   @type t :: %__MODULE__{
-          :powerForms => [PowerForms]
+          :powerForms => [PowerForm]
         }
 end
 
@@ -22,6 +22,6 @@ defimpl Poison.Decoder, for: DocuSign.Model.PowerFormsRequest do
 
   def decode(value, options) do
     value
-    |> deserialize(:powerForms, :list, DocuSign.Model.PowerForms, options)
+    |> deserialize(:powerForms, :list, DocuSign.Model.PowerForm, options)
   end
 end

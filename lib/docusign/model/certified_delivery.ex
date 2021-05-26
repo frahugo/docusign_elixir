@@ -4,51 +4,79 @@
 
 defmodule DocuSign.Model.CertifiedDelivery do
   @moduledoc """
-
+  Contains information about a certified delivery recipient. Certified delivery recipients must receive the completed documents for the envelope to be completed. However, they don&#39;t need to sign, initial, date or add information to any of the documents.
   """
 
   @derive [Poison.Encoder]
   defstruct [
     :accessCode,
+    :accessCodeMetadata,
     :addAccessCodeToEmail,
+    :additionalNotifications,
     :agentCanEditEmail,
     :agentCanEditName,
+    :allowSystemOverrideForLockedRecipient,
     :clientUserId,
+    :completedCount,
     :customFields,
     :declinedDateTime,
     :declinedReason,
     :deliveredDateTime,
     :deliveryMethod,
+    :deliveryMethodMetadata,
+    :designatorId,
+    :designatorIdGuid,
     :documentVisibility,
     :email,
+    :emailMetadata,
     :emailNotification,
-    :emailRecipientPostSigningURL,
     :embeddedRecipientStartURL,
     :errorDetails,
     :excludedDocuments,
     :faxNumber,
+    :faxNumberMetadata,
+    :firstName,
+    :firstNameMetadata,
+    :fullName,
+    :fullNameMetadata,
     :idCheckConfigurationName,
+    :idCheckConfigurationNameMetadata,
     :idCheckInformationInput,
+    :identityVerification,
     :inheritEmailNotificationConfiguration,
+    :lastName,
+    :lastNameMetadata,
+    :lockedRecipientPhoneAuthEditable,
+    :lockedRecipientSmsEditable,
     :name,
+    :nameMetadata,
     :note,
+    :noteMetadata,
     :phoneAuthentication,
+    :proofFile,
     :recipientAttachments,
     :recipientAuthenticationStatus,
+    :recipientFeatureMetadata,
     :recipientId,
     :recipientIdGuid,
+    :recipientType,
+    :recipientTypeMetadata,
     :requireIdLookup,
+    :requireIdLookupMetadata,
     :roleName,
     :routingOrder,
-    :samlAuthentication,
+    :routingOrderMetadata,
     :sentDateTime,
     :signedDateTime,
     :signingGroupId,
+    :signingGroupIdMetadata,
     :signingGroupName,
     :signingGroupUsers,
     :smsAuthentication,
     :socialAuthentications,
     :status,
+    :statusCode,
+    :suppressEmails,
     :templateLocked,
     :templateRequired,
     :totalTabCount,
@@ -57,45 +85,73 @@ defmodule DocuSign.Model.CertifiedDelivery do
 
   @type t :: %__MODULE__{
           :accessCode => String.t(),
+          :accessCodeMetadata => PropertyMetadata,
           :addAccessCodeToEmail => String.t(),
+          :additionalNotifications => [RecipientAdditionalNotification],
           :agentCanEditEmail => String.t(),
           :agentCanEditName => String.t(),
+          :allowSystemOverrideForLockedRecipient => String.t(),
           :clientUserId => String.t(),
+          :completedCount => String.t(),
           :customFields => [String.t()],
           :declinedDateTime => String.t(),
           :declinedReason => String.t(),
           :deliveredDateTime => String.t(),
           :deliveryMethod => String.t(),
+          :deliveryMethodMetadata => PropertyMetadata,
+          :designatorId => String.t(),
+          :designatorIdGuid => String.t(),
           :documentVisibility => [DocumentVisibility],
           :email => String.t(),
+          :emailMetadata => PropertyMetadata,
           :emailNotification => RecipientEmailNotification,
-          :emailRecipientPostSigningURL => String.t(),
           :embeddedRecipientStartURL => String.t(),
           :errorDetails => ErrorDetails,
           :excludedDocuments => [String.t()],
           :faxNumber => String.t(),
+          :faxNumberMetadata => PropertyMetadata,
+          :firstName => String.t(),
+          :firstNameMetadata => PropertyMetadata,
+          :fullName => String.t(),
+          :fullNameMetadata => PropertyMetadata,
           :idCheckConfigurationName => String.t(),
+          :idCheckConfigurationNameMetadata => PropertyMetadata,
           :idCheckInformationInput => IdCheckInformationInput,
+          :identityVerification => RecipientIdentityVerification,
           :inheritEmailNotificationConfiguration => String.t(),
+          :lastName => String.t(),
+          :lastNameMetadata => PropertyMetadata,
+          :lockedRecipientPhoneAuthEditable => String.t(),
+          :lockedRecipientSmsEditable => String.t(),
           :name => String.t(),
+          :nameMetadata => PropertyMetadata,
           :note => String.t(),
+          :noteMetadata => PropertyMetadata,
           :phoneAuthentication => RecipientPhoneAuthentication,
+          :proofFile => RecipientProofFile,
           :recipientAttachments => [RecipientAttachment],
           :recipientAuthenticationStatus => AuthenticationStatus,
+          :recipientFeatureMetadata => [FeatureAvailableMetadata],
           :recipientId => String.t(),
           :recipientIdGuid => String.t(),
+          :recipientType => String.t(),
+          :recipientTypeMetadata => PropertyMetadata,
           :requireIdLookup => String.t(),
+          :requireIdLookupMetadata => PropertyMetadata,
           :roleName => String.t(),
           :routingOrder => String.t(),
-          :samlAuthentication => RecipientSamlAuthentication,
+          :routingOrderMetadata => PropertyMetadata,
           :sentDateTime => String.t(),
           :signedDateTime => String.t(),
           :signingGroupId => String.t(),
+          :signingGroupIdMetadata => PropertyMetadata,
           :signingGroupName => String.t(),
           :signingGroupUsers => [UserInfo],
           :smsAuthentication => RecipientSmsAuthentication,
           :socialAuthentications => [SocialAuthentication],
           :status => String.t(),
+          :statusCode => String.t(),
+          :suppressEmails => String.t(),
           :templateLocked => String.t(),
           :templateRequired => String.t(),
           :totalTabCount => String.t(),
@@ -108,7 +164,21 @@ defimpl Poison.Decoder, for: DocuSign.Model.CertifiedDelivery do
 
   def decode(value, options) do
     value
+    |> deserialize(:accessCodeMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(
+      :additionalNotifications,
+      :list,
+      DocuSign.Model.RecipientAdditionalNotification,
+      options
+    )
+    |> deserialize(
+      :deliveryMethodMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
     |> deserialize(:documentVisibility, :list, DocuSign.Model.DocumentVisibility, options)
+    |> deserialize(:emailMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
     |> deserialize(
       :emailNotification,
       :struct,
@@ -116,6 +186,15 @@ defimpl Poison.Decoder, for: DocuSign.Model.CertifiedDelivery do
       options
     )
     |> deserialize(:errorDetails, :struct, DocuSign.Model.ErrorDetails, options)
+    |> deserialize(:faxNumberMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:firstNameMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:fullNameMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(
+      :idCheckConfigurationNameMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
     |> deserialize(
       :idCheckInformationInput,
       :struct,
@@ -123,12 +202,27 @@ defimpl Poison.Decoder, for: DocuSign.Model.CertifiedDelivery do
       options
     )
     |> deserialize(
+      :identityVerification,
+      :struct,
+      DocuSign.Model.RecipientIdentityVerification,
+      options
+    )
+    |> deserialize(:lastNameMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:nameMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:noteMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(
       :phoneAuthentication,
       :struct,
       DocuSign.Model.RecipientPhoneAuthentication,
       options
     )
-    |> deserialize(:recipientAttachments, :list, DocuSign.Model.RecipientAttachment, options)
+    |> deserialize(:proofFile, :struct, DocuSign.Model.RecipientProofFile, options)
+    |> deserialize(
+      :recipientAttachments,
+      :list,
+      DocuSign.Model.RecipientAttachment,
+      options
+    )
     |> deserialize(
       :recipientAuthenticationStatus,
       :struct,
@@ -136,9 +230,33 @@ defimpl Poison.Decoder, for: DocuSign.Model.CertifiedDelivery do
       options
     )
     |> deserialize(
-      :samlAuthentication,
+      :recipientFeatureMetadata,
+      :list,
+      DocuSign.Model.FeatureAvailableMetadata,
+      options
+    )
+    |> deserialize(
+      :recipientTypeMetadata,
       :struct,
-      DocuSign.Model.RecipientSamlAuthentication,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
+    |> deserialize(
+      :requireIdLookupMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
+    |> deserialize(
+      :routingOrderMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
+    |> deserialize(
+      :signingGroupIdMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
       options
     )
     |> deserialize(:signingGroupUsers, :list, DocuSign.Model.UserInfo, options)
@@ -148,6 +266,11 @@ defimpl Poison.Decoder, for: DocuSign.Model.CertifiedDelivery do
       DocuSign.Model.RecipientSmsAuthentication,
       options
     )
-    |> deserialize(:socialAuthentications, :list, DocuSign.Model.SocialAuthentication, options)
+    |> deserialize(
+      :socialAuthentications,
+      :list,
+      DocuSign.Model.SocialAuthentication,
+      options
+    )
   end
 end

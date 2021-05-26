@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.ConsoleViewRequest do
   @moduledoc """
-
+  The request object for the EnvelopeViews::createConsole method.
   """
 
   @derive [Poison.Encoder]

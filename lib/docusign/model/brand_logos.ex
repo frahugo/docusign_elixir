@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.BrandLogos do
   @moduledoc """
-
+  Information about the logos associated with the brand.
   """
 
   @derive [Poison.Encoder]

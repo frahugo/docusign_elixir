@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.AccountPasswordRules do
   @moduledoc """
-
+  Contains details about the password rules for an account.
   """
 
   @derive [Poison.Encoder]

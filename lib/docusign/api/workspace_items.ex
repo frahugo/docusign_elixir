@@ -11,19 +11,19 @@ defmodule DocuSign.Api.WorkspaceItems do
   import DocuSign.RequestBuilder
 
   @doc """
-  Get Workspace File
-  Retrieves a workspace file (the binary).
+  Gets a workspace file
+  This method returns a binary version of a file in a workspace.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - file_id (String.t): Specifies the room file ID GUID.
-  - folder_id (String.t): The ID of the folder being accessed.
-  - workspace_id (String.t): Specifies the workspace ID GUID.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - file_id (String.t): The id of the file.
+  - folder_id (String.t): The id of the folder.
+  - workspace_id (String.t): The id of the workspace.
   - opts (KeywordList): [optional] Optional parameters
-    - :is_download (String.t): When set to **true**, the Content-Disposition header is set in the response. The value of the header provides the filename of the file. Default is **false**.
-    - :pdf_version (String.t): When set to **true** the file returned as a PDF.
+    - :is_download (String.t): When set to **true**, the &#x60;Content-Disposition&#x60; header is set in the response. The value of the header provides the filename of the file. The default is **false**.
+    - :pdf_version (String.t): When set to **true** the file is returned in PDF format.
 
   ## Returns
 
@@ -47,14 +47,16 @@ defmodule DocuSign.Api.WorkspaceItems do
         opts \\ []
       ) do
     optional_params = %{
-      is_download: :query,
-      pdf_version: :query
+      :is_download => :query,
+      :pdf_version => :query
     }
 
     %{}
     |> method(:get)
     |> url(
-      "/v2/accounts/#{account_id}/workspaces/#{workspace_id}/folders/#{folder_id}/files/#{file_id}"
+      "/v2.1/accounts/#{account_id}/workspaces/#{workspace_id}/folders/#{folder_id}/files/#{
+        file_id
+      }"
     )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
@@ -64,20 +66,20 @@ defmodule DocuSign.Api.WorkspaceItems do
 
   @doc """
   List File Pages
-  Retrieves a workspace file as rasterized pages.
+  This method returns a workspace file as rasterized pages.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - file_id (String.t): Specifies the room file ID GUID.
-  - folder_id (String.t): The ID of the folder being accessed.
-  - workspace_id (String.t): Specifies the workspace ID GUID.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - file_id (String.t): The id of the file.
+  - folder_id (String.t): The id of the folder.
+  - workspace_id (String.t): The id of the workspace.
   - opts (KeywordList): [optional] Optional parameters
     - :count (String.t): The maximum number of results to be returned by this request.
-    - :dpi (String.t): Number of dots per inch for the resulting image. The default if not used is 94. The range is 1-310.
-    - :max_height (String.t): Sets the maximum height (in pixels) of the returned image.
-    - :max_width (String.t): Sets the maximum width (in pixels) of the returned image.
+    - :dpi (String.t): The number of dots per inch (DPI) for the resulting images. Valid values are 1-310 DPI. The default value is 94.
+    - :max_height (String.t): Sets the maximum height of the returned images in pixels.
+    - :max_width (String.t): Sets the maximum width of the returned images in pixels.
     - :start_position (String.t): The position within the total result set from which to start returning values. The value **thumbnail** may be used to return the page image.
 
   ## Returns
@@ -102,17 +104,19 @@ defmodule DocuSign.Api.WorkspaceItems do
         opts \\ []
       ) do
     optional_params = %{
-      count: :query,
-      dpi: :query,
-      max_height: :query,
-      max_width: :query,
-      start_position: :query
+      :count => :query,
+      :dpi => :query,
+      :max_height => :query,
+      :max_width => :query,
+      :start_position => :query
     }
 
     %{}
     |> method(:get)
     |> url(
-      "/v2/accounts/#{account_id}/workspaces/#{workspace_id}/folders/#{folder_id}/files/#{file_id}/pages"
+      "/v2.1/accounts/#{account_id}/workspaces/#{workspace_id}/folders/#{folder_id}/files/#{
+        file_id
+      }/pages"
     )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
@@ -122,19 +126,19 @@ defmodule DocuSign.Api.WorkspaceItems do
 
   @doc """
   Creates a workspace file.
-
+  This method adds a file to a workspace.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - folder_id (String.t): The ID of the folder being accessed.
-  - workspace_id (String.t): Specifies the workspace ID GUID.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - folder_id (String.t): The id of the folder.
+  - workspace_id (String.t): The id of the workspace.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
 
-  {:ok, %DocuSign.Model.WorkspaceItems{}} on success
+  {:ok, %DocuSign.Model.WorkspaceItem{}} on success
   {:error, info} on failure
   """
   @spec workspace_file_post_workspace_files(
@@ -143,7 +147,7 @@ defmodule DocuSign.Api.WorkspaceItems do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.WorkspaceItems.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.WorkspaceItem.t()} | {:error, Tesla.Env.t()}
   def workspace_file_post_workspace_files(
         connection,
         account_id,
@@ -153,28 +157,28 @@ defmodule DocuSign.Api.WorkspaceItems do
       ) do
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/workspaces/#{workspace_id}/folders/#{folder_id}/files")
+    |> url("/v2.1/accounts/#{account_id}/workspaces/#{workspace_id}/folders/#{folder_id}/files")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.WorkspaceItems{})
+    |> decode(%DocuSign.Model.WorkspaceItem{})
   end
 
   @doc """
-  Update Workspace File Metadata
-  Updates workspace item metadata for one or more specific files/folders.
+  Update workspace file or folder metadata
+  This method updates the metadata for one or more specific files or folders in a workspace.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - file_id (String.t): Specifies the room file ID GUID.
-  - folder_id (String.t): The ID of the folder being accessed.
-  - workspace_id (String.t): Specifies the workspace ID GUID.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - file_id (String.t): The id of the file.
+  - folder_id (String.t): The id of the folder.
+  - workspace_id (String.t): The id of the workspace.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
 
-  {:ok, %DocuSign.Model.WorkspaceItems{}} on success
+  {:ok, %DocuSign.Model.WorkspaceItem{}} on success
   {:error, info} on failure
   """
   @spec workspace_file_put_workspace_file(
@@ -184,7 +188,7 @@ defmodule DocuSign.Api.WorkspaceItems do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.WorkspaceItems.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.WorkspaceItem.t()} | {:error, Tesla.Env.t()}
   def workspace_file_put_workspace_file(
         connection,
         account_id,
@@ -196,25 +200,27 @@ defmodule DocuSign.Api.WorkspaceItems do
     %{}
     |> method(:put)
     |> url(
-      "/v2/accounts/#{account_id}/workspaces/#{workspace_id}/folders/#{folder_id}/files/#{file_id}"
+      "/v2.1/accounts/#{account_id}/workspaces/#{workspace_id}/folders/#{folder_id}/files/#{
+        file_id
+      }"
     )
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.WorkspaceItems{})
+    |> decode(%DocuSign.Model.WorkspaceItem{})
   end
 
   @doc """
-  Deletes workspace one or more specific files/folders from the given folder or root.
-
+  Deletes files or sub-folders from a workspace.
+  This method deletes one or more files or sub-folders from a workspace folder or root.  Note: To delete items from a workspace, the &#x60;status&#x60; of the workspace must be &#x60;active&#x60;.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - folder_id (String.t): The ID of the folder being accessed.
-  - workspace_id (String.t): Specifies the workspace ID GUID.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - folder_id (String.t): The id of the folder.
+  - workspace_id (String.t): The id of the workspace.
   - opts (KeywordList): [optional] Optional parameters
-    - :workspace_item_list (WorkspaceItemList): 
+    - :workspace_item_list (WorkspaceItemList):
 
   ## Returns
 
@@ -236,12 +242,12 @@ defmodule DocuSign.Api.WorkspaceItems do
         opts \\ []
       ) do
     optional_params = %{
-      workspaceItemList: :body
+      :workspaceItemList => :body
     }
 
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/workspaces/#{workspace_id}/folders/#{folder_id}")
+    |> url("/v2.1/accounts/#{account_id}/workspaces/#{workspace_id}/folders/#{folder_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -249,23 +255,23 @@ defmodule DocuSign.Api.WorkspaceItems do
   end
 
   @doc """
-  List Workspace Folder Contents
-  Retrieves workspace folder contents, which can include sub folders and files.
+  List workspace folder contents
+  This method returns the contents of a workspace folder, which can include sub-folders and files.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - folder_id (String.t): The ID of the folder being accessed.
-  - workspace_id (String.t): Specifies the workspace ID GUID.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - folder_id (String.t): The id of the folder.
+  - workspace_id (String.t): The id of the workspace.
   - opts (KeywordList): [optional] Optional parameters
     - :count (String.t): The maximum number of results to be returned by this request.
-    - :include_files (String.t): When set to **true**, file information is returned in the response along with folder information. The default is **false**.
-    - :include_sub_folders (String.t): When set to **true**, information about the sub-folders of the current folder is returned. The default is **false**.
-    - :include_thumbnails (String.t): When set to **true**, thumbnails are returned as part of the response.  The default is **false**.
-    - :include_user_detail (String.t): Set to **true** to return extended details about the user. The default is **false**.
+    - :include_files (String.t): When set to **true**, the response includes file information (in addition to folder information). The default is **false**.
+    - :include_sub_folders (String.t): When set to **true**, the response includes information about the sub-folders of the current folder. The default is **false**.
+    - :include_thumbnails (String.t): When set to **true**, the response returns thumbnails.  The default is **false**.
+    - :include_user_detail (String.t): When set to **true**, the response includes extended details about the user. The default is **false**.
     - :start_position (String.t): The position within the total result set from which to start returning values.
-    - :workspace_user_id (String.t): If set, then the results are filtered to those associated with the specified userId.
+    - :workspace_user_id (String.t): If set, the response only includes results associated with the &#x60;userId&#x60; that you specify.
 
   ## Returns
 
@@ -287,18 +293,18 @@ defmodule DocuSign.Api.WorkspaceItems do
         opts \\ []
       ) do
     optional_params = %{
-      count: :query,
-      include_files: :query,
-      include_sub_folders: :query,
-      include_thumbnails: :query,
-      include_user_detail: :query,
-      start_position: :query,
-      workspace_user_id: :query
+      :count => :query,
+      :include_files => :query,
+      :include_sub_folders => :query,
+      :include_thumbnails => :query,
+      :include_user_detail => :query,
+      :start_position => :query,
+      :workspace_user_id => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/workspaces/#{workspace_id}/folders/#{folder_id}")
+    |> url("/v2.1/accounts/#{account_id}/workspaces/#{workspace_id}/folders/#{folder_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()

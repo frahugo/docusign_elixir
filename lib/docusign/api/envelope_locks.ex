@@ -12,13 +12,13 @@ defmodule DocuSign.Api.EnvelopeLocks do
 
   @doc """
   Deletes an envelope lock.
-  Deletes the lock from the specified envelope. The &#x60;X-DocuSign-Edit&#x60; header must be included in the request.
+  Deletes the lock from the specified envelope. The user deleting the lock must be the same user who locked the envelope.  You must include the &#x60;X-DocuSign-Edit&#x60; header as described in [EnvelopeLocks: create](https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/envelopelocks/create/).  This method takes an optional query paramter that lets you specify whether changes made while the envelope was locked are kept or discarded.   | Query Parameter | Description                                                                                                                                                                         | | :-------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | | &#x60;save_changes&#x60;  | (Optional) When set to **true** (the default), any changes made while the lock was active are saved. When set to **false**, any changes made while the envelope was locked are discarded. |
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -31,7 +31,7 @@ defmodule DocuSign.Api.EnvelopeLocks do
   def lock_delete_envelope_lock(connection, account_id, envelope_id, _opts \\ []) do
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/lock")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/lock")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.EnvelopeLocks{})
@@ -39,13 +39,13 @@ defmodule DocuSign.Api.EnvelopeLocks do
 
   @doc """
   Gets envelope lock information.
-  Retrieves general information about the envelope lock.  If the call is made by the locked by user and the request has the same integrator key as original, then the &#x60;X-DocuSign-Edit&#x60; header and additional lock information is included in the response. This allows users to recover a lost editing session token and the &#x60;X-DocuSign-Edit&#x60; header.
+  Retrieves general information about an envelope lock.  The user requesting the information must be the same user who locked the envelope.  You can use this method to recover the lock information, including the &#x60;lockToken&#x60;, for a locked envelope. The &#x60;X-DocuSign-Edit&#x60; header is included in the response.  See [EnvelopeLocks: create](https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/envelopelocks/create/) for a description of the &#x60;X-DocuSign-Edit&#x60; header.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -58,23 +58,23 @@ defmodule DocuSign.Api.EnvelopeLocks do
   def lock_get_envelope_lock(connection, account_id, envelope_id, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/lock")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/lock")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.EnvelopeLocks{})
   end
 
   @doc """
-  Lock an envelope.
-  Locks the specified envelope, and sets the time until the lock expires, to prevent other users or recipients from accessing and changing the envelope.  ###### Note: Users must have envelope locking capability enabled to use this function (userSetting &#x60;canLockEnvelopes&#x60; must be  set to true for the user).
+  Locks an envelope.
+  This method locks the specified envelope and sets the time until the lock expires to prevent other users or recipients from changing the envelope.  **Note**: To use this method, the envelope locking capability must be enabled for the user; that is, the user setting &#x60;canLockEnvelopes&#x60; must be set to **true**.  The response to this request includes a &#x60;lockToken&#x60; parameter that you must use in the &#x60;X-DocuSign-Edit&#x60; header for every PUT method (typically a method that updates an envelope) while the envelope is locked.   If you do not provide the &#x60;lockToken&#x60; when accessing a locked envelope, you will get the following error:  &#x60;&#x60;&#x60; {    \&quot;errorCode\&quot;: \&quot;EDIT_LOCK_NOT_LOCK_OWNER\&quot;,    \&quot;message\&quot;: \&quot;The user is not the owner of the lock. The template is locked by another user or in another application\&quot; } &#x60;&#x60;&#x60;   ### The X-DocuSign-Edit header  The &#x60;X-DocuSign-Edit&#x60; header looks like this and can be specified in either JSON or XML.  **JSON** &#x60;&#x60;&#x60; {   \&quot;LockToken\&quot;: \&quot;token-from-response\&quot;,   \&quot;LockDurationInSeconds\&quot;: \&quot;600\&quot; } &#x60;&#x60;&#x60;  **XML** &#x60;&#x60;&#x60; &lt;DocuSignEdit&gt;   &lt;LockToken&gt;token-from-response&lt;/LockToken&gt;   &lt;LockDurationInSeconds&gt;600&lt;/LockDurationInSeconds&gt; &lt;/DocuSignEdit&gt; &#x60;&#x60;&#x60;  In the actual HTTP header, you would remove the linebreaks:  &#x60;&#x60;&#x60; X-DocuSign-Edit: {\&quot;LockToken\&quot;: \&quot;token-from-response\&quot;, \&quot;LockDurationInSeconds\&quot;: \&quot;600\&quot; }     or X-DocuSign-Edit:&lt;DocuSignEdit&gt;&lt;LockToken&gt;token-from-response&lt;/LockToken&gt;&lt;LockDurationInSeconds&gt;600&lt;/LockDurationInSeconds&gt;&lt;/DocuSignEdit&gt; &#x60;&#x60;&#x60;
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :lock_request (LockRequest): 
+    - :lock_request (LockRequest):
 
   ## Returns
 
@@ -85,12 +85,12 @@ defmodule DocuSign.Api.EnvelopeLocks do
           {:ok, DocuSign.Model.EnvelopeLocks.t()} | {:error, Tesla.Env.t()}
   def lock_post_envelope_lock(connection, account_id, envelope_id, opts \\ []) do
     optional_params = %{
-      lockRequest: :body
+      :lockRequest => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/lock")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/lock")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -99,15 +99,15 @@ defmodule DocuSign.Api.EnvelopeLocks do
 
   @doc """
   Updates an envelope lock.
-  Updates the lock duration time or update the &#x60;lockedByApp&#x60; property information for the specified envelope. The user and integrator key must match the user specified by the &#x60;lockByUser&#x60; property and integrator key information and the &#x60;X-DocuSign-Edit&#x60; header must be included or an error will be generated.
+  Updates the lock information for a locked envelope.  You must include the &#x60;X-DocuSign-Edit&#x60; header as described in [EnvelopeLocks: create](https://developers.docusign.com/docs/esign-rest-api/reference/envelopes/envelopelocks/create/).   Use this method to change the duration of the lock (&#x60;lockDurationInSeconds&#x60;) or the &#x60;lockedByApp&#x60; string.  The request body is a full &#x60;lockRequest&#x60; object, but you only need to specify the properties that you are updating. For example:  &#x60;&#x60;&#x60; {   \&quot;lockDurationInSeconds\&quot;: \&quot;3600\&quot;,   \&quot;lockedByApp\&quot;: \&quot;My Application\&quot; } &#x60;&#x60;&#x60;
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :lock_request (LockRequest): 
+    - :lock_request (LockRequest):
 
   ## Returns
 
@@ -118,12 +118,12 @@ defmodule DocuSign.Api.EnvelopeLocks do
           {:ok, DocuSign.Model.EnvelopeLocks.t()} | {:error, Tesla.Env.t()}
   def lock_put_envelope_lock(connection, account_id, envelope_id, opts \\ []) do
     optional_params = %{
-      lockRequest: :body
+      :lockRequest => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/lock")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/lock")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()

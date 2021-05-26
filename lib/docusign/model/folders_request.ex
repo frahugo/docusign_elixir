@@ -4,23 +4,28 @@
 
 defmodule DocuSign.Model.FoldersRequest do
   @moduledoc """
-
+  Information for a folder request.
   """
 
   @derive [Poison.Encoder]
   defstruct [
     :envelopeIds,
+    :folders,
     :fromFolderId
   ]
 
   @type t :: %__MODULE__{
           :envelopeIds => [String.t()],
+          :folders => [Folder],
           :fromFolderId => String.t()
         }
 end
 
 defimpl Poison.Decoder, for: DocuSign.Model.FoldersRequest do
-  def decode(value, _options) do
+  import DocuSign.Deserializer
+
+  def decode(value, options) do
     value
+    |> deserialize(:folders, :list, DocuSign.Model.Folder, options)
   end
 end

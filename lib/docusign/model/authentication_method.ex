@@ -19,7 +19,7 @@ defmodule DocuSign.Model.AuthenticationMethod do
           :authenticationType => String.t(),
           :lastProvider => String.t(),
           :lastTimestamp => String.t(),
-          :totalCount => integer()
+          :totalCount => String.t()
         }
 end
 

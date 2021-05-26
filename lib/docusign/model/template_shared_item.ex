@@ -4,13 +4,14 @@
 
 defmodule DocuSign.Model.TemplateSharedItem do
   @moduledoc """
-
+  Information about shared templates.
   """
 
   @derive [Poison.Encoder]
   defstruct [
     :errorDetails,
     :owner,
+    :password,
     :shared,
     :sharedGroups,
     :sharedUsers,
@@ -21,6 +22,7 @@ defmodule DocuSign.Model.TemplateSharedItem do
   @type t :: %__MODULE__{
           :errorDetails => ErrorDetails,
           :owner => UserInfo,
+          :password => String.t(),
           :shared => String.t(),
           :sharedGroups => [MemberGroupSharedItem],
           :sharedUsers => [UserSharedItem],

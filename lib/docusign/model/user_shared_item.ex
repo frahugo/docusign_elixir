@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.UserSharedItem do
   @moduledoc """
-
+  Information about a shared item.
   """
 
   @derive [Poison.Encoder]

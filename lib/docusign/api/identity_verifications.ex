@@ -11,25 +11,27 @@ defmodule DocuSign.Api.IdentityVerifications do
   import DocuSign.RequestBuilder
 
   @doc """
-
-
+  Retrieves the Identity Verification workflows available to an account.
+  This method returns a list of Identity Verification workflows that are available to an account.  **Note**: To use this method, you must either be an account administrator or a sender.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
 
-  {:ok, %DocuSign.Model.IdentityVerifications{}} on success
+  {:ok, %DocuSign.Model.AccountIdentityVerificationResponse{}} on success
   {:error, info} on failure
   """
   @spec account_identity_verification_get_account_identity_verification(
           Tesla.Env.client(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.IdentityVerifications.t()} | {:error, Tesla.Env.t()}
+        ) ::
+          {:ok, DocuSign.Model.AccountIdentityVerificationResponse.t()}
+          | {:error, Tesla.Env.t()}
   def account_identity_verification_get_account_identity_verification(
         connection,
         account_id,
@@ -37,9 +39,9 @@ defmodule DocuSign.Api.IdentityVerifications do
       ) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/identity_verification")
+    |> url("/v2.1/accounts/#{account_id}/identity_verification")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.IdentityVerifications{})
+    |> decode(%DocuSign.Model.AccountIdentityVerificationResponse{})
   end
 end

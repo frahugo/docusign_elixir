@@ -12,15 +12,15 @@ defmodule DocuSign.Api.SigningGroupUsers do
 
   @doc """
   Deletes  one or more members from a signing group.
-  Deletes  one or more members from the specified signing group. 
+  Deletes  one or more members from the specified signing group.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - signing_group_id (String.t): 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - signing_group_id (String.t): Optional. The ID of the [signing group](https://support.docusign.com/en/guides/ndse-user-guide-signing-groups).  **Note**: When you send an envelope to a signing group, anyone in the group can open it and sign it with their own signature. For this reason, we recommend that you do not include non-signer recipients (such as carbon copy recipients) in the same signing group as signer recipients. However, you could create a second signing group for the non-signer recipients and change the default action of Needs to Sign to a different value, such as Receives a Copy.
   - opts (KeywordList): [optional] Optional parameters
-    - :signing_group_users (SigningGroupUsers): 
+    - :signing_group_users (SigningGroupUsers): A complex type that contains information about users in the signing group.
 
   ## Returns
 
@@ -40,12 +40,12 @@ defmodule DocuSign.Api.SigningGroupUsers do
         opts \\ []
       ) do
     optional_params = %{
-      SigningGroupUsers: :body
+      :signingGroupUsers => :body
     }
 
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/signing_groups/#{signing_group_id}/users")
+    |> url("/v2.1/accounts/#{account_id}/signing_groups/#{signing_group_id}/users")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -59,8 +59,8 @@ defmodule DocuSign.Api.SigningGroupUsers do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - signing_group_id (String.t): 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - signing_group_id (String.t): Optional. The ID of the [signing group](https://support.docusign.com/en/guides/ndse-user-guide-signing-groups).  **Note**: When you send an envelope to a signing group, anyone in the group can open it and sign it with their own signature. For this reason, we recommend that you do not include non-signer recipients (such as carbon copy recipients) in the same signing group as signer recipients. However, you could create a second signing group for the non-signer recipients and change the default action of Needs to Sign to a different value, such as Receives a Copy.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -82,23 +82,23 @@ defmodule DocuSign.Api.SigningGroupUsers do
       ) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/signing_groups/#{signing_group_id}/users")
+    |> url("/v2.1/accounts/#{account_id}/signing_groups/#{signing_group_id}/users")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.SigningGroupUsers{})
   end
 
   @doc """
-  Adds members to a signing group. 
-  Adds one or more new members to a signing group. A signing group can have a maximum of 50 members. 
+  Adds members to a signing group.
+  Adds one or more new members to a signing group. A signing group can have a maximum of 50 members.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - signing_group_id (String.t): 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - signing_group_id (String.t): Optional. The ID of the [signing group](https://support.docusign.com/en/guides/ndse-user-guide-signing-groups).  **Note**: When you send an envelope to a signing group, anyone in the group can open it and sign it with their own signature. For this reason, we recommend that you do not include non-signer recipients (such as carbon copy recipients) in the same signing group as signer recipients. However, you could create a second signing group for the non-signer recipients and change the default action of Needs to Sign to a different value, such as Receives a Copy.
   - opts (KeywordList): [optional] Optional parameters
-    - :signing_group_users (SigningGroupUsers): 
+    - :signing_group_users (SigningGroupUsers): A complex type that contains information about users in the signing group.
 
   ## Returns
 
@@ -113,12 +113,12 @@ defmodule DocuSign.Api.SigningGroupUsers do
         ) :: {:ok, DocuSign.Model.SigningGroupUsers.t()} | {:error, Tesla.Env.t()}
   def signing_groups_put_signing_group_users(connection, account_id, signing_group_id, opts \\ []) do
     optional_params = %{
-      SigningGroupUsers: :body
+      :signingGroupUsers => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/signing_groups/#{signing_group_id}/users")
+    |> url("/v2.1/accounts/#{account_id}/signing_groups/#{signing_group_id}/users")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()

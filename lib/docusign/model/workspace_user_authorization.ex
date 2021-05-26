@@ -43,6 +43,11 @@ defimpl Poison.Decoder, for: DocuSign.Model.WorkspaceUserAuthorization do
   def decode(value, options) do
     value
     |> deserialize(:errorDetails, :struct, DocuSign.Model.ErrorDetails, options)
-    |> deserialize(:workspaceUserInformation, :struct, DocuSign.Model.WorkspaceUser, options)
+    |> deserialize(
+      :workspaceUserInformation,
+      :struct,
+      DocuSign.Model.WorkspaceUser,
+      options
+    )
   end
 end

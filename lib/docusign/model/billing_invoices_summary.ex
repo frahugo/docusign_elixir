@@ -15,7 +15,7 @@ defmodule DocuSign.Model.BillingInvoicesSummary do
   ]
 
   @type t :: %__MODULE__{
-          :billingInvoices => [Invoices],
+          :billingInvoices => [BillingInvoice],
           :pastDueBalance => String.t(),
           :paymentAllowed => String.t()
         }
@@ -26,6 +26,6 @@ defimpl Poison.Decoder, for: DocuSign.Model.BillingInvoicesSummary do
 
   def decode(value, options) do
     value
-    |> deserialize(:billingInvoices, :list, DocuSign.Model.Invoices, options)
+    |> deserialize(:billingInvoices, :list, DocuSign.Model.BillingInvoice, options)
   end
 end

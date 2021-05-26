@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.WorkspaceFolderContents do
   @moduledoc """
-  Provides properties that describe the contents of a workspace folder.
+  This object&#39;s properties describe the contents of a workspace folder.
   """
 
   @derive [Poison.Encoder]
@@ -21,9 +21,9 @@ defmodule DocuSign.Model.WorkspaceFolderContents do
 
   @type t :: %__MODULE__{
           :endPosition => String.t(),
-          :folder => WorkspaceItems,
-          :items => [WorkspaceItems],
-          :parentFolders => [WorkspaceItems],
+          :folder => WorkspaceItem,
+          :items => [WorkspaceItem],
+          :parentFolders => [WorkspaceItem],
           :resultSetSize => String.t(),
           :startPosition => String.t(),
           :totalSetSize => String.t(),
@@ -36,8 +36,8 @@ defimpl Poison.Decoder, for: DocuSign.Model.WorkspaceFolderContents do
 
   def decode(value, options) do
     value
-    |> deserialize(:folder, :struct, DocuSign.Model.WorkspaceItems, options)
-    |> deserialize(:items, :list, DocuSign.Model.WorkspaceItems, options)
-    |> deserialize(:parentFolders, :list, DocuSign.Model.WorkspaceItems, options)
+    |> deserialize(:folder, :struct, DocuSign.Model.WorkspaceItem, options)
+    |> deserialize(:items, :list, DocuSign.Model.WorkspaceItem, options)
+    |> deserialize(:parentFolders, :list, DocuSign.Model.WorkspaceItem, options)
   end
 end

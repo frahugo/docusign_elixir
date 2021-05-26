@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.WorkspaceItems do
   @moduledoc """
-
+  This object contains information about a file or folder in a workspace.
   """
 
   @derive [Poison.Encoder]
@@ -26,8 +26,13 @@ defmodule DocuSign.Model.WorkspaceItems do
     :pageCount,
     :parentFolderId,
     :parentFolderUri,
+    :sha256,
+    :thumbHeight,
+    :thumbnail,
+    :thumbWidth,
     :type,
-    :uri
+    :uri,
+    :userAuthorization
   ]
 
   @type t :: %__MODULE__{
@@ -48,8 +53,13 @@ defmodule DocuSign.Model.WorkspaceItems do
           :pageCount => String.t(),
           :parentFolderId => String.t(),
           :parentFolderUri => String.t(),
+          :sha256 => String.t(),
+          :thumbHeight => String.t(),
+          :thumbnail => Page,
+          :thumbWidth => String.t(),
           :type => String.t(),
-          :uri => String.t()
+          :uri => String.t(),
+          :userAuthorization => WorkspaceUserAuthorization
         }
 end
 
@@ -65,6 +75,18 @@ defimpl Poison.Decoder, for: DocuSign.Model.WorkspaceItems do
       options
     )
     |> deserialize(:createdByInformation, :struct, DocuSign.Model.WorkspaceUser, options)
-    |> deserialize(:lastModifiedByInformation, :struct, DocuSign.Model.WorkspaceUser, options)
+    |> deserialize(
+      :lastModifiedByInformation,
+      :struct,
+      DocuSign.Model.WorkspaceUser,
+      options
+    )
+    |> deserialize(:thumbnail, :struct, DocuSign.Model.Page, options)
+    |> deserialize(
+      :userAuthorization,
+      :struct,
+      DocuSign.Model.WorkspaceUserAuthorization,
+      options
+    )
   end
 end

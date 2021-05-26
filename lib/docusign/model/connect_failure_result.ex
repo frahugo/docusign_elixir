@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.ConnectFailureResult do
   @moduledoc """
-
+  This object contains details about a Connect failure result.
   """
 
   @derive [Poison.Encoder]

@@ -11,18 +11,18 @@ defmodule DocuSign.Api.PowerFormData do
   import DocuSign.RequestBuilder
 
   @doc """
-  Returns the form data associated with the usage of a PowerForm.
-
+  Returns the data that users entered in a PowerForm.
+  This method enables Powerform Administrators or the sender of a PowerForm to download the data that recipients have entered into a PowerForm.  You specify the format in which you want to retrieve the data in the &#x60;Accept&#x60; header. This header accepts the following values:   - &#x60;application/json&#x60;: JSON format - &#x60;application/xml&#x60;: XML format - &#x60;text/csv&#x60;: Comma-separated value (CSV) format  **Note**: Only PowerForm Administrators or the PowerForm Sender can download the data associated with a PowerForm.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - power_form_id (String.t): 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - power_form_id (String.t): The id of the PowerForm.
   - opts (KeywordList): [optional] Optional parameters
-    - :data_layout (String.t): 
-    - :from_date (String.t): Start of the search date range. Only returns templates created on or after this date/time. If no value is specified, there is no limit on the earliest date created.
-    - :to_date (String.t): End of the search date range. Only returns templates created up to this date/time. If no value is provided, this defaults to the current date.
+    - :data_layout (String.t): The layout in which to return the PowerForm data. Valid values are:  - &#x60;Native&#x60; - &#x60;Csv_Classic&#x60; - &#x60;Csv_One_Envelope_Per_Line&#x60; - &#x60;Xml_Classic&#x60;
+    - :from_date (String.t): The start date for a date range in UTC DateTime format.  **Note**: If this property is null, no date filtering is applied.
+    - :to_date (String.t): The end date of a date range in UTC DateTime format. The default value is &#x60;UtcNow&#x60;.
 
   ## Returns
 
@@ -37,14 +37,14 @@ defmodule DocuSign.Api.PowerFormData do
         ) :: {:ok, DocuSign.Model.PowerFormsFormDataResponse.t()} | {:error, Tesla.Env.t()}
   def power_forms_get_power_form_form_data(connection, account_id, power_form_id, opts \\ []) do
     optional_params = %{
-      data_layout: :query,
-      from_date: :query,
-      to_date: :query
+      :data_layout => :query,
+      :from_date => :query,
+      :to_date => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/powerforms/#{power_form_id}/form_data")
+    |> url("/v2.1/accounts/#{account_id}/powerforms/#{power_form_id}/form_data")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()

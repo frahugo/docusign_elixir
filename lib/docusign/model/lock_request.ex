@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.LockRequest do
   @moduledoc """
-
+  This request object contains information about the lock that you want to create or update.
   """
 
   @derive [Poison.Encoder]

@@ -11,14 +11,14 @@ defmodule DocuSign.Api.AccountBrands do
   import DocuSign.RequestBuilder
 
   @doc """
-  Removes a brand.
-
+  Deletes a brand.
+  This method deletes a brand from an account.  **Note**: Branding for either signing or sending must be enabled for the account (&#x60;canSelfBrandSend&#x60; , &#x60;canSelfBrandSign&#x60;, or both of these account settings must be **true**).
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - brand_id (String.t): The unique identifier of a brand.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - brand_id (String.t): The id of the brand.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -31,21 +31,21 @@ defmodule DocuSign.Api.AccountBrands do
   def brand_delete_brand(connection, account_id, brand_id, _opts \\ []) do
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/brands/#{brand_id}")
+    |> url("/v2.1/accounts/#{account_id}/brands/#{brand_id}")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(false)
   end
 
   @doc """
-  Export a specific brand.
-
+  Exports a brand.
+  This method exports information about a brand to an XML file.  **Note**: Branding for either signing or sending must be enabled for the account (&#x60;canSelfBrandSend&#x60; , &#x60;canSelfBrandSign&#x60;, or both of these account settings must be **true**).
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - brand_id (String.t): The unique identifier of a brand.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - brand_id (String.t): The id of the brand.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -58,24 +58,24 @@ defmodule DocuSign.Api.AccountBrands do
   def brand_export_get_brand_export_file(connection, account_id, brand_id, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/brands/#{brand_id}/file")
+    |> url("/v2.1/accounts/#{account_id}/brands/#{brand_id}/file")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(false)
   end
 
   @doc """
-  Get information for a specific brand.
-
+  Gets information about a brand.
+  This method returns details about an account brand.  **Note**: Branding for either signing or sending must be enabled for the account (&#x60;canSelfBrandSend&#x60; , &#x60;canSelfBrandSign&#x60;, or both of these account settings must be **true**).
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - brand_id (String.t): The unique identifier of a brand.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - brand_id (String.t): The id of the brand.
   - opts (KeywordList): [optional] Optional parameters
-    - :include_external_references (String.t): 
-    - :include_logos (String.t): 
+    - :include_external_references (String.t): When **true**, the landing pages and links associated with the brand are included in the response.
+    - :include_logos (String.t): When **true**, the URIs for the logos associated with the brand are included in the response.
 
   ## Returns
 
@@ -86,13 +86,13 @@ defmodule DocuSign.Api.AccountBrands do
           {:ok, DocuSign.Model.Brand.t()} | {:error, Tesla.Env.t()}
   def brand_get_brand(connection, account_id, brand_id, opts \\ []) do
     optional_params = %{
-      include_external_references: :query,
-      include_logos: :query
+      :include_external_references => :query,
+      :include_logos => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/brands/#{brand_id}")
+    |> url("/v2.1/accounts/#{account_id}/brands/#{brand_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -100,15 +100,15 @@ defmodule DocuSign.Api.AccountBrands do
   end
 
   @doc """
-  Delete one branding logo.
-
+  Deletes a brand logo.
+  This method deletes a single logo from an account brand.  **Note**: Branding for either signing or sending must be enabled for the account (&#x60;canSelfBrandSend&#x60; , &#x60;canSelfBrandSign&#x60;, or both of these account settings must be **true**).
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - brand_id (String.t): The unique identifier of a brand.
-  - logo_type (String.t): One of **Primary**, **Secondary** or **Email**.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - brand_id (String.t): The id of the brand.
+  - logo_type (String.t): The type of logo. Valid values are:  - &#x60;primary&#x60;  - &#x60;secondary&#x60;  - &#x60;email&#x60;
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -126,27 +126,27 @@ defmodule DocuSign.Api.AccountBrands do
   def brand_logo_delete_brand_logo(connection, account_id, brand_id, logo_type, _opts \\ []) do
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/brands/#{brand_id}/logos/#{logo_type}")
+    |> url("/v2.1/accounts/#{account_id}/brands/#{brand_id}/logos/#{logo_type}")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(false)
   end
 
   @doc """
-  Obtains the specified image for a brand.
-
+  Gets a brand logo.
+  This method returns a specific logo that is used in a brand.  **Note**: Branding for either signing or sending must be enabled for the account (&#x60;canSelfBrandSend&#x60; , &#x60;canSelfBrandSign&#x60;, or both of these account settings must be **true**).
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - brand_id (String.t): The unique identifier of a brand.
-  - logo_type (String.t): One of **Primary**, **Secondary** or **Email**.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - brand_id (String.t): The id of the brand.
+  - logo_type (String.t): The type of logo. Valid values are:  - &#x60;primary&#x60;  - &#x60;secondary&#x60;  - &#x60;email&#x60;
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
 
-  {:ok, %{}} on success
+  {:ok, %DocuSign.Model.String.t{}} on success
   {:error, info} on failure
   """
   @spec brand_logo_get_brand_logo(
@@ -155,26 +155,27 @@ defmodule DocuSign.Api.AccountBrands do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, nil} | {:error, Tesla.Env.t()}
+        ) :: {:ok, String.t()} | {:error, Tesla.Env.t()}
   def brand_logo_get_brand_logo(connection, account_id, brand_id, logo_type, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/brands/#{brand_id}/logos/#{logo_type}")
+    |> url("/v2.1/accounts/#{account_id}/brands/#{brand_id}/logos/#{logo_type}")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(false)
   end
 
   @doc """
-  Put one branding logo.
-
+  Updates a brand logo.
+  This method updates a single brand logo.  You pass in the new version of the resource in the &#x60;Content-Disposition&#x60; header. Example:  &#x60;Content-Disposition: form-data; name&#x3D;\&quot;file\&quot;; filename&#x3D;\&quot;logo.jpg\&quot;&#x60;  **Note**: Branding for either signing or sending must be enabled for the account (&#x60;canSelfBrandSend&#x60; , &#x60;canSelfBrandSign&#x60;, or both of these account settings must be **true**).
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - brand_id (String.t): The unique identifier of a brand.
-  - logo_type (String.t): One of **Primary**, **Secondary** or **Email**.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - brand_id (String.t): The id of the brand.
+  - logo_type (String.t): The type of logo. Valid values are:  - &#x60;primary&#x60;  - &#x60;secondary&#x60;  - &#x60;email&#x60;
+  - logo_file_bytes (binary()): Brand logo binary Stream. Supported formats: JPG, GIF, PNG. Maximum file size: 300 KB. Recommended dimensions: 296 x 76 pixels (larger images will be resized). Changes may take up to one hour to display in all places
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -187,12 +188,21 @@ defmodule DocuSign.Api.AccountBrands do
           String.t(),
           String.t(),
           String.t(),
+          binary(),
           keyword()
         ) :: {:ok, nil} | {:error, Tesla.Env.t()}
-  def brand_logo_put_brand_logo(connection, account_id, brand_id, logo_type, _opts \\ []) do
+  def brand_logo_put_brand_logo(
+        connection,
+        account_id,
+        brand_id,
+        logo_type,
+        logo_file_bytes,
+        _opts \\ []
+      ) do
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/brands/#{brand_id}/logos/#{logo_type}")
+    |> url("/v2.1/accounts/#{account_id}/brands/#{brand_id}/logos/#{logo_type}")
+    |> add_param(:body, :logoFileBytes, logo_file_bytes)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(false)
@@ -200,15 +210,15 @@ defmodule DocuSign.Api.AccountBrands do
 
   @doc """
   Updates an existing brand.
-
+  This method updates an account brand.   **Note**: Branding for either signing or sending must be enabled for the account (&#x60;canSelfBrandSend&#x60; , &#x60;canSelfBrandSign&#x60;, or both of these account settings must be **true**).
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - brand_id (String.t): The unique identifier of a brand.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - brand_id (String.t): The id of the brand.
   - opts (KeywordList): [optional] Optional parameters
-    - :brand (Brand): 
+    - :brand (Brand):
 
   ## Returns
 
@@ -219,12 +229,12 @@ defmodule DocuSign.Api.AccountBrands do
           {:ok, DocuSign.Model.Brand.t()} | {:error, Tesla.Env.t()}
   def brand_put_brand(connection, account_id, brand_id, opts \\ []) do
     optional_params = %{
-      brand: :body
+      :brand => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/brands/#{brand_id}")
+    |> url("/v2.1/accounts/#{account_id}/brands/#{brand_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -232,18 +242,18 @@ defmodule DocuSign.Api.AccountBrands do
   end
 
   @doc """
-  Returns the specified branding resource file.
-
+  Returns a branding resource file.
+  This method returns a specific branding resource file.  A brand uses a set of brand resource files to control the sending, signing, email message, and captive (embedded) signing experiences.  You can modify the default email messages and formats in these files and upload them to your brand to customize the user experience.  **Important**: When you upload a modified resource file, only the elements that differ from the master resource file are saved as your resource file. Similarly, when you download your resource files, only the modified elements are included in the file.   **Note**: Branding for either signing or sending must be enabled for the account (&#x60;canSelfBrandSend&#x60; , &#x60;canSelfBrandSign&#x60;, or both of these account settings must be **true**).
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - brand_id (String.t): The unique identifier of a brand.
-  - resource_content_type (String.t): 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - brand_id (String.t): The id of the brand.
+  - resource_content_type (String.t): The type of brand resource file to return. Valid values are:  - &#x60;sending&#x60; - &#x60;signing&#x60; - &#x60;email&#x60; - &#x60;signing_captive&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :langcode (String.t): 
-    - :return_master (String.t): 
+    - :langcode (String.t): The ISO 3166-1 alpha-2 codes for the languages that the brand supports.
+    - :return_master (String.t): Specifies which resource file data to return. When **true**, only the master resource file is returned. When **false**, only the elements that you modified are returned.
 
   ## Returns
 
@@ -265,13 +275,13 @@ defmodule DocuSign.Api.AccountBrands do
         opts \\ []
       ) do
     optional_params = %{
-      langcode: :query,
-      return_master: :query
+      :langcode => :query,
+      :return_master => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/brands/#{brand_id}/resources/#{resource_content_type}")
+    |> url("/v2.1/accounts/#{account_id}/brands/#{brand_id}/resources/#{resource_content_type}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -279,14 +289,14 @@ defmodule DocuSign.Api.AccountBrands do
   end
 
   @doc """
-  Returns the specified account&#39;s list of branding resources (metadata).
-
+  Returns metadata about the branding resources for an account.
+  This method returns metadata about the branding resources that are associated with an account.  **Note**: Branding for either signing or sending must be enabled for the account (&#x60;canSelfBrandSend&#x60; , &#x60;canSelfBrandSign&#x60;, or both of these account settings must be **true**).
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - brand_id (String.t): The unique identifier of a brand.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - brand_id (String.t): The id of the brand.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -303,22 +313,23 @@ defmodule DocuSign.Api.AccountBrands do
   def brand_resources_get_brand_resources_list(connection, account_id, brand_id, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/brands/#{brand_id}/resources")
+    |> url("/v2.1/accounts/#{account_id}/brands/#{brand_id}/resources")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.BrandResourcesList{})
   end
 
   @doc """
-  Uploads a branding resource file.
-
+  Updates a branding resource file.
+  This method updates a branding resource file.  You pass in the new version of the resource file in the &#x60;Content-Disposition&#x60; header. Example:  &#x60;Content-Disposition: form-data; name&#x3D;\&quot;file\&quot;; filename&#x3D;\&quot;DocuSign_SigningResource_4328673.xml\&quot;&#x60;  **Note**: Branding for either signing or sending must be enabled for the account (&#x60;canSelfBrandSend&#x60; , &#x60;canSelfBrandSign&#x60;, or both of these account settings must be **true**).  **Important**: Customizing resource files is an advanced branding configuration option which can significantly impact your account, and should be done only by someone with expertise in XML and HTML. The master resource files are subject to change without notice. If you customize your resource files, after each release, DocuSign recommends you review any changes and update your custom files as needed.  When you upload a modified resource file, only the elements that differ from the master resource file are saved as your resource file. Similarly, when you download your resource files, only the modified elements are included in the file.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - brand_id (String.t): The unique identifier of a brand.
-  - resource_content_type (String.t): 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - brand_id (String.t): The id of the brand.
+  - resource_content_type (String.t): The type of brand resource file that you are updating. Valid values are:  - &#x60;sending&#x60; - &#x60;signing&#x60; - &#x60;email&#x60; - &#x60;signing_captive&#x60;
+  - file/xml (String.t): Brand resource XML file.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -331,6 +342,7 @@ defmodule DocuSign.Api.AccountBrands do
           String.t(),
           String.t(),
           String.t(),
+          String.t(),
           keyword()
         ) :: {:ok, DocuSign.Model.BrandResources.t()} | {:error, Tesla.Env.t()}
   def brand_resources_put_brand_resources(
@@ -338,11 +350,13 @@ defmodule DocuSign.Api.AccountBrands do
         account_id,
         brand_id,
         resource_content_type,
+        file_xml,
         _opts \\ []
       ) do
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/brands/#{brand_id}/resources/#{resource_content_type}")
+    |> url("/v2.1/accounts/#{account_id}/brands/#{brand_id}/resources/#{resource_content_type}")
+    |> add_param(:file, :"file.xml", file_xml)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.BrandResources{})
@@ -350,14 +364,14 @@ defmodule DocuSign.Api.AccountBrands do
 
   @doc """
   Deletes one or more brand profiles.
-  Deletes one or more brand profiles from an account. The Account Branding feature (accountSettings properties &#x60;canSelfBrandSend&#x60; and &#x60;canSelfBrandSend&#x60;) must be set to **true** to use this call.
+  This method deletes one or more brand profiles from an account, based on the brand ids that you include in the &#x60;brandsRequest&#x60;.  **Note**: Branding for either signing or sending must be enabled for the account (&#x60;canSelfBrandSend&#x60; , &#x60;canSelfBrandSign&#x60;, or both of these account settings must be **true**).
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :brands_request (BrandsRequest): 
+    - :brands_request (BrandsRequest):
 
   ## Returns
 
@@ -368,12 +382,12 @@ defmodule DocuSign.Api.AccountBrands do
           {:ok, DocuSign.Model.AccountBrands.t()} | {:error, Tesla.Env.t()}
   def brands_delete_brands(connection, account_id, opts \\ []) do
     optional_params = %{
-      brandsRequest: :body
+      :brandsRequest => :body
     }
 
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/brands")
+    |> url("/v2.1/accounts/#{account_id}/brands")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -381,15 +395,15 @@ defmodule DocuSign.Api.AccountBrands do
   end
 
   @doc """
-  Gets a list of brand profiles.
-  Retrieves the list of brand profiles associated with the account and the default brand profiles. The Account Branding feature (accountSettings properties &#x60;canSelfBrandSend&#x60; and &#x60;canSelfBrandSend&#x60;)  must be set to **true** for the account to use this call.
+  Gets a list of brands.
+  This method returns details about all of the brands associated with an account, including the default brand profiles.   **Note**: Branding for either signing or sending must be enabled for the account (&#x60;canSelfBrandSend&#x60; , &#x60;canSelfBrandSign&#x60;, or both of these account settings must be **true**).
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :exclude_distributor_brand (String.t): When set to **true**, excludes distributor brand information from the response set.
+    - :exclude_distributor_brand (String.t): When **true**, excludes distributor brand information from the response set.
     - :include_logos (String.t): When set to **true**, returns the logos associated with the brand.
 
   ## Returns
@@ -401,13 +415,13 @@ defmodule DocuSign.Api.AccountBrands do
           {:ok, DocuSign.Model.AccountBrands.t()} | {:error, Tesla.Env.t()}
   def brands_get_brands(connection, account_id, opts \\ []) do
     optional_params = %{
-      exclude_distributor_brand: :query,
-      include_logos: :query
+      :exclude_distributor_brand => :query,
+      :include_logos => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/brands")
+    |> url("/v2.1/accounts/#{account_id}/brands")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -415,15 +429,15 @@ defmodule DocuSign.Api.AccountBrands do
   end
 
   @doc """
-  Creates one or more brand profile files for the account.
-  Creates one or more brand profile files for the account. The Account Branding feature (accountSettings properties &#x60;canSelfBrandSend&#x60; and &#x60;canSelfBrandSig&#x60;) must be set to **true** for the account to use this call.  An error is returned if &#x60;brandId&#x60; property for a brand profile is already set for the account. To upload a new version of an existing brand profile, you must delete the profile and then upload the newer version.  When brand profile files are being uploaded, they must be combined into one zip file and the &#x60;Content-Type&#x60; must be &#x60;application/zip&#x60;.
+  Creates one or more brand profiles for an account.
+  This method creates one or more brand profile files for an account.  If the &#x60;brandId&#x60; property for a brand profile is already set for the account, an error is returned. To upload a new version of an existing brand profile, you must delete the profile and then upload the newer version.  When you upload brand profile files, you must combine them into a single zip file and set the &#x60;Content-Type&#x60; to &#x60;application/zip&#x60;.  **Note**: Branding for either signing or sending must be enabled for the account (&#x60;canSelfBrandSend&#x60; , &#x60;canSelfBrandSign&#x60;, or both of these account settings must be **true**).
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :brand (Brand): 
+    - :brand (Brand):
 
   ## Returns
 
@@ -434,12 +448,12 @@ defmodule DocuSign.Api.AccountBrands do
           {:ok, DocuSign.Model.AccountBrands.t()} | {:error, Tesla.Env.t()}
   def brands_post_brands(connection, account_id, opts \\ []) do
     optional_params = %{
-      brand: :body
+      :brand => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/brands")
+    |> url("/v2.1/accounts/#{account_id}/brands")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()

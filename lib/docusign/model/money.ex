@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.Money do
   @moduledoc """
-  Describes information about the &#x60;total&#x60; of a payment. 
+  Describes information about the &#x60;total&#x60; of a payment.
   """
 
   @derive [Poison.Encoder]

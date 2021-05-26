@@ -29,7 +29,7 @@ defmodule DocuSign.Api.RequestLogs do
   def api_request_log_delete_request_logs(connection, _opts \\ []) do
     %{}
     |> method(:delete)
-    |> url("/v2/diagnostics/request_logs")
+    |> url("/v2.1/diagnostics/request_logs")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(false)
@@ -42,7 +42,7 @@ defmodule DocuSign.Api.RequestLogs do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - request_log_id (String.t): 
+  - request_log_id (String.t):
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -55,7 +55,7 @@ defmodule DocuSign.Api.RequestLogs do
   def api_request_log_get_request_log(connection, request_log_id, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/diagnostics/request_logs/#{request_log_id}")
+    |> url("/v2.1/diagnostics/request_logs/#{request_log_id}")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(false)
@@ -72,29 +72,30 @@ defmodule DocuSign.Api.RequestLogs do
 
   ## Returns
 
-  {:ok, %DocuSign.Model.RequestLogs{}} on success
+  {:ok, %DocuSign.Model.DiagnosticsSettingsInformation{}} on success
   {:error, info} on failure
   """
   @spec api_request_log_get_request_log_settings(Tesla.Env.client(), keyword()) ::
-          {:ok, DocuSign.Model.RequestLogs.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.DiagnosticsSettingsInformation.t()}
+          | {:error, Tesla.Env.t()}
   def api_request_log_get_request_log_settings(connection, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/diagnostics/settings")
+    |> url("/v2.1/diagnostics/settings")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.RequestLogs{})
+    |> decode(%DocuSign.Model.DiagnosticsSettingsInformation{})
   end
 
   @doc """
   Gets the API request logging log files.
-  Retrieves a list of log entries as a JSON or xml object or as a zip file containing the entries.  If the Accept header is set to application/zip, the response is a zip file containing individual text files, each representing an API request.  If the Accept header is set to &#x60;application/json&#x60; or &#x60;application/xml&#x60;, the response returns list of log entries in either JSON or XML. An example JSON response body is shown below. 
+  Retrieves a list of log entries as a JSON or xml object or as a zip file containing the entries.  If the Accept header is set to application/zip, the response is a zip file containing individual text files, each representing an API request.  If the Accept header is set to &#x60;application/json&#x60; or &#x60;application/xml&#x60;, the response returns list of log entries in either JSON or XML. An example JSON response body is shown below.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
   - opts (KeywordList): [optional] Optional parameters
-    - :encoding (String.t): 
+    - :encoding (String.t): Reserved for DocuSign.
 
   ## Returns
 
@@ -105,12 +106,12 @@ defmodule DocuSign.Api.RequestLogs do
           {:ok, DocuSign.Model.ApiRequestLogsResult.t()} | {:error, Tesla.Env.t()}
   def api_request_log_get_request_logs(connection, opts \\ []) do
     optional_params = %{
-      encoding: :query
+      :encoding => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/diagnostics/request_logs")
+    |> url("/v2.1/diagnostics/request_logs")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -119,32 +120,33 @@ defmodule DocuSign.Api.RequestLogs do
 
   @doc """
   Enables or disables API request logging for troubleshooting.
-  Enables or disables API request logging for troubleshooting.  When enabled (&#x60;apiRequestLogging&#x60; is set to true), REST API requests and responses for the user are added to a log. A log can have up to 50 requests/responses and the current number of log entries can be determined by getting the settings. Logging is automatically disabled when the log limit of 50 is reached.  You can call [ML:GetRequestLog] or [ML:GetRequestLogs] to download the log files (individually or as a zip file). Call [ML:DeleteRequestLogs] to clear the log by deleting current entries.  Private information, such as passwords and integrator key information, which is normally located in the call header is omitted from the request/response log.  ###### Note: API request logging only captures requests from the authenticated user. Any call that does not authenticate the user and resolve a userId isn&#39;t logged. Meaning that login_information, NewAccounts, or other distributor-credential calls are not logged. 
+  Enables or disables API request logging for troubleshooting.  When enabled (&#x60;apiRequestLogging&#x60; is **true**), REST API requests and responses for the user are added to a log. A log can have up to 50 requests/responses and the current number of log entries can be determined by getting the settings. Logging is automatically disabled when the log limit of 50 is reached.  You can call [Diagnostics::getRequestLog ](https://developers.docusign.com/esign-rest-api/reference/Diagnostics/RequestLogs/get) or [Diagnostics::listRequestLogs](https://developers.docusign.com/esign-rest-api/reference/Diagnostics/RequestLogs/list) to download the log files (individually or as a zip file). Call [Diagnostics::deleteRequestLogs ](https://developers.docusign.com/esign-rest-api/reference/Diagnostics/RequestLogs/delete) to clear the log by deleting current entries.  Private information, such as passwords and integrator key information, which is normally located in the call header is omitted from the request/response log.  API request logging only captures requests from the authenticated user. Any call that does not authenticate the user and resolve a userId is not logged.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
   - opts (KeywordList): [optional] Optional parameters
-    - :request_logs (RequestLogs): 
+    - :diagnostics_settings_information (DiagnosticsSettingsInformation):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.RequestLogs{}} on success
+  {:ok, %DocuSign.Model.DiagnosticsSettingsInformation{}} on success
   {:error, info} on failure
   """
   @spec api_request_log_put_request_log_settings(Tesla.Env.client(), keyword()) ::
-          {:ok, DocuSign.Model.RequestLogs.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.DiagnosticsSettingsInformation.t()}
+          | {:error, Tesla.Env.t()}
   def api_request_log_put_request_log_settings(connection, opts \\ []) do
     optional_params = %{
-      RequestLogs: :body
+      :diagnosticsSettingsInformation => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/diagnostics/settings")
+    |> url("/v2.1/diagnostics/settings")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.RequestLogs{})
+    |> decode(%DocuSign.Model.DiagnosticsSettingsInformation{})
   end
 end

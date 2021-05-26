@@ -17,9 +17,11 @@ defmodule DocuSign.Model.EnvelopeRecipients do
     :errorDetails,
     :inPersonSigners,
     :intermediaries,
+    :notaries,
     :recipientCount,
     :seals,
-    :signers
+    :signers,
+    :witnesses
   ]
 
   @type t :: %__MODULE__{
@@ -31,9 +33,11 @@ defmodule DocuSign.Model.EnvelopeRecipients do
           :errorDetails => ErrorDetails,
           :inPersonSigners => [InPersonSigner],
           :intermediaries => [Intermediary],
+          :notaries => [NotaryRecipient],
           :recipientCount => String.t(),
           :seals => [SealSign],
-          :signers => [Signer]
+          :signers => [Signer],
+          :witnesses => [Witness]
         }
 end
 
@@ -49,7 +53,9 @@ defimpl Poison.Decoder, for: DocuSign.Model.EnvelopeRecipients do
     |> deserialize(:errorDetails, :struct, DocuSign.Model.ErrorDetails, options)
     |> deserialize(:inPersonSigners, :list, DocuSign.Model.InPersonSigner, options)
     |> deserialize(:intermediaries, :list, DocuSign.Model.Intermediary, options)
+    |> deserialize(:notaries, :list, DocuSign.Model.NotaryRecipient, options)
     |> deserialize(:seals, :list, DocuSign.Model.SealSign, options)
     |> deserialize(:signers, :list, DocuSign.Model.Signer, options)
+    |> deserialize(:witnesses, :list, DocuSign.Model.Witness, options)
   end
 end

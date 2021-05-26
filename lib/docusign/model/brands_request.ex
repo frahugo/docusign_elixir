@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.BrandsRequest do
   @moduledoc """
-
+  Details about one or more brands.
   """
 
   @derive [Poison.Encoder]

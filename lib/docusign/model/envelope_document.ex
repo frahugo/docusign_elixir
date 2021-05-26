@@ -4,44 +4,62 @@
 
 defmodule DocuSign.Model.EnvelopeDocument do
   @moduledoc """
-
+  This object contains details about the envelope document.
   """
 
   @derive [Poison.Encoder]
   defstruct [
+    :addedRecipientIds,
     :attachmentTabId,
     :authoritativeCopy,
+    :authoritativeCopyMetadata,
     :availableDocumentTypes,
     :containsPdfFormFields,
     :display,
+    :displayMetadata,
     :documentFields,
-    :documentGroup,
     :documentId,
+    :documentIdGuid,
     :errorDetails,
     :includeInDownload,
+    :includeInDownloadMetadata,
     :name,
+    :nameMetadata,
     :order,
     :pages,
     :signerMustAcknowledge,
+    :signerMustAcknowledgeMetadata,
+    :sizeBytes,
+    :templateLocked,
+    :templateRequired,
     :type,
     :uri
   ]
 
   @type t :: %__MODULE__{
+          :addedRecipientIds => [String.t()],
           :attachmentTabId => String.t(),
           :authoritativeCopy => String.t(),
+          :authoritativeCopyMetadata => PropertyMetadata,
           :availableDocumentTypes => [SignatureType],
           :containsPdfFormFields => String.t(),
           :display => String.t(),
+          :displayMetadata => PropertyMetadata,
           :documentFields => [NameValue],
-          :documentGroup => String.t(),
           :documentId => String.t(),
+          :documentIdGuid => String.t(),
           :errorDetails => ErrorDetails,
           :includeInDownload => String.t(),
+          :includeInDownloadMetadata => PropertyMetadata,
           :name => String.t(),
+          :nameMetadata => PropertyMetadata,
           :order => String.t(),
-          :pages => String.t(),
+          :pages => [Page],
           :signerMustAcknowledge => String.t(),
+          :signerMustAcknowledgeMetadata => PropertyMetadata,
+          :sizeBytes => String.t(),
+          :templateLocked => String.t(),
+          :templateRequired => String.t(),
           :type => String.t(),
           :uri => String.t()
         }
@@ -52,8 +70,29 @@ defimpl Poison.Decoder, for: DocuSign.Model.EnvelopeDocument do
 
   def decode(value, options) do
     value
+    |> deserialize(
+      :authoritativeCopyMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
     |> deserialize(:availableDocumentTypes, :list, DocuSign.Model.SignatureType, options)
+    |> deserialize(:displayMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
     |> deserialize(:documentFields, :list, DocuSign.Model.NameValue, options)
     |> deserialize(:errorDetails, :struct, DocuSign.Model.ErrorDetails, options)
+    |> deserialize(
+      :includeInDownloadMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
+    |> deserialize(:nameMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:pages, :list, DocuSign.Model.Page, options)
+    |> deserialize(
+      :signerMustAcknowledgeMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
   end
 end

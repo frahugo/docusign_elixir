@@ -11,13 +11,13 @@ defmodule DocuSign.Api.AccountSealProviders do
   import DocuSign.RequestBuilder
 
   @doc """
-
+  Returns available seals for specified account.
 
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -30,7 +30,7 @@ defmodule DocuSign.Api.AccountSealProviders do
   def account_signature_providers_get_seal_providers(connection, account_id, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/seals")
+    |> url("/v2.1/accounts/#{account_id}/seals")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.AccountSealProviders{})

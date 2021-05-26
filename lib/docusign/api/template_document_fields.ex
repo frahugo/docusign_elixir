@@ -17,15 +17,15 @@ defmodule DocuSign.Api.TemplateDocumentFields do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :template_document_fields (TemplateDocumentFields): 
+    - :document_fields_information (DocumentFieldsInformation):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.TemplateDocumentFields{}} on success
+  {:ok, %DocuSign.Model.DocumentFieldsInformation{}} on success
   {:error, info} on failure
   """
   @spec document_fields_delete_template_document_fields(
@@ -34,7 +34,7 @@ defmodule DocuSign.Api.TemplateDocumentFields do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.TemplateDocumentFields.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.DocumentFieldsInformation.t()} | {:error, Tesla.Env.t()}
   def document_fields_delete_template_document_fields(
         connection,
         account_id,
@@ -43,33 +43,35 @@ defmodule DocuSign.Api.TemplateDocumentFields do
         opts \\ []
       ) do
     optional_params = %{
-      TemplateDocumentFields: :body
+      :documentFieldsInformation => :body
     }
 
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/documents/#{document_id}/fields")
+    |> url(
+      "/v2.1/accounts/#{account_id}/templates/#{template_id}/documents/#{document_id}/fields"
+    )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.TemplateDocumentFields{})
+    |> decode(%DocuSign.Model.DocumentFieldsInformation{})
   end
 
   @doc """
   Gets the custom document fields for a an existing template document.
-  Retrieves the custom document fields for an existing template document.
+  This method retrieves the custom document fields for an existing template document.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
 
-  {:ok, %DocuSign.Model.TemplateDocumentFields{}} on success
+  {:ok, %DocuSign.Model.DocumentFieldsInformation{}} on success
   {:error, info} on failure
   """
   @spec document_fields_get_template_document_fields(
@@ -78,7 +80,7 @@ defmodule DocuSign.Api.TemplateDocumentFields do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.TemplateDocumentFields.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.DocumentFieldsInformation.t()} | {:error, Tesla.Env.t()}
   def document_fields_get_template_document_fields(
         connection,
         account_id,
@@ -88,10 +90,12 @@ defmodule DocuSign.Api.TemplateDocumentFields do
       ) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/documents/#{document_id}/fields")
+    |> url(
+      "/v2.1/accounts/#{account_id}/templates/#{template_id}/documents/#{document_id}/fields"
+    )
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.TemplateDocumentFields{})
+    |> decode(%DocuSign.Model.DocumentFieldsInformation{})
   end
 
   @doc """
@@ -101,15 +105,15 @@ defmodule DocuSign.Api.TemplateDocumentFields do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :template_document_fields (TemplateDocumentFields): 
+    - :document_fields_information (DocumentFieldsInformation):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.TemplateDocumentFields{}} on success
+  {:ok, %DocuSign.Model.DocumentFieldsInformation{}} on success
   {:error, info} on failure
   """
   @spec document_fields_post_template_document_fields(
@@ -118,7 +122,7 @@ defmodule DocuSign.Api.TemplateDocumentFields do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.TemplateDocumentFields.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.DocumentFieldsInformation.t()} | {:error, Tesla.Env.t()}
   def document_fields_post_template_document_fields(
         connection,
         account_id,
@@ -127,16 +131,18 @@ defmodule DocuSign.Api.TemplateDocumentFields do
         opts \\ []
       ) do
     optional_params = %{
-      TemplateDocumentFields: :body
+      :documentFieldsInformation => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/documents/#{document_id}/fields")
+    |> url(
+      "/v2.1/accounts/#{account_id}/templates/#{template_id}/documents/#{document_id}/fields"
+    )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.TemplateDocumentFields{})
+    |> decode(%DocuSign.Model.DocumentFieldsInformation{})
   end
 
   @doc """
@@ -146,15 +152,15 @@ defmodule DocuSign.Api.TemplateDocumentFields do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :template_document_fields (TemplateDocumentFields): 
+    - :document_fields_information (DocumentFieldsInformation):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.TemplateDocumentFields{}} on success
+  {:ok, %DocuSign.Model.DocumentFieldsInformation{}} on success
   {:error, info} on failure
   """
   @spec document_fields_put_template_document_fields(
@@ -163,7 +169,7 @@ defmodule DocuSign.Api.TemplateDocumentFields do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.TemplateDocumentFields.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.DocumentFieldsInformation.t()} | {:error, Tesla.Env.t()}
   def document_fields_put_template_document_fields(
         connection,
         account_id,
@@ -172,15 +178,17 @@ defmodule DocuSign.Api.TemplateDocumentFields do
         opts \\ []
       ) do
     optional_params = %{
-      TemplateDocumentFields: :body
+      :documentFieldsInformation => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/documents/#{document_id}/fields")
+    |> url(
+      "/v2.1/accounts/#{account_id}/templates/#{template_id}/documents/#{document_id}/fields"
+    )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.TemplateDocumentFields{})
+    |> decode(%DocuSign.Model.DocumentFieldsInformation{})
   end
 end

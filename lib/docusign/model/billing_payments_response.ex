@@ -15,7 +15,7 @@ defmodule DocuSign.Model.BillingPaymentsResponse do
   ]
 
   @type t :: %__MODULE__{
-          :billingPayments => [Payments],
+          :billingPayments => [BillingPaymentItem],
           :nextUri => String.t(),
           :previousUri => String.t()
         }
@@ -26,6 +26,6 @@ defimpl Poison.Decoder, for: DocuSign.Model.BillingPaymentsResponse do
 
   def decode(value, options) do
     value
-    |> deserialize(:billingPayments, :list, DocuSign.Model.Payments, options)
+    |> deserialize(:billingPayments, :list, DocuSign.Model.BillingPaymentItem, options)
   end
 end

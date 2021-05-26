@@ -9,10 +9,13 @@ defmodule DocuSign.Model.UserInfo do
 
   @derive [Poison.Encoder]
   defstruct [
+    :accountId,
+    :accountName,
     :activationAccessCode,
     :email,
     :errorDetails,
     :loginStatus,
+    :membershipId,
     :sendActivationEmail,
     :uri,
     :userId,
@@ -22,10 +25,13 @@ defmodule DocuSign.Model.UserInfo do
   ]
 
   @type t :: %__MODULE__{
+          :accountId => String.t(),
+          :accountName => String.t(),
           :activationAccessCode => String.t(),
           :email => String.t(),
           :errorDetails => ErrorDetails,
           :loginStatus => String.t(),
+          :membershipId => String.t(),
           :sendActivationEmail => String.t(),
           :uri => String.t(),
           :userId => String.t(),

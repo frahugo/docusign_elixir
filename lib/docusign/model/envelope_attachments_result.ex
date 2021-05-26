@@ -13,7 +13,7 @@ defmodule DocuSign.Model.EnvelopeAttachmentsResult do
   ]
 
   @type t :: %__MODULE__{
-          :attachments => [EnvelopeAttachments]
+          :attachments => [EnvelopeAttachment]
         }
 end
 
@@ -22,6 +22,6 @@ defimpl Poison.Decoder, for: DocuSign.Model.EnvelopeAttachmentsResult do
 
   def decode(value, options) do
     value
-    |> deserialize(:attachments, :list, DocuSign.Model.EnvelopeAttachments, options)
+    |> deserialize(:attachments, :list, DocuSign.Model.EnvelopeAttachment, options)
   end
 end

@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.PowerFormData do
   @moduledoc """
-
+  Data that recipients have entered in PowerForm fields.
   """
 
   @derive [Poison.Encoder]

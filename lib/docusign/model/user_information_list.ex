@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.UserInformationList do
   @moduledoc """
-
+  Contains a list of account users.
   """
 
   @derive [Poison.Encoder]
@@ -25,7 +25,7 @@ defmodule DocuSign.Model.UserInformationList do
           :resultSetSize => String.t(),
           :startPosition => String.t(),
           :totalSetSize => String.t(),
-          :users => [Users]
+          :users => [UserInformation]
         }
 end
 
@@ -34,6 +34,6 @@ defimpl Poison.Decoder, for: DocuSign.Model.UserInformationList do
 
   def decode(value, options) do
     value
-    |> deserialize(:users, :list, DocuSign.Model.Users, options)
+    |> deserialize(:users, :list, DocuSign.Model.UserInformation, options)
   end
 end

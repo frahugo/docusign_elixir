@@ -17,9 +17,9 @@ defmodule DocuSign.Api.CloudStorageProviders do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - service_id (String.t): The ID of the service to access.   Valid values are the service name (\&quot;Box\&quot;) or the numerical serviceId (\&quot;4136\&quot;).
-  - user_id (String.t): The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing.
+  - user_id (String.t): The ID of the user to access. Generally this is the ID of the current authenticated user, but if the authenticated user is an Administrator on the account, &#x60;userId&#x60; can represent another user whom the Administrator is accessing.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -37,7 +37,7 @@ defmodule DocuSign.Api.CloudStorageProviders do
   def cloud_storage_delete_cloud_storage(connection, account_id, service_id, user_id, _opts \\ []) do
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/users/#{user_id}/cloud_storage/#{service_id}")
+    |> url("/v2.1/accounts/#{account_id}/users/#{user_id}/cloud_storage/#{service_id}")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.CloudStorageProviders{})
@@ -50,10 +50,10 @@ defmodule DocuSign.Api.CloudStorageProviders do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - user_id (String.t): The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - user_id (String.t): The ID of the user to access. Generally this is the ID of the current authenticated user, but if the authenticated user is an Administrator on the account, &#x60;userId&#x60; can represent another user whom the Administrator is accessing.
   - opts (KeywordList): [optional] Optional parameters
-    - :cloud_storage_providers (CloudStorageProviders): 
+    - :cloud_storage_providers (CloudStorageProviders):
 
   ## Returns
 
@@ -68,12 +68,12 @@ defmodule DocuSign.Api.CloudStorageProviders do
         ) :: {:ok, DocuSign.Model.CloudStorageProviders.t()} | {:error, Tesla.Env.t()}
   def cloud_storage_delete_cloud_storage_providers(connection, account_id, user_id, opts \\ []) do
     optional_params = %{
-      CloudStorageProviders: :body
+      :cloudStorageProviders => :body
     }
 
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/users/#{user_id}/cloud_storage")
+    |> url("/v2.1/accounts/#{account_id}/users/#{user_id}/cloud_storage")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -87,11 +87,11 @@ defmodule DocuSign.Api.CloudStorageProviders do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - service_id (String.t): The ID of the service to access.   Valid values are the service name (\&quot;Box\&quot;) or the numerical serviceId (\&quot;4136\&quot;).
-  - user_id (String.t): The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing.
+  - user_id (String.t): The ID of the user to access. Generally this is the ID of the current authenticated user, but if the authenticated user is an Administrator on the account, &#x60;userId&#x60; can represent another user whom the Administrator is accessing.
   - opts (KeywordList): [optional] Optional parameters
-    - :redirect_url (String.t):  The URL the user is redirected to after the cloud storage provider authenticates the user. Using this will append the redirectUrl to the authenticationUrl.  The redirectUrl is restricted to URLs in the docusign.com or docusign.net domains.  
+    - :redirect_url (String.t):  The URL the user is redirected to after the cloud storage provider authenticates the user. Using this will append the redirectUrl to the authenticationUrl.  The redirectUrl is restricted to URLs in the docusign.com or docusign.net domains.
 
   ## Returns
 
@@ -107,12 +107,12 @@ defmodule DocuSign.Api.CloudStorageProviders do
         ) :: {:ok, DocuSign.Model.CloudStorageProviders.t()} | {:error, Tesla.Env.t()}
   def cloud_storage_get_cloud_storage(connection, account_id, service_id, user_id, opts \\ []) do
     optional_params = %{
-      redirectUrl: :query
+      :redirectUrl => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/users/#{user_id}/cloud_storage/#{service_id}")
+    |> url("/v2.1/accounts/#{account_id}/users/#{user_id}/cloud_storage/#{service_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -121,15 +121,15 @@ defmodule DocuSign.Api.CloudStorageProviders do
 
   @doc """
   Get the Cloud Storage Provider configuration for the specified user.
-  Retrieves the list of cloud storage providers enabled for the account and the configuration information for the user. 
+  Retrieves the list of cloud storage providers enabled for the account and the configuration information for the user.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - user_id (String.t): The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - user_id (String.t): The ID of the user to access. Generally this is the ID of the current authenticated user, but if the authenticated user is an Administrator on the account, &#x60;userId&#x60; can represent another user whom the Administrator is accessing.
   - opts (KeywordList): [optional] Optional parameters
-    - :redirect_url (String.t):  The URL the user is redirected to after the cloud storage provider authenticates the user. Using this will append the redirectUrl to the authenticationUrl.  The redirectUrl is restricted to URLs in the docusign.com or docusign.net domains.  
+    - :redirect_url (String.t):  The URL the user is redirected to after the cloud storage provider authenticates the user. Using this will append the redirectUrl to the authenticationUrl.  The redirectUrl is restricted to URLs in the docusign.com or docusign.net domains.
 
   ## Returns
 
@@ -144,12 +144,12 @@ defmodule DocuSign.Api.CloudStorageProviders do
         ) :: {:ok, DocuSign.Model.CloudStorageProviders.t()} | {:error, Tesla.Env.t()}
   def cloud_storage_get_cloud_storage_providers(connection, account_id, user_id, opts \\ []) do
     optional_params = %{
-      redirectUrl: :query
+      :redirectUrl => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/users/#{user_id}/cloud_storage")
+    |> url("/v2.1/accounts/#{account_id}/users/#{user_id}/cloud_storage")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -163,10 +163,10 @@ defmodule DocuSign.Api.CloudStorageProviders do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - user_id (String.t): The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - user_id (String.t): The ID of the user to access. Generally this is the ID of the current authenticated user, but if the authenticated user is an Administrator on the account, &#x60;userId&#x60; can represent another user whom the Administrator is accessing.
   - opts (KeywordList): [optional] Optional parameters
-    - :cloud_storage_providers (CloudStorageProviders): 
+    - :cloud_storage_providers (CloudStorageProviders):
 
   ## Returns
 
@@ -177,12 +177,12 @@ defmodule DocuSign.Api.CloudStorageProviders do
           {:ok, DocuSign.Model.CloudStorageProviders.t()} | {:error, Tesla.Env.t()}
   def cloud_storage_post_cloud_storage(connection, account_id, user_id, opts \\ []) do
     optional_params = %{
-      CloudStorageProviders: :body
+      :cloudStorageProviders => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/users/#{user_id}/cloud_storage")
+    |> url("/v2.1/accounts/#{account_id}/users/#{user_id}/cloud_storage")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()

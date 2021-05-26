@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.TemplateViews do
   @moduledoc """
-  Embedding template views
+  A TemplateView contains a URL that you can embed in your application to generate a template view that uses the DocuSign user interface (UI).
   """
 
   @derive [Poison.Encoder]

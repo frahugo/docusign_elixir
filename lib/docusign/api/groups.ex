@@ -12,34 +12,34 @@ defmodule DocuSign.Api.Groups do
 
   @doc """
   Deletes an existing user group.
-  Deletes an existing user group.
+  Deletes an existing user group.  When you delete a group, you include only the &#x60;groupId&#x60; in the request body.  Example:  &#x60;&#x60;&#x60; {   \&quot;groups\&quot;: [     {       \&quot;groupId\&quot;: \&quot;12345\&quot;     } } &#x60;&#x60;&#x60;
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :groups (Groups): 
+    - :group_information (GroupInformation):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.Groups{}} on success
+  {:ok, %DocuSign.Model.GroupInformation{}} on success
   {:error, info} on failure
   """
   @spec groups_delete_groups(Tesla.Env.client(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.Groups.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.GroupInformation.t()} | {:error, Tesla.Env.t()}
   def groups_delete_groups(connection, account_id, opts \\ []) do
     optional_params = %{
-      Groups: :body
+      :groupInformation => :body
     }
 
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/groups")
+    |> url("/v2.1/accounts/#{account_id}/groups")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.Groups{})
+    |> decode(%DocuSign.Model.GroupInformation{})
   end
 
   @doc """
@@ -49,35 +49,37 @@ defmodule DocuSign.Api.Groups do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
     - :count (String.t): Number of records to return. The number must be greater than 1 and less than or equal to 100.
-    - :group_type (String.t): 
-    - :search_text (String.t): 
-    - :start_position (String.t): Starting value for the list.
+    - :group_type (String.t):
+    - :include_usercount (String.t): When set to **true**, every group returned in the response includes a &#x60;userCount&#x60; property that contains the total number of users in the group. The default is **true**.
+    - :search_text (String.t): Filters the results of a GET request based on the text that you specify.
+    - :start_position (String.t): The starting value for the list.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.Groups{}} on success
+  {:ok, %DocuSign.Model.GroupInformation{}} on success
   {:error, info} on failure
   """
   @spec groups_get_groups(Tesla.Env.client(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.Groups.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.GroupInformation.t()} | {:error, Tesla.Env.t()}
   def groups_get_groups(connection, account_id, opts \\ []) do
     optional_params = %{
-      count: :query,
-      group_type: :query,
-      search_text: :query,
-      start_position: :query
+      :count => :query,
+      :group_type => :query,
+      :include_usercount => :query,
+      :search_text => :query,
+      :start_position => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/groups")
+    |> url("/v2.1/accounts/#{account_id}/groups")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.Groups{})
+    |> decode(%DocuSign.Model.GroupInformation{})
   end
 
   @doc """
@@ -87,29 +89,29 @@ defmodule DocuSign.Api.Groups do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :groups (Groups): 
+    - :group_information (GroupInformation):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.Groups{}} on success
+  {:ok, %DocuSign.Model.GroupInformation{}} on success
   {:error, info} on failure
   """
   @spec groups_post_groups(Tesla.Env.client(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.Groups.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.GroupInformation.t()} | {:error, Tesla.Env.t()}
   def groups_post_groups(connection, account_id, opts \\ []) do
     optional_params = %{
-      Groups: :body
+      :groupInformation => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/groups")
+    |> url("/v2.1/accounts/#{account_id}/groups")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.Groups{})
+    |> decode(%DocuSign.Model.GroupInformation{})
   end
 
   @doc """
@@ -119,28 +121,28 @@ defmodule DocuSign.Api.Groups do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :groups (Groups): 
+    - :group_information (GroupInformation):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.Groups{}} on success
+  {:ok, %DocuSign.Model.GroupInformation{}} on success
   {:error, info} on failure
   """
   @spec groups_put_groups(Tesla.Env.client(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.Groups.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.GroupInformation.t()} | {:error, Tesla.Env.t()}
   def groups_put_groups(connection, account_id, opts \\ []) do
     optional_params = %{
-      Groups: :body
+      :groupInformation => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/groups")
+    |> url("/v2.1/accounts/#{account_id}/groups")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.Groups{})
+    |> decode(%DocuSign.Model.GroupInformation{})
   end
 end

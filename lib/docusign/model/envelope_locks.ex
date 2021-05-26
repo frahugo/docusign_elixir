@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.EnvelopeLocks do
   @moduledoc """
-  Envelope locks
+  This section provides information about envelope locks.
   """
 
   @derive [Poison.Encoder]

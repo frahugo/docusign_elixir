@@ -17,23 +17,23 @@ defmodule DocuSign.Api.AccountWatermarks do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
 
-  {:ok, %DocuSign.Model.AccountWatermarks{}} on success
+  {:ok, %DocuSign.Model.Watermark{}} on success
   {:error, info} on failure
   """
   @spec watermark_get_watermark(Tesla.Env.client(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.AccountWatermarks.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.Watermark.t()} | {:error, Tesla.Env.t()}
   def watermark_get_watermark(connection, account_id, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/watermark")
+    |> url("/v2.1/accounts/#{account_id}/watermark")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.AccountWatermarks{})
+    |> decode(%DocuSign.Model.Watermark{})
   end
 
   @doc """
@@ -43,29 +43,29 @@ defmodule DocuSign.Api.AccountWatermarks do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :account_watermarks (AccountWatermarks): 
+    - :watermark (Watermark): When set to **true**, the account has the watermark feature enabled, and the envelope is not complete, then the watermark for the account is added to the PDF documents. This option can remove the watermark.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.AccountWatermarks{}} on success
+  {:ok, %DocuSign.Model.Watermark{}} on success
   {:error, info} on failure
   """
   @spec watermark_preview_put_watermark_preview(Tesla.Env.client(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.AccountWatermarks.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.Watermark.t()} | {:error, Tesla.Env.t()}
   def watermark_preview_put_watermark_preview(connection, account_id, opts \\ []) do
     optional_params = %{
-      AccountWatermarks: :body
+      :watermark => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/watermark/preview")
+    |> url("/v2.1/accounts/#{account_id}/watermark/preview")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.AccountWatermarks{})
+    |> decode(%DocuSign.Model.Watermark{})
   end
 
   @doc """
@@ -75,28 +75,28 @@ defmodule DocuSign.Api.AccountWatermarks do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :account_watermarks (AccountWatermarks): 
+    - :watermark (Watermark): When set to **true**, the account has the watermark feature enabled, and the envelope is not complete, then the watermark for the account is added to the PDF documents. This option can remove the watermark.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.AccountWatermarks{}} on success
+  {:ok, %DocuSign.Model.Watermark{}} on success
   {:error, info} on failure
   """
   @spec watermark_put_watermark(Tesla.Env.client(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.AccountWatermarks.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.Watermark.t()} | {:error, Tesla.Env.t()}
   def watermark_put_watermark(connection, account_id, opts \\ []) do
     optional_params = %{
-      AccountWatermarks: :body
+      :watermark => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/watermark")
+    |> url("/v2.1/accounts/#{account_id}/watermark")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.AccountWatermarks{})
+    |> decode(%DocuSign.Model.Watermark{})
   end
 end

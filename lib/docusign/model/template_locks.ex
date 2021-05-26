@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.TemplateLocks do
   @moduledoc """
-  Template locks
+  This section provides information about template locks. You use template locks to prevent others from making changes to a template while you are modifying it.
   """
 
   @derive [Poison.Encoder]

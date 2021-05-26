@@ -4,18 +4,20 @@
 
 defmodule DocuSign.Model.CorrectViewRequest do
   @moduledoc """
-
+  The request body for the EnvelopeViews::createCorrect method.
   """
 
   @derive [Poison.Encoder]
   defstruct [
     :returnUrl,
-    :suppressNavigation
+    :suppressNavigation,
+    :viewUrl
   ]
 
   @type t :: %__MODULE__{
           :returnUrl => String.t(),
-          :suppressNavigation => String.t()
+          :suppressNavigation => String.t(),
+          :viewUrl => String.t()
         }
 end
 

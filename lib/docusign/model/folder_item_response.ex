@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.FolderItemResponse do
   @moduledoc """
-
+  Results from a folder item request.
   """
 
   @derive [Poison.Encoder]

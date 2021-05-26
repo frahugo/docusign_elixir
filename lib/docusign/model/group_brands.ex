@@ -4,20 +4,20 @@
 
 defmodule DocuSign.Model.GroupBrands do
   @moduledoc """
-  Brand management for groups
+  If your account includes multiple signing brands, you can use the groups functionality to assign different brands to different groups. This resource enables you to manage group brands.
   """
 
   @derive [Poison.Encoder]
   defstruct [
-    :brands,
     :recipientBrandIdDefault,
-    :senderBrandIdDefault
+    :senderBrandIdDefault,
+    :brandOptions
   ]
 
   @type t :: %__MODULE__{
-          :brands => [Brand],
           :recipientBrandIdDefault => String.t(),
-          :senderBrandIdDefault => String.t()
+          :senderBrandIdDefault => String.t(),
+          :brandOptions => [Brand]
         }
 end
 
@@ -26,6 +26,6 @@ defimpl Poison.Decoder, for: DocuSign.Model.GroupBrands do
 
   def decode(value, options) do
     value
-    |> deserialize(:brands, :list, DocuSign.Model.Brand, options)
+    |> deserialize(:brandOptions, :list, DocuSign.Model.Brand, options)
   end
 end

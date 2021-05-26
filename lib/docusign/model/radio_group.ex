@@ -4,36 +4,68 @@
 
 defmodule DocuSign.Model.RadioGroup do
   @moduledoc """
-  This group tab is used to place radio buttons on a document. The &#x60;radios&#x60; property contains a list of [&#x60;radio&#x60;](/esign/restapi/Envelopes/EnvelopeRecipientTabs/create/#/definitions/radio) objects  associated with the group. Only one radio button can be selected in a group. 
+  This group tab is used to place radio buttons on a document. The &#x60;radios&#x60; property contains a list of [&#x60;radio&#x60;](https://developers.docusign.com/docs/esign-rest-api/reference/Envelopes/EnvelopeRecipientTabs/) objects  associated with the group. Only one radio button can be selected in a group.
   """
 
   @derive [Poison.Encoder]
   defstruct [
     :conditionalParentLabel,
+    :conditionalParentLabelMetadata,
     :conditionalParentValue,
+    :conditionalParentValueMetadata,
     :documentId,
+    :documentIdMetadata,
     :groupName,
+    :groupNameMetadata,
     :radios,
     :recipientId,
+    :recipientIdGuid,
+    :recipientIdGuidMetadata,
+    :recipientIdMetadata,
     :requireAll,
+    :requireAllMetadata,
     :requireInitialOnSharedChange,
+    :requireInitialOnSharedChangeMetadata,
     :shared,
+    :sharedMetadata,
+    :tabType,
+    :tabTypeMetadata,
     :templateLocked,
-    :templateRequired
+    :templateLockedMetadata,
+    :templateRequired,
+    :templateRequiredMetadata,
+    :tooltip,
+    :tooltipMetadata
   ]
 
   @type t :: %__MODULE__{
           :conditionalParentLabel => String.t(),
+          :conditionalParentLabelMetadata => PropertyMetadata,
           :conditionalParentValue => String.t(),
+          :conditionalParentValueMetadata => PropertyMetadata,
           :documentId => String.t(),
+          :documentIdMetadata => PropertyMetadata,
           :groupName => String.t(),
+          :groupNameMetadata => PropertyMetadata,
           :radios => [Radio],
           :recipientId => String.t(),
+          :recipientIdGuid => String.t(),
+          :recipientIdGuidMetadata => PropertyMetadata,
+          :recipientIdMetadata => PropertyMetadata,
           :requireAll => String.t(),
+          :requireAllMetadata => PropertyMetadata,
           :requireInitialOnSharedChange => String.t(),
+          :requireInitialOnSharedChangeMetadata => PropertyMetadata,
           :shared => String.t(),
+          :sharedMetadata => PropertyMetadata,
+          :tabType => String.t(),
+          :tabTypeMetadata => PropertyMetadata,
           :templateLocked => String.t(),
-          :templateRequired => String.t()
+          :templateLockedMetadata => PropertyMetadata,
+          :templateRequired => String.t(),
+          :templateRequiredMetadata => PropertyMetadata,
+          :tooltip => String.t(),
+          :tooltipMetadata => PropertyMetadata
         }
 end
 
@@ -42,6 +74,49 @@ defimpl Poison.Decoder, for: DocuSign.Model.RadioGroup do
 
   def decode(value, options) do
     value
+    |> deserialize(
+      :conditionalParentLabelMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
+    |> deserialize(
+      :conditionalParentValueMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
+    |> deserialize(:documentIdMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:groupNameMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
     |> deserialize(:radios, :list, DocuSign.Model.Radio, options)
+    |> deserialize(
+      :recipientIdGuidMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
+    |> deserialize(:recipientIdMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:requireAllMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(
+      :requireInitialOnSharedChangeMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
+    |> deserialize(:sharedMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:tabTypeMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(
+      :templateLockedMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
+    |> deserialize(
+      :templateRequiredMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
+    |> deserialize(:tooltipMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
   end
 end

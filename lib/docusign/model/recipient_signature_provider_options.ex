@@ -4,27 +4,46 @@
 
 defmodule DocuSign.Model.RecipientSignatureProviderOptions do
   @moduledoc """
-  Option settings for the signature provider. Different providers require or use different options. [The current provider list and the options they require.](../../../../guide/appendix/standards_based_signatures.html#signature-provider-options)
+  Option settings for the signature provider. Different providers require or use different options. [The current provider list and the options they require.](https://developers.docusign.com/esign-rest-api/guides/standards-based-signatures)
   """
 
   @derive [Poison.Encoder]
   defstruct [
     :cpfNumber,
+    :cpfNumberMetadata,
     :oneTimePassword,
+    :oneTimePasswordMetadata,
     :signerRole,
-    :sms
+    :signerRoleMetadata,
+    :sms,
+    :smsMetadata
   ]
 
   @type t :: %__MODULE__{
           :cpfNumber => String.t(),
+          :cpfNumberMetadata => PropertyMetadata,
           :oneTimePassword => String.t(),
+          :oneTimePasswordMetadata => PropertyMetadata,
           :signerRole => String.t(),
-          :sms => String.t()
+          :signerRoleMetadata => PropertyMetadata,
+          :sms => String.t(),
+          :smsMetadata => PropertyMetadata
         }
 end
 
 defimpl Poison.Decoder, for: DocuSign.Model.RecipientSignatureProviderOptions do
-  def decode(value, _options) do
+  import DocuSign.Deserializer
+
+  def decode(value, options) do
     value
+    |> deserialize(:cpfNumberMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(
+      :oneTimePasswordMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
+    |> deserialize(:signerRoleMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
+    |> deserialize(:smsMetadata, :struct, DocuSign.Model.PropertyMetadata, options)
   end
 end

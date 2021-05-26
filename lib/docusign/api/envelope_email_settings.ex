@@ -17,13 +17,13 @@ defmodule DocuSign.Api.EnvelopeEmailSettings do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
 
-  {:ok, %DocuSign.Model.EnvelopeEmailSettings{}} on success
+  {:ok, %DocuSign.Model.EmailSettings{}} on success
   {:error, info} on failure
   """
   @spec email_settings_delete_email_settings(
@@ -31,14 +31,14 @@ defmodule DocuSign.Api.EnvelopeEmailSettings do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.EnvelopeEmailSettings.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.EmailSettings.t()} | {:error, Tesla.Env.t()}
   def email_settings_delete_email_settings(connection, account_id, envelope_id, _opts \\ []) do
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/email_settings")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/email_settings")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.EnvelopeEmailSettings{})
+    |> decode(%DocuSign.Model.EmailSettings{})
   end
 
   @doc """
@@ -48,57 +48,57 @@ defmodule DocuSign.Api.EnvelopeEmailSettings do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
 
-  {:ok, %DocuSign.Model.EnvelopeEmailSettings{}} on success
+  {:ok, %DocuSign.Model.EmailSettings{}} on success
   {:error, info} on failure
   """
   @spec email_settings_get_email_settings(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.EnvelopeEmailSettings.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.EmailSettings.t()} | {:error, Tesla.Env.t()}
   def email_settings_get_email_settings(connection, account_id, envelope_id, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/email_settings")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/email_settings")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.EnvelopeEmailSettings{})
+    |> decode(%DocuSign.Model.EmailSettings{})
   end
 
   @doc """
   Adds email setting overrides to an envelope.
-  Adds email override settings, changing the email address to reply to an email address, name, or the BCC for email archive information, for the envelope. Note that adding email settings will only affect email communications that occur after the addition was made.  ### Important: The BCC Email address feature is designed to provide a copy of all email communications for external archiving purposes. DocuSign recommends that envelopes sent using the BCC for Email Archive feature, including the BCC Email Override option, include additional signer authentication options. To send a copy of the envelope to a recipient who does not need to sign, use a Carbon Copies or Certified Deliveries Recipient Type.
+  Adds email override settings, changing the email address to reply to an email address, name, or the BCC for email archive information, for the envelope. Note that adding email settings will only affect email communications that occur after the addition was made.  ### Important: The BCC Email address feature is designed to provide a copy of all email communications for external archiving purposes. DocuSign recommends that envelopes sent using the BCC for Email Archive feature, including the BCC Email Override option, include additional signer authentication options. To send a copy of the envelope to a recipient who does not need to sign, use a Carbon Copy or Certified Delivery recipient type.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :envelope_email_settings (EnvelopeEmailSettings): 
+    - :email_settings (EmailSettings): A complex type that contains email settings.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.EnvelopeEmailSettings{}} on success
+  {:ok, %DocuSign.Model.EmailSettings{}} on success
   {:error, info} on failure
   """
   @spec email_settings_post_email_settings(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.EnvelopeEmailSettings.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.EmailSettings.t()} | {:error, Tesla.Env.t()}
   def email_settings_post_email_settings(connection, account_id, envelope_id, opts \\ []) do
     optional_params = %{
-      EnvelopeEmailSettings: :body
+      :emailSettings => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/email_settings")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/email_settings")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.EnvelopeEmailSettings{})
+    |> decode(%DocuSign.Model.EmailSettings{})
   end
 
   @doc """
@@ -108,29 +108,29 @@ defmodule DocuSign.Api.EnvelopeEmailSettings do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :envelope_email_settings (EnvelopeEmailSettings): 
+    - :email_settings (EmailSettings): A complex type that contains email settings.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.EnvelopeEmailSettings{}} on success
+  {:ok, %DocuSign.Model.EmailSettings{}} on success
   {:error, info} on failure
   """
   @spec email_settings_put_email_settings(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.EnvelopeEmailSettings.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.EmailSettings.t()} | {:error, Tesla.Env.t()}
   def email_settings_put_email_settings(connection, account_id, envelope_id, opts \\ []) do
     optional_params = %{
-      EnvelopeEmailSettings: :body
+      :emailSettings => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/email_settings")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/email_settings")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.EnvelopeEmailSettings{})
+    |> decode(%DocuSign.Model.EmailSettings{})
   end
 end

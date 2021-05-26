@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.ErrorDetails do
   @moduledoc """
-  This object describes errors that occur. It is only valid for responses, and ignored in requests.
+  This object describes errors that occur. It is only valid for responses and ignored in requests.
   """
 
   @derive [Poison.Encoder]

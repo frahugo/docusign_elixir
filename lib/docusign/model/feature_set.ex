@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.FeatureSet do
   @moduledoc """
-
+  This object provides details about a feature set, or add-on product that is associated with an account. It is reserved for DocuSign internal use only.
   """
 
   @derive [Poison.Encoder]

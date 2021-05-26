@@ -4,22 +4,252 @@
 
 defmodule DocuSign.Model.UserSettingsInformation do
   @moduledoc """
-
+  Properties that configure the settings for a user. Some elements of this object have a &#x60;metadata&#x60; property, which includes the following: - &#x60;rights&#x60;: The calling users permissions to edit this setting (can be &#x60;editable&#x60; or &#x60;read_only&#x60;) - &#x60;uiHint&#x60;: Internally used to build UIs (can be &#x60;available&#x60; or &#x60;hidden&#x60;) - &#x60;options&#x60;: The values supported for this setting (not all settings have this element)
   """
 
   @derive [Poison.Encoder]
   defstruct [
     :accountManagementGranular,
+    :adminOnly,
+    :adminOnlyMetadata,
+    :allowAutoTagging,
+    :allowEnvelopeTransferTo,
+    :allowEnvelopeTransferToMetadata,
+    :allowEsealRecipients,
+    :allowEsealRecipientsMetadata,
+    :allowPowerFormsAdminToAccessAllPowerFormEnvelope,
+    :allowPowerFormsAdminToAccessAllPowerFormEnvelopeMetadata,
+    :allowRecipientLanguageSelection,
+    :allowRecipientLanguageSelectionMetadata,
+    :allowSendOnBehalfOf,
+    :allowSendOnBehalfOfMetadata,
+    :allowSupplementalDocuments,
+    :allowSupplementalDocumentsMetadata,
+    :anchorTagVersionedPlacementEnabled,
+    :apiAccountWideAccess,
+    :apiAccountWideAccessMetadata,
+    :apiCanExportAC,
+    :apiCanExportACMetadata,
+    :bulkSend,
+    :bulkSendMetadata,
+    :canChargeAccount,
+    :canChargeAccountMetadata,
+    :canEditSharedAddressbook,
+    :canEditSharedAddressbookMetadata,
+    :canLockEnvelopes,
+    :canLockEnvelopesMetadata,
+    :canManageAccount,
+    :canManageAccountMetadata,
+    :canManageDistributor,
+    :canManageDistributorMetadata,
+    :canManageTemplates,
+    :canManageTemplatesMetadata,
+    :canSendAPIRequests,
+    :canSendAPIRequestsMetadata,
+    :canSendEnvelope,
+    :canSendEnvelopeMetadata,
+    :canSignEnvelope,
+    :canSignEnvelopeMetadata,
+    :canUseScratchpad,
+    :canUseScratchpadMetadata,
+    :canUseSmartContracts,
+    :canUseSmartContractsMetadata,
+    :disableDocumentUpload,
+    :disableDocumentUploadMetadata,
+    :disableOtherActions,
+    :disableOtherActionsMetadata,
+    :enableDSPro,
+    :enableDSProMetadata,
+    :enableSequentialSigningAPI,
+    :enableSequentialSigningAPIMetadata,
+    :enableSequentialSigningUI,
+    :enableSequentialSigningUIMetadata,
+    :enableSignerAttachments,
+    :enableSignerAttachmentsMetadata,
+    :enableSignOnPaperOverride,
+    :enableSignOnPaperOverrideMetadata,
+    :enableTransactionPoint,
+    :enableTransactionPointMetadata,
+    :enableVaulting,
+    :enableVaultingMetadata,
+    :expressSendOnly,
+    :locale,
+    :localeMetadata,
+    :localePolicy,
+    :manageClickwrapsMode,
+    :manageClickwrapsModeMetadata,
+    :modifiedBy,
+    :modifiedByMetadata,
+    :modifiedDate,
+    :modifiedDateMetadata,
+    :modifiedPage,
+    :modifiedPageMetadata,
+    :newSendUI,
+    :newSendUIMetadata,
+    :powerFormMode,
+    :powerFormModeMetadata,
+    :recipientViewedNotification,
+    :recipientViewedNotificationMetadata,
+    :sealIdentifiers,
+    :selfSignedRecipientEmailDocument,
+    :selfSignedRecipientEmailDocumentMetadata,
     :senderEmailNotifications,
     :signerEmailNotifications,
-    :userSettings
+    :supplementalDocumentIncludeInDownload,
+    :supplementalDocumentsMustAccept,
+    :supplementalDocumentsMustAcceptMetadata,
+    :supplementalDocumentsMustRead,
+    :supplementalDocumentsMustReadMetadata,
+    :supplementalDocumentsMustView,
+    :supplementalDocumentsMustViewMetadata,
+    :templateActiveCreation,
+    :templateActiveCreationMetadata,
+    :templateApplyNotify,
+    :templateApplyNotifyMetadata,
+    :templateAutoMatching,
+    :templateAutoMatchingMetadata,
+    :templateMatchingSensitivity,
+    :templateMatchingSensitivityMetadata,
+    :templatePageLevelMatching,
+    :templatePageLevelMatchingMetadata,
+    :timezoneDST,
+    :timezoneDSTMetadata,
+    :timezoneMask,
+    :timezoneMaskMetadata,
+    :timezoneOffset,
+    :timezoneOffsetMetadata,
+    :timezoneSendingPref,
+    :timezoneSendingPrefMetadata,
+    :timezoneSigningPref,
+    :timezoneSigningPrefMetadata,
+    :transactionPointSiteNameURL,
+    :transactionPointSiteNameURLMetadata,
+    :transactionPointUserName,
+    :transactionPointUserNameMetadata,
+    :vaultingMode,
+    :vaultingModeMetadata
   ]
 
   @type t :: %__MODULE__{
           :accountManagementGranular => UserAccountManagementGranularInformation,
+          :adminOnly => String.t(),
+          :adminOnlyMetadata => SettingsMetadata,
+          :allowAutoTagging => String.t(),
+          :allowEnvelopeTransferTo => String.t(),
+          :allowEnvelopeTransferToMetadata => SettingsMetadata,
+          :allowEsealRecipients => String.t(),
+          :allowEsealRecipientsMetadata => SettingsMetadata,
+          :allowPowerFormsAdminToAccessAllPowerFormEnvelope => String.t(),
+          :allowPowerFormsAdminToAccessAllPowerFormEnvelopeMetadata => SettingsMetadata,
+          :allowRecipientLanguageSelection => String.t(),
+          :allowRecipientLanguageSelectionMetadata => SettingsMetadata,
+          :allowSendOnBehalfOf => String.t(),
+          :allowSendOnBehalfOfMetadata => SettingsMetadata,
+          :allowSupplementalDocuments => String.t(),
+          :allowSupplementalDocumentsMetadata => SettingsMetadata,
+          :anchorTagVersionedPlacementEnabled => String.t(),
+          :apiAccountWideAccess => String.t(),
+          :apiAccountWideAccessMetadata => SettingsMetadata,
+          :apiCanExportAC => String.t(),
+          :apiCanExportACMetadata => SettingsMetadata,
+          :bulkSend => String.t(),
+          :bulkSendMetadata => SettingsMetadata,
+          :canChargeAccount => String.t(),
+          :canChargeAccountMetadata => SettingsMetadata,
+          :canEditSharedAddressbook => String.t(),
+          :canEditSharedAddressbookMetadata => SettingsMetadata,
+          :canLockEnvelopes => String.t(),
+          :canLockEnvelopesMetadata => SettingsMetadata,
+          :canManageAccount => String.t(),
+          :canManageAccountMetadata => SettingsMetadata,
+          :canManageDistributor => String.t(),
+          :canManageDistributorMetadata => SettingsMetadata,
+          :canManageTemplates => String.t(),
+          :canManageTemplatesMetadata => SettingsMetadata,
+          :canSendAPIRequests => String.t(),
+          :canSendAPIRequestsMetadata => SettingsMetadata,
+          :canSendEnvelope => String.t(),
+          :canSendEnvelopeMetadata => SettingsMetadata,
+          :canSignEnvelope => String.t(),
+          :canSignEnvelopeMetadata => SettingsMetadata,
+          :canUseScratchpad => String.t(),
+          :canUseScratchpadMetadata => SettingsMetadata,
+          :canUseSmartContracts => String.t(),
+          :canUseSmartContractsMetadata => SettingsMetadata,
+          :disableDocumentUpload => String.t(),
+          :disableDocumentUploadMetadata => SettingsMetadata,
+          :disableOtherActions => String.t(),
+          :disableOtherActionsMetadata => SettingsMetadata,
+          :enableDSPro => String.t(),
+          :enableDSProMetadata => SettingsMetadata,
+          :enableSequentialSigningAPI => String.t(),
+          :enableSequentialSigningAPIMetadata => SettingsMetadata,
+          :enableSequentialSigningUI => String.t(),
+          :enableSequentialSigningUIMetadata => SettingsMetadata,
+          :enableSignerAttachments => String.t(),
+          :enableSignerAttachmentsMetadata => SettingsMetadata,
+          :enableSignOnPaperOverride => String.t(),
+          :enableSignOnPaperOverrideMetadata => SettingsMetadata,
+          :enableTransactionPoint => String.t(),
+          :enableTransactionPointMetadata => SettingsMetadata,
+          :enableVaulting => String.t(),
+          :enableVaultingMetadata => SettingsMetadata,
+          :expressSendOnly => String.t(),
+          :locale => String.t(),
+          :localeMetadata => SettingsMetadata,
+          :localePolicy => LocalePolicy,
+          :manageClickwrapsMode => String.t(),
+          :manageClickwrapsModeMetadata => SettingsMetadata,
+          :modifiedBy => String.t(),
+          :modifiedByMetadata => SettingsMetadata,
+          :modifiedDate => String.t(),
+          :modifiedDateMetadata => SettingsMetadata,
+          :modifiedPage => String.t(),
+          :modifiedPageMetadata => SettingsMetadata,
+          :newSendUI => String.t(),
+          :newSendUIMetadata => SettingsMetadata,
+          :powerFormMode => String.t(),
+          :powerFormModeMetadata => SettingsMetadata,
+          :recipientViewedNotification => String.t(),
+          :recipientViewedNotificationMetadata => SettingsMetadata,
+          :sealIdentifiers => [SealIdentifier],
+          :selfSignedRecipientEmailDocument => String.t(),
+          :selfSignedRecipientEmailDocumentMetadata => SettingsMetadata,
           :senderEmailNotifications => SenderEmailNotifications,
           :signerEmailNotifications => SignerEmailNotifications,
-          :userSettings => [NameValue]
+          :supplementalDocumentIncludeInDownload => String.t(),
+          :supplementalDocumentsMustAccept => String.t(),
+          :supplementalDocumentsMustAcceptMetadata => SettingsMetadata,
+          :supplementalDocumentsMustRead => String.t(),
+          :supplementalDocumentsMustReadMetadata => SettingsMetadata,
+          :supplementalDocumentsMustView => String.t(),
+          :supplementalDocumentsMustViewMetadata => SettingsMetadata,
+          :templateActiveCreation => String.t(),
+          :templateActiveCreationMetadata => SettingsMetadata,
+          :templateApplyNotify => String.t(),
+          :templateApplyNotifyMetadata => SettingsMetadata,
+          :templateAutoMatching => String.t(),
+          :templateAutoMatchingMetadata => SettingsMetadata,
+          :templateMatchingSensitivity => String.t(),
+          :templateMatchingSensitivityMetadata => SettingsMetadata,
+          :templatePageLevelMatching => String.t(),
+          :templatePageLevelMatchingMetadata => SettingsMetadata,
+          :timezoneDST => String.t(),
+          :timezoneDSTMetadata => SettingsMetadata,
+          :timezoneMask => String.t(),
+          :timezoneMaskMetadata => SettingsMetadata,
+          :timezoneOffset => String.t(),
+          :timezoneOffsetMetadata => SettingsMetadata,
+          :timezoneSendingPref => String.t(),
+          :timezoneSendingPrefMetadata => SettingsMetadata,
+          :timezoneSigningPref => String.t(),
+          :timezoneSigningPrefMetadata => SettingsMetadata,
+          :transactionPointSiteNameURL => String.t(),
+          :transactionPointSiteNameURLMetadata => SettingsMetadata,
+          :transactionPointUserName => String.t(),
+          :transactionPointUserNameMetadata => SettingsMetadata,
+          :vaultingMode => String.t(),
+          :vaultingModeMetadata => SettingsMetadata
         }
 end
 
@@ -34,6 +264,212 @@ defimpl Poison.Decoder, for: DocuSign.Model.UserSettingsInformation do
       DocuSign.Model.UserAccountManagementGranularInformation,
       options
     )
+    |> deserialize(:adminOnlyMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
+    |> deserialize(
+      :allowEnvelopeTransferToMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowEsealRecipientsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowPowerFormsAdminToAccessAllPowerFormEnvelopeMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowRecipientLanguageSelectionMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowSendOnBehalfOfMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :allowSupplementalDocumentsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :apiAccountWideAccessMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :apiCanExportACMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(:bulkSendMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
+    |> deserialize(
+      :canChargeAccountMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :canEditSharedAddressbookMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :canLockEnvelopesMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :canManageAccountMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :canManageDistributorMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :canManageTemplatesMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :canSendAPIRequestsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :canSendEnvelopeMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :canSignEnvelopeMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :canUseScratchpadMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :canUseSmartContractsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :disableDocumentUploadMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :disableOtherActionsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(:enableDSProMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
+    |> deserialize(
+      :enableSequentialSigningAPIMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableSequentialSigningUIMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableSignerAttachmentsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableSignOnPaperOverrideMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableTransactionPointMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :enableVaultingMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(:localeMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
+    |> deserialize(:localePolicy, :struct, DocuSign.Model.LocalePolicy, options)
+    |> deserialize(
+      :manageClickwrapsModeMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(:modifiedByMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
+    |> deserialize(
+      :modifiedDateMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :modifiedPageMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(:newSendUIMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
+    |> deserialize(
+      :powerFormModeMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :recipientViewedNotificationMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(:sealIdentifiers, :list, DocuSign.Model.SealIdentifier, options)
+    |> deserialize(
+      :selfSignedRecipientEmailDocumentMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
     |> deserialize(
       :senderEmailNotifications,
       :struct,
@@ -46,6 +482,96 @@ defimpl Poison.Decoder, for: DocuSign.Model.UserSettingsInformation do
       DocuSign.Model.SignerEmailNotifications,
       options
     )
-    |> deserialize(:userSettings, :list, DocuSign.Model.NameValue, options)
+    |> deserialize(
+      :supplementalDocumentsMustAcceptMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :supplementalDocumentsMustReadMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :supplementalDocumentsMustViewMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :templateActiveCreationMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :templateApplyNotifyMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :templateAutoMatchingMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :templateMatchingSensitivityMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :templatePageLevelMatchingMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(:timezoneDSTMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
+    |> deserialize(
+      :timezoneMaskMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :timezoneOffsetMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :timezoneSendingPrefMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :timezoneSigningPrefMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :transactionPointSiteNameURLMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :transactionPointUserNameMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :vaultingModeMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
   end
 end

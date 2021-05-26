@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.SeatDiscount do
   @moduledoc """
-
+  This object contains information about a seat discount.
   """
 
   @derive [Poison.Encoder]

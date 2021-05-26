@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.AccountAddress do
   @moduledoc """
-  Contains information about an account address.
+  Contains information about the address associated with the account.
   """
 
   @derive [Poison.Encoder]

@@ -4,19 +4,23 @@
 
 defmodule DocuSign.Model.EnvelopeSummary do
   @moduledoc """
-
+   This object describes an envelope.
   """
 
   @derive [Poison.Encoder]
   defstruct [
+    :bulkEnvelopeStatus,
     :envelopeId,
+    :errorDetails,
     :status,
     :statusDateTime,
     :uri
   ]
 
   @type t :: %__MODULE__{
+          :bulkEnvelopeStatus => BulkEnvelopeStatus,
           :envelopeId => String.t(),
+          :errorDetails => ErrorDetails,
           :status => String.t(),
           :statusDateTime => String.t(),
           :uri => String.t()
@@ -24,7 +28,16 @@ defmodule DocuSign.Model.EnvelopeSummary do
 end
 
 defimpl Poison.Decoder, for: DocuSign.Model.EnvelopeSummary do
-  def decode(value, _options) do
+  import DocuSign.Deserializer
+
+  def decode(value, options) do
     value
+    |> deserialize(
+      :bulkEnvelopeStatus,
+      :struct,
+      DocuSign.Model.BulkEnvelopeStatus,
+      options
+    )
+    |> deserialize(:errorDetails, :struct, DocuSign.Model.ErrorDetails, options)
   end
 end

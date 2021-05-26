@@ -21,7 +21,7 @@ defmodule DocuSign.Model.NotaryJournalList do
   @type t :: %__MODULE__{
           :endPosition => String.t(),
           :nextUri => String.t(),
-          :notaryJournals => [NotaryJournals],
+          :notaryJournals => [NotaryJournal],
           :previousUri => String.t(),
           :resultSetSize => String.t(),
           :startPosition => String.t(),
@@ -34,6 +34,6 @@ defimpl Poison.Decoder, for: DocuSign.Model.NotaryJournalList do
 
   def decode(value, options) do
     value
-    |> deserialize(:notaryJournals, :list, DocuSign.Model.NotaryJournals, options)
+    |> deserialize(:notaryJournals, :list, DocuSign.Model.NotaryJournal, options)
   end
 end

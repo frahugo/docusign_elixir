@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.Reminders do
   @moduledoc """
-  A complex element that specifies reminder settings for the envelope
+  A complex element that specifies reminder settings for the envelope.
   """
 
   @derive [Poison.Encoder]

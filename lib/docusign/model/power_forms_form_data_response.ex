@@ -13,7 +13,7 @@ defmodule DocuSign.Model.PowerFormsFormDataResponse do
   ]
 
   @type t :: %__MODULE__{
-          :envelopes => [PowerFormData]
+          :envelopes => [PowerFormFormDataEnvelope]
         }
 end
 
@@ -22,6 +22,6 @@ defimpl Poison.Decoder, for: DocuSign.Model.PowerFormsFormDataResponse do
 
   def decode(value, options) do
     value
-    |> deserialize(:envelopes, :list, DocuSign.Model.PowerFormData, options)
+    |> deserialize(:envelopes, :list, DocuSign.Model.PowerFormFormDataEnvelope, options)
   end
 end

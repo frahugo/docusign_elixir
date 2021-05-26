@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.AccountSignatureProvider do
   @moduledoc """
-
+  Contains information abotu the signature provider associated with the Identity Verification workflow.  If empty, then this specific workflow is not intended for signers.
   """
 
   @derive [Poison.Encoder]

@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.SignatureProviderRequiredOption do
   @moduledoc """
-
+  Contains additional information that a specific signature provider requires.
   """
 
   @derive [Poison.Encoder]

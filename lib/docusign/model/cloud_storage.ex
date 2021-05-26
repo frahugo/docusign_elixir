@@ -40,7 +40,12 @@ defimpl Poison.Decoder, for: DocuSign.Model.CloudStorage do
 
   def decode(value, options) do
     value
-    |> deserialize(:errorDetails, :struct, DocuSign.Model.ExternalDocServiceErrorDetails, options)
+    |> deserialize(
+      :errorDetails,
+      :struct,
+      DocuSign.Model.ExternalDocServiceErrorDetails,
+      options
+    )
     |> deserialize(:items, :list, DocuSign.Model.ExternalFile, options)
   end
 end

@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.AccountSignatureProviders do
   @moduledoc """
-  Account SBS Signature Providers
+  This resource provides information on the Standards Based Signature providers that have been provisioned for an account.
   """
 
   @derive [Poison.Encoder]
@@ -22,6 +22,11 @@ defimpl Poison.Decoder, for: DocuSign.Model.AccountSignatureProviders do
 
   def decode(value, options) do
     value
-    |> deserialize(:signatureProviders, :list, DocuSign.Model.AccountSignatureProvider, options)
+    |> deserialize(
+      :signatureProviders,
+      :list,
+      DocuSign.Model.AccountSignatureProvider,
+      options
+    )
   end
 end

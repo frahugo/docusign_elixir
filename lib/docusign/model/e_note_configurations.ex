@@ -9,6 +9,7 @@ defmodule DocuSign.Model.ENoteConfigurations do
 
   @derive [Poison.Encoder]
   defstruct [
+    :apiKey,
     :connectConfigured,
     :eNoteConfigured,
     :organization,
@@ -17,6 +18,7 @@ defmodule DocuSign.Model.ENoteConfigurations do
   ]
 
   @type t :: %__MODULE__{
+          :apiKey => String.t(),
           :connectConfigured => String.t(),
           :eNoteConfigured => String.t(),
           :organization => String.t(),

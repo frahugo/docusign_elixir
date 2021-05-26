@@ -17,51 +17,51 @@ defmodule DocuSign.Api.Workspaces do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - workspace_id (String.t): Specifies the workspace ID GUID.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - workspace_id (String.t): The id of the workspace.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
 
-  {:ok, %DocuSign.Model.Workspaces{}} on success
+  {:ok, %DocuSign.Model.Workspace{}} on success
   {:error, info} on failure
   """
   @spec workspace_delete_workspace(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.Workspaces.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.Workspace.t()} | {:error, Tesla.Env.t()}
   def workspace_delete_workspace(connection, account_id, workspace_id, _opts \\ []) do
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/workspaces/#{workspace_id}")
+    |> url("/v2.1/accounts/#{account_id}/workspaces/#{workspace_id}")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.Workspaces{})
+    |> decode(%DocuSign.Model.Workspace{})
   end
 
   @doc """
   Get Workspace
-  Retrives properties about a workspace given a unique workspaceId. 
+  Retrives properties about a workspace given a unique workspaceId.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - workspace_id (String.t): Specifies the workspace ID GUID.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - workspace_id (String.t): The id of the workspace.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
 
-  {:ok, %DocuSign.Model.Workspaces{}} on success
+  {:ok, %DocuSign.Model.Workspace{}} on success
   {:error, info} on failure
   """
   @spec workspace_get_workspace(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.Workspaces.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.Workspace.t()} | {:error, Tesla.Env.t()}
   def workspace_get_workspace(connection, account_id, workspace_id, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/workspaces/#{workspace_id}")
+    |> url("/v2.1/accounts/#{account_id}/workspaces/#{workspace_id}")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.Workspaces{})
+    |> decode(%DocuSign.Model.Workspace{})
   end
 
   @doc """
@@ -71,7 +71,7 @@ defmodule DocuSign.Api.Workspaces do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -84,7 +84,7 @@ defmodule DocuSign.Api.Workspaces do
   def workspace_get_workspaces(connection, account_id, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/workspaces")
+    |> url("/v2.1/accounts/#{account_id}/workspaces")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.WorkspaceList{})
@@ -92,34 +92,34 @@ defmodule DocuSign.Api.Workspaces do
 
   @doc """
   Create a Workspace
-  Creates a new workspace.
+  This method creates a new workspace.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :workspaces (Workspaces): 
+    - :workspace (Workspace):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.Workspaces{}} on success
+  {:ok, %DocuSign.Model.Workspace{}} on success
   {:error, info} on failure
   """
   @spec workspace_post_workspace(Tesla.Env.client(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.Workspaces.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.Workspace.t()} | {:error, Tesla.Env.t()}
   def workspace_post_workspace(connection, account_id, opts \\ []) do
     optional_params = %{
-      Workspaces: :body
+      :workspace => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/workspaces")
+    |> url("/v2.1/accounts/#{account_id}/workspaces")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.Workspaces{})
+    |> decode(%DocuSign.Model.Workspace{})
   end
 
   @doc """
@@ -129,29 +129,29 @@ defmodule DocuSign.Api.Workspaces do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - workspace_id (String.t): Specifies the workspace ID GUID.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - workspace_id (String.t): The id of the workspace.
   - opts (KeywordList): [optional] Optional parameters
-    - :workspaces (Workspaces): 
+    - :workspace (Workspace):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.Workspaces{}} on success
+  {:ok, %DocuSign.Model.Workspace{}} on success
   {:error, info} on failure
   """
   @spec workspace_put_workspace(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.Workspaces.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.Workspace.t()} | {:error, Tesla.Env.t()}
   def workspace_put_workspace(connection, account_id, workspace_id, opts \\ []) do
     optional_params = %{
-      Workspaces: :body
+      :workspace => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/workspaces/#{workspace_id}")
+    |> url("/v2.1/accounts/#{account_id}/workspaces/#{workspace_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.Workspaces{})
+    |> decode(%DocuSign.Model.Workspace{})
   end
 end

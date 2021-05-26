@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.RecipientViewRequest do
   @moduledoc """
-
+  The request body for the EnvelopeViews::createRecipient and EnvelopeViews::createSharedRecipient methods.
   """
 
   @derive [Poison.Encoder]
@@ -14,6 +14,8 @@ defmodule DocuSign.Model.RecipientViewRequest do
     :authenticationMethod,
     :clientUserId,
     :email,
+    :frameAncestors,
+    :messageOrigins,
     :pingFrequency,
     :pingUrl,
     :recipientId,
@@ -31,6 +33,8 @@ defmodule DocuSign.Model.RecipientViewRequest do
           :authenticationMethod => String.t(),
           :clientUserId => String.t(),
           :email => String.t(),
+          :frameAncestors => [String.t()],
+          :messageOrigins => [String.t()],
           :pingFrequency => String.t(),
           :pingUrl => String.t(),
           :recipientId => String.t(),

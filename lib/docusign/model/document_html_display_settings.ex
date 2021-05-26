@@ -18,6 +18,7 @@ defmodule DocuSign.Model.DocumentHtmlDisplaySettings do
     :hideLabelWhenOpened,
     :inlineOuterStyle,
     :labelWhenOpened,
+    :preLabel,
     :scrollToTopWhenOpened,
     :tableStyle
   ]
@@ -32,6 +33,7 @@ defmodule DocuSign.Model.DocumentHtmlDisplaySettings do
           :hideLabelWhenOpened => boolean(),
           :inlineOuterStyle => String.t(),
           :labelWhenOpened => String.t(),
+          :preLabel => String.t(),
           :scrollToTopWhenOpened => boolean(),
           :tableStyle => String.t()
         }

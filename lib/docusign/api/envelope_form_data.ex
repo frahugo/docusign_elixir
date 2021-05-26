@@ -12,13 +12,13 @@ defmodule DocuSign.Api.EnvelopeFormData do
 
   @doc """
   Returns envelope form data for an existing envelope.
-
+  This method downloads the envelope and field data from any in-process, completed, or canceled envelope that you sent or that is shared with you. Recipients who are also full administrators on an account can view form data for any envelopes that another user on the account has sent to them.  **Note**: To use this feature, the Sending Setting \&quot;Allow sender to download form data\&quot; must be enabled for the account.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -31,7 +31,7 @@ defmodule DocuSign.Api.EnvelopeFormData do
   def form_data_get_form_data(connection, account_id, envelope_id, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/form_data")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/form_data")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.EnvelopeFormData{})

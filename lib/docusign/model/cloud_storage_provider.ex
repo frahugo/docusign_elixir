@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.CloudStorageProvider do
   @moduledoc """
-
+  Contains details about a specific cloud storage provider.
   """
 
   @derive [Poison.Encoder]

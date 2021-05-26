@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.Group do
   @moduledoc """
-
+  This object contains information about a group.
   """
 
   @derive [Poison.Encoder]
@@ -14,7 +14,8 @@ defmodule DocuSign.Model.Group do
     :groupName,
     :groupType,
     :permissionProfileId,
-    :users
+    :users,
+    :usersCount
   ]
 
   @type t :: %__MODULE__{
@@ -23,7 +24,8 @@ defmodule DocuSign.Model.Group do
           :groupName => String.t(),
           :groupType => String.t(),
           :permissionProfileId => String.t(),
-          :users => [UserInfo]
+          :users => [UserInfo],
+          :usersCount => String.t()
         }
 end
 

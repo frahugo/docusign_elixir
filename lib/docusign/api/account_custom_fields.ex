@@ -11,16 +11,16 @@ defmodule DocuSign.Api.AccountCustomFields do
   import DocuSign.RequestBuilder
 
   @doc """
-  Delete an existing account custom field.
-
+  Deletes an account custom field.
+  This method deletes an existing account custom field.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - custom_field_id (String.t): 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - custom_field_id (String.t): The id of the custom field.
   - opts (KeywordList): [optional] Optional parameters
-    - :apply_to_templates (String.t): 
+    - :apply_to_templates (String.t):
 
   ## Returns
 
@@ -40,12 +40,12 @@ defmodule DocuSign.Api.AccountCustomFields do
         opts \\ []
       ) do
     optional_params = %{
-      apply_to_templates: :query
+      :apply_to_templates => :query
     }
 
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/custom_fields/#{custom_field_id}")
+    |> url("/v2.1/accounts/#{account_id}/custom_fields/#{custom_field_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -53,13 +53,13 @@ defmodule DocuSign.Api.AccountCustomFields do
   end
 
   @doc """
-  Gets a list of custom fields associated with the account.
-  Retrieves a list of envelope custom fields associated with the account. You can use these fields in the envelopes for your account to record information about the envelope, help search for envelopes and track information. The envelope custom fields are shown in the Envelope Settings section when a user is creating an envelope in the DocuSign member console. The envelope custom fields are not seen by the envelope recipients.  There are two types of envelope custom fields, text, and list. A text custom field lets the sender enter the value for the field. The list custom field lets the sender select the value of the field from a list you provide.
+  Gets a list of custom fields.
+  This method returns a list of the envelope and document custom fields associated with an account.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -72,23 +72,23 @@ defmodule DocuSign.Api.AccountCustomFields do
   def account_custom_fields_get_account_custom_fields(connection, account_id, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/custom_fields")
+    |> url("/v2.1/accounts/#{account_id}/custom_fields")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.AccountCustomFields{})
   end
 
   @doc """
-  Creates an acount custom field.
-
+  Creates an account custom field.
+  This method creates a custom field and makes it available for all new envelopes associated with an account.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :apply_to_templates (String.t): 
-    - :custom_field (CustomField): 
+    - :apply_to_templates (String.t): (Optional) When set to **true**, the new custom field is applied to all of the templates on the account.
+    - :custom_field (CustomField):
 
   ## Returns
 
@@ -102,13 +102,13 @@ defmodule DocuSign.Api.AccountCustomFields do
         ) :: {:ok, DocuSign.Model.AccountCustomFields.t()} | {:error, Tesla.Env.t()}
   def account_custom_fields_post_account_custom_fields(connection, account_id, opts \\ []) do
     optional_params = %{
-      apply_to_templates: :query,
-      customField: :body
+      :apply_to_templates => :query,
+      :customField => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/custom_fields")
+    |> url("/v2.1/accounts/#{account_id}/custom_fields")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -116,17 +116,17 @@ defmodule DocuSign.Api.AccountCustomFields do
   end
 
   @doc """
-  Updates an existing account custom field.
-
+  Updates an account custom field.
+  This method updates an existing account custom field.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - custom_field_id (String.t): 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - custom_field_id (String.t): The id of the custom field.
   - opts (KeywordList): [optional] Optional parameters
-    - :apply_to_templates (String.t): 
-    - :custom_field (CustomField): 
+    - :apply_to_templates (String.t):
+    - :custom_field (CustomField):
 
   ## Returns
 
@@ -146,13 +146,13 @@ defmodule DocuSign.Api.AccountCustomFields do
         opts \\ []
       ) do
     optional_params = %{
-      apply_to_templates: :query,
-      customField: :body
+      :apply_to_templates => :query,
+      :customField => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/custom_fields/#{custom_field_id}")
+    |> url("/v2.1/accounts/#{account_id}/custom_fields/#{custom_field_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()

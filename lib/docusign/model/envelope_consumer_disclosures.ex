@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.EnvelopeConsumerDisclosures do
   @moduledoc """
-  Envelope consumer disclosures
+  Details about envelope consumer disclosures.
   """
 
   @derive [Poison.Encoder]
@@ -84,7 +84,12 @@ defimpl Poison.Decoder, for: DocuSign.Model.EnvelopeConsumerDisclosures do
 
   def decode(value, options) do
     value
-    |> deserialize(:allowCDWithdrawMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
+    |> deserialize(
+      :allowCDWithdrawMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
     |> deserialize(
       :useConsumerDisclosureWithinAccountMetadata,
       :struct,

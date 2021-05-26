@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.AccountPermissionProfiles do
   @moduledoc """
-
+  The AccountPermissionProfiles resource provides methods that allow you to manage permission profiles for groups of account users.
   """
 
   @derive [Poison.Encoder]
@@ -25,7 +25,7 @@ defmodule DocuSign.Model.AccountPermissionProfiles do
           :permissionProfileName => String.t(),
           :settings => AccountRoleSettings,
           :userCount => String.t(),
-          :users => [Users]
+          :users => [UserInformation]
         }
 end
 
@@ -35,6 +35,6 @@ defimpl Poison.Decoder, for: DocuSign.Model.AccountPermissionProfiles do
   def decode(value, options) do
     value
     |> deserialize(:settings, :struct, DocuSign.Model.AccountRoleSettings, options)
-    |> deserialize(:users, :list, DocuSign.Model.Users, options)
+    |> deserialize(:users, :list, DocuSign.Model.UserInformation, options)
   end
 end

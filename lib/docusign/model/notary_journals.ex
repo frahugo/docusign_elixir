@@ -33,6 +33,11 @@ defimpl Poison.Decoder, for: DocuSign.Model.NotaryJournals do
   def decode(value, options) do
     value
     |> deserialize(:jurisdiction, :struct, DocuSign.Model.Jurisdiction, options)
-    |> deserialize(:notaryJournalMetaData, :struct, DocuSign.Model.NotaryJournalMetaData, options)
+    |> deserialize(
+      :notaryJournalMetaData,
+      :struct,
+      DocuSign.Model.NotaryJournalMetaData,
+      options
+    )
   end
 end

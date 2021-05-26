@@ -11,13 +11,20 @@ defmodule DocuSign.Model.UserSignatures do
   defstruct [
     :adoptedDateTime,
     :createdDateTime,
+    :customField,
     :dateStampProperties,
+    :disallowUserResizeStamp,
     :errorDetails,
     :externalID,
+    :imageBase64,
     :imageType,
     :initials150ImageId,
     :initialsImageUri,
     :isDefault,
+    :lastModifiedDateTime,
+    :nrdsId,
+    :nrdsLastName,
+    :nrdsStatus,
     :phoneticName,
     :signature150ImageId,
     :signatureFont,
@@ -25,23 +32,32 @@ defmodule DocuSign.Model.UserSignatures do
     :signatureImageUri,
     :signatureInitials,
     :signatureName,
+    :signatureRights,
     :signatureType,
     :stampFormat,
     :stampImageUri,
     :stampSizeMM,
-    :stampType
+    :stampType,
+    :status
   ]
 
   @type t :: %__MODULE__{
           :adoptedDateTime => String.t(),
           :createdDateTime => String.t(),
+          :customField => String.t(),
           :dateStampProperties => DateStampProperties,
+          :disallowUserResizeStamp => String.t(),
           :errorDetails => ErrorDetails,
           :externalID => String.t(),
+          :imageBase64 => String.t(),
           :imageType => String.t(),
           :initials150ImageId => String.t(),
           :initialsImageUri => String.t(),
           :isDefault => String.t(),
+          :lastModifiedDateTime => String.t(),
+          :nrdsId => String.t(),
+          :nrdsLastName => String.t(),
+          :nrdsStatus => String.t(),
           :phoneticName => String.t(),
           :signature150ImageId => String.t(),
           :signatureFont => String.t(),
@@ -49,11 +65,13 @@ defmodule DocuSign.Model.UserSignatures do
           :signatureImageUri => String.t(),
           :signatureInitials => String.t(),
           :signatureName => String.t(),
+          :signatureRights => String.t(),
           :signatureType => String.t(),
           :stampFormat => String.t(),
           :stampImageUri => String.t(),
           :stampSizeMM => String.t(),
-          :stampType => String.t()
+          :stampType => String.t(),
+          :status => String.t()
         }
 end
 
@@ -62,7 +80,12 @@ defimpl Poison.Decoder, for: DocuSign.Model.UserSignatures do
 
   def decode(value, options) do
     value
-    |> deserialize(:dateStampProperties, :struct, DocuSign.Model.DateStampProperties, options)
+    |> deserialize(
+      :dateStampProperties,
+      :struct,
+      DocuSign.Model.DateStampProperties,
+      options
+    )
     |> deserialize(:errorDetails, :struct, DocuSign.Model.ErrorDetails, options)
   end
 end

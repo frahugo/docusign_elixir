@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.DocumentHtmlDefinition do
   @moduledoc """
-
+  Holds the properties that define how to generate the responsive-formatted HTML for the document.
   """
 
   @derive [Poison.Encoder]
@@ -42,6 +42,11 @@ defimpl Poison.Decoder, for: DocuSign.Model.DocumentHtmlDefinition do
 
   def decode(value, options) do
     value
-    |> deserialize(:displayAnchors, :list, DocuSign.Model.DocumentHtmlDisplayAnchor, options)
+    |> deserialize(
+      :displayAnchors,
+      :list,
+      DocuSign.Model.DocumentHtmlDisplayAnchor,
+      options
+    )
   end
 end

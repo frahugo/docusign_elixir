@@ -26,6 +26,11 @@ defimpl Poison.Decoder, for: DocuSign.Model.AddressInformationInput do
 
   def decode(value, options) do
     value
-    |> deserialize(:addressInformation, :struct, DocuSign.Model.AddressInformation, options)
+    |> deserialize(
+      :addressInformation,
+      :struct,
+      DocuSign.Model.AddressInformation,
+      options
+    )
   end
 end

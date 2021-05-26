@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.WorkspaceList do
   @moduledoc """
-  Provides properties that describe the workspaces avaialble.
+  This object contains a list of available workspaces.
   """
 
   @derive [Poison.Encoder]
@@ -21,7 +21,7 @@ defmodule DocuSign.Model.WorkspaceList do
           :resultSetSize => String.t(),
           :startPosition => String.t(),
           :totalSetSize => String.t(),
-          :workspaces => [Workspaces]
+          :workspaces => [Workspace]
         }
 end
 
@@ -30,6 +30,6 @@ defimpl Poison.Decoder, for: DocuSign.Model.WorkspaceList do
 
   def decode(value, options) do
     value
-    |> deserialize(:workspaces, :list, DocuSign.Model.Workspaces, options)
+    |> deserialize(:workspaces, :list, DocuSign.Model.Workspace, options)
   end
 end

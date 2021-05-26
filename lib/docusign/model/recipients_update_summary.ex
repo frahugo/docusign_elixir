@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.RecipientsUpdateSummary do
   @moduledoc """
-
+  This is the response that the API returns after you update recipients.
   """
 
   @derive [Poison.Encoder]

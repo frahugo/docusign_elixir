@@ -4,13 +4,14 @@
 
 defmodule DocuSign.Model.MemberSharedItems do
   @moduledoc """
-
+  Information about shared items.
   """
 
   @derive [Poison.Encoder]
   defstruct [
     :envelopes,
     :errorDetails,
+    :folders,
     :templates,
     :user
   ]
@@ -18,6 +19,7 @@ defmodule DocuSign.Model.MemberSharedItems do
   @type t :: %__MODULE__{
           :envelopes => [SharedItem],
           :errorDetails => ErrorDetails,
+          :folders => [FolderSharedItem],
           :templates => [TemplateSharedItem],
           :user => UserInfo
         }
@@ -30,6 +32,7 @@ defimpl Poison.Decoder, for: DocuSign.Model.MemberSharedItems do
     value
     |> deserialize(:envelopes, :list, DocuSign.Model.SharedItem, options)
     |> deserialize(:errorDetails, :struct, DocuSign.Model.ErrorDetails, options)
+    |> deserialize(:folders, :list, DocuSign.Model.FolderSharedItem, options)
     |> deserialize(:templates, :list, DocuSign.Model.TemplateSharedItem, options)
     |> deserialize(:user, :struct, DocuSign.Model.UserInfo, options)
   end

@@ -15,8 +15,8 @@ defmodule DocuSign.Model.UserAccountManagementGranularInformation do
     :canManageAccountSettingsMetadata,
     :canManageAdmins,
     :canManageAdminsMetadata,
-    :canManageGroups,
-    :canManageGroupsMetadata,
+    :canManageEnvelopeTransfer,
+    :canManageEnvelopeTransferMetadata,
     :canManageReporting,
     :canManageReportingMetadata,
     :canManageSharing,
@@ -24,7 +24,8 @@ defmodule DocuSign.Model.UserAccountManagementGranularInformation do
     :canManageSigningGroups,
     :canManageSigningGroupsMetadata,
     :canManageUsers,
-    :canManageUsersMetadata
+    :canManageUsersMetadata,
+    :canViewUsers
   ]
 
   @type t :: %__MODULE__{
@@ -34,8 +35,8 @@ defmodule DocuSign.Model.UserAccountManagementGranularInformation do
           :canManageAccountSettingsMetadata => SettingsMetadata,
           :canManageAdmins => String.t(),
           :canManageAdminsMetadata => SettingsMetadata,
-          :canManageGroups => String.t(),
-          :canManageGroupsMetadata => SettingsMetadata,
+          :canManageEnvelopeTransfer => String.t(),
+          :canManageEnvelopeTransferMetadata => SettingsMetadata,
           :canManageReporting => String.t(),
           :canManageReportingMetadata => SettingsMetadata,
           :canManageSharing => String.t(),
@@ -43,7 +44,8 @@ defmodule DocuSign.Model.UserAccountManagementGranularInformation do
           :canManageSigningGroups => String.t(),
           :canManageSigningGroupsMetadata => SettingsMetadata,
           :canManageUsers => String.t(),
-          :canManageUsersMetadata => SettingsMetadata
+          :canManageUsersMetadata => SettingsMetadata,
+          :canViewUsers => String.t()
         }
 end
 
@@ -64,16 +66,41 @@ defimpl Poison.Decoder, for: DocuSign.Model.UserAccountManagementGranularInforma
       DocuSign.Model.SettingsMetadata,
       options
     )
-    |> deserialize(:canManageAdminsMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
-    |> deserialize(:canManageGroupsMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
-    |> deserialize(:canManageReportingMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
-    |> deserialize(:canManageSharingMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
+    |> deserialize(
+      :canManageAdminsMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :canManageEnvelopeTransferMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :canManageReportingMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
+    |> deserialize(
+      :canManageSharingMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
     |> deserialize(
       :canManageSigningGroupsMetadata,
       :struct,
       DocuSign.Model.SettingsMetadata,
       options
     )
-    |> deserialize(:canManageUsersMetadata, :struct, DocuSign.Model.SettingsMetadata, options)
+    |> deserialize(
+      :canManageUsersMetadata,
+      :struct,
+      DocuSign.Model.SettingsMetadata,
+      options
+    )
   end
 end

@@ -17,14 +17,14 @@ defmodule DocuSign.Api.TemplateCustomFields do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :template_custom_fields (TemplateCustomFields): 
+    - :template_custom_fields (TemplateCustomFields):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.TemplateCustomFields{}} on success
+  {:ok, %DocuSign.Model.CustomFields{}} on success
   {:error, info} on failure
   """
   @spec custom_fields_delete_template_custom_fields(
@@ -32,19 +32,19 @@ defmodule DocuSign.Api.TemplateCustomFields do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.TemplateCustomFields.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.CustomFields.t()} | {:error, Tesla.Env.t()}
   def custom_fields_delete_template_custom_fields(connection, account_id, template_id, opts \\ []) do
     optional_params = %{
-      templateCustomFields: :body
+      :templateCustomFields => :body
     }
 
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/custom_fields")
+    |> url("/v2.1/accounts/#{account_id}/templates/#{template_id}/custom_fields")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.TemplateCustomFields{})
+    |> decode(%DocuSign.Model.CustomFields{})
   end
 
   @doc """
@@ -54,13 +54,13 @@ defmodule DocuSign.Api.TemplateCustomFields do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
 
-  {:ok, %DocuSign.Model.TemplateCustomFields{}} on success
+  {:ok, %DocuSign.Model.CustomFields{}} on success
   {:error, info} on failure
   """
   @spec custom_fields_get_template_custom_fields(
@@ -68,14 +68,14 @@ defmodule DocuSign.Api.TemplateCustomFields do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.TemplateCustomFields.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.CustomFields.t()} | {:error, Tesla.Env.t()}
   def custom_fields_get_template_custom_fields(connection, account_id, template_id, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/custom_fields")
+    |> url("/v2.1/accounts/#{account_id}/templates/#{template_id}/custom_fields")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.TemplateCustomFields{})
+    |> decode(%DocuSign.Model.CustomFields{})
   end
 
   @doc """
@@ -85,14 +85,14 @@ defmodule DocuSign.Api.TemplateCustomFields do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :template_custom_fields (TemplateCustomFields): 
+    - :template_custom_fields (TemplateCustomFields):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.TemplateCustomFields{}} on success
+  {:ok, %DocuSign.Model.CustomFields{}} on success
   {:error, info} on failure
   """
   @spec custom_fields_post_template_custom_fields(
@@ -100,19 +100,19 @@ defmodule DocuSign.Api.TemplateCustomFields do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.TemplateCustomFields.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.CustomFields.t()} | {:error, Tesla.Env.t()}
   def custom_fields_post_template_custom_fields(connection, account_id, template_id, opts \\ []) do
     optional_params = %{
-      templateCustomFields: :body
+      :templateCustomFields => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/custom_fields")
+    |> url("/v2.1/accounts/#{account_id}/templates/#{template_id}/custom_fields")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.TemplateCustomFields{})
+    |> decode(%DocuSign.Model.CustomFields{})
   end
 
   @doc """
@@ -122,14 +122,14 @@ defmodule DocuSign.Api.TemplateCustomFields do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :template_custom_fields (TemplateCustomFields): 
+    - :template_custom_fields (TemplateCustomFields):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.TemplateCustomFields{}} on success
+  {:ok, %DocuSign.Model.CustomFields{}} on success
   {:error, info} on failure
   """
   @spec custom_fields_put_template_custom_fields(
@@ -137,18 +137,18 @@ defmodule DocuSign.Api.TemplateCustomFields do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.TemplateCustomFields.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.CustomFields.t()} | {:error, Tesla.Env.t()}
   def custom_fields_put_template_custom_fields(connection, account_id, template_id, opts \\ []) do
     optional_params = %{
-      templateCustomFields: :body
+      :templateCustomFields => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/custom_fields")
+    |> url("/v2.1/accounts/#{account_id}/templates/#{template_id}/custom_fields")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.TemplateCustomFields{})
+    |> decode(%DocuSign.Model.CustomFields{})
   end
 end

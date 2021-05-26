@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.NewUsersSummary do
   @moduledoc """
-
+  Object representing a summary of data for new users.
   """
 
   @derive [Poison.Encoder]

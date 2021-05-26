@@ -4,17 +4,19 @@
 
 defmodule DocuSign.Model.EventNotification do
   @moduledoc """
-  Register a Connect webhook for a specific envelope
+  Use this object to configure a [DocuSign Connect webhook](https://developers.docusign.com/platform/webhooks/connect/).
   """
 
   @derive [Poison.Encoder]
   defstruct [
     :envelopeEvents,
+    :eventData,
     :includeCertificateOfCompletion,
     :includeCertificateWithSoap,
     :includeDocumentFields,
     :includeDocuments,
     :includeEnvelopeVoidReason,
+    :includeHMAC,
     :includeSenderAccountAsCustomField,
     :includeTimeZone,
     :loggingEnabled,
@@ -28,11 +30,13 @@ defmodule DocuSign.Model.EventNotification do
 
   @type t :: %__MODULE__{
           :envelopeEvents => [EnvelopeEvent],
+          :eventData => ConnectEventData,
           :includeCertificateOfCompletion => String.t(),
           :includeCertificateWithSoap => String.t(),
           :includeDocumentFields => String.t(),
           :includeDocuments => String.t(),
           :includeEnvelopeVoidReason => String.t(),
+          :includeHMAC => String.t(),
           :includeSenderAccountAsCustomField => String.t(),
           :includeTimeZone => String.t(),
           :loggingEnabled => String.t(),
@@ -51,6 +55,7 @@ defimpl Poison.Decoder, for: DocuSign.Model.EventNotification do
   def decode(value, options) do
     value
     |> deserialize(:envelopeEvents, :list, DocuSign.Model.EnvelopeEvent, options)
+    |> deserialize(:eventData, :struct, DocuSign.Model.ConnectEventData, options)
     |> deserialize(:recipientEvents, :list, DocuSign.Model.RecipientEvent, options)
   end
 end

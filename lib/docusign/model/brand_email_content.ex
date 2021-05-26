@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.BrandEmailContent do
   @moduledoc """
-
+  Deprecated.
   """
 
   @derive [Poison.Encoder]

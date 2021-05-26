@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.EnvelopeFormData do
   @moduledoc """
-
+  This object contains the data that recipients have entered into the form fields associated with an envelope.
   """
 
   @derive [Poison.Encoder]
@@ -12,6 +12,7 @@ defmodule DocuSign.Model.EnvelopeFormData do
     :emailSubject,
     :envelopeId,
     :formData,
+    :prefillFormData,
     :recipientFormData,
     :sentDateTime,
     :status
@@ -20,7 +21,8 @@ defmodule DocuSign.Model.EnvelopeFormData do
   @type t :: %__MODULE__{
           :emailSubject => String.t(),
           :envelopeId => String.t(),
-          :formData => [NameValue],
+          :formData => [FormDataItem],
+          :prefillFormData => [FormDataItem],
           :recipientFormData => [RecipientFormData],
           :sentDateTime => String.t(),
           :status => String.t()
@@ -32,7 +34,8 @@ defimpl Poison.Decoder, for: DocuSign.Model.EnvelopeFormData do
 
   def decode(value, options) do
     value
-    |> deserialize(:formData, :list, DocuSign.Model.NameValue, options)
+    |> deserialize(:formData, :list, DocuSign.Model.FormDataItem, options)
+    |> deserialize(:prefillFormData, :list, DocuSign.Model.FormDataItem, options)
     |> deserialize(:recipientFormData, :list, DocuSign.Model.RecipientFormData, options)
   end
 end

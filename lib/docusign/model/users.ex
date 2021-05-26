@@ -4,25 +4,29 @@
 
 defmodule DocuSign.Model.Users do
   @moduledoc """
-  User management
+  The Users resource enables you to create and manage account users.
   """
 
   @derive [Poison.Encoder]
   defstruct [
-    :accountManagementGranular,
     :activationAccessCode,
+    :company,
+    :connectConfigurations,
     :countryCode,
     :createdDateTime,
     :customSettings,
+    :defaultAccountId,
     :email,
     :enableConnectForUser,
     :errorDetails,
     :firstName,
     :forgottenPasswordInfo,
     :groupList,
+    :hasRemoteNotary,
     :homeAddress,
     :initialsImageUri,
     :isAdmin,
+    :isNAREnabled,
     :lastLogin,
     :lastName,
     :loginStatus,
@@ -39,6 +43,7 @@ defmodule DocuSign.Model.Users do
     :suffixName,
     :title,
     :uri,
+    :userAddedToAccountDateTime,
     :userId,
     :userName,
     :userProfileLastModifiedDate,
@@ -49,20 +54,24 @@ defmodule DocuSign.Model.Users do
   ]
 
   @type t :: %__MODULE__{
-          :accountManagementGranular => UserAccountManagementGranularInformation,
           :activationAccessCode => String.t(),
+          :company => String.t(),
+          :connectConfigurations => [ConnectUserObject],
           :countryCode => String.t(),
           :createdDateTime => String.t(),
           :customSettings => [NameValue],
+          :defaultAccountId => String.t(),
           :email => String.t(),
           :enableConnectForUser => String.t(),
           :errorDetails => ErrorDetails,
           :firstName => String.t(),
           :forgottenPasswordInfo => ForgottenPasswordInformation,
           :groupList => [Group],
-          :homeAddress => AddressInformationV2,
+          :hasRemoteNotary => boolean(),
+          :homeAddress => AddressInformation,
           :initialsImageUri => String.t(),
           :isAdmin => String.t(),
+          :isNAREnabled => String.t(),
           :lastLogin => String.t(),
           :lastName => String.t(),
           :loginStatus => String.t(),
@@ -79,13 +88,14 @@ defmodule DocuSign.Model.Users do
           :suffixName => String.t(),
           :title => String.t(),
           :uri => String.t(),
+          :userAddedToAccountDateTime => String.t(),
           :userId => String.t(),
           :userName => String.t(),
           :userProfileLastModifiedDate => String.t(),
-          :userSettings => [NameValue],
+          :userSettings => UserSettingsInformation,
           :userStatus => String.t(),
           :userType => String.t(),
-          :workAddress => AddressInformationV2
+          :workAddress => AddressInformation
         }
 end
 
@@ -95,9 +105,9 @@ defimpl Poison.Decoder, for: DocuSign.Model.Users do
   def decode(value, options) do
     value
     |> deserialize(
-      :accountManagementGranular,
-      :struct,
-      DocuSign.Model.UserAccountManagementGranularInformation,
+      :connectConfigurations,
+      :list,
+      DocuSign.Model.ConnectUserObject,
       options
     )
     |> deserialize(:customSettings, :list, DocuSign.Model.NameValue, options)
@@ -109,8 +119,8 @@ defimpl Poison.Decoder, for: DocuSign.Model.Users do
       options
     )
     |> deserialize(:groupList, :list, DocuSign.Model.Group, options)
-    |> deserialize(:homeAddress, :struct, DocuSign.Model.AddressInformationV2, options)
-    |> deserialize(:userSettings, :list, DocuSign.Model.NameValue, options)
-    |> deserialize(:workAddress, :struct, DocuSign.Model.AddressInformationV2, options)
+    |> deserialize(:homeAddress, :struct, DocuSign.Model.AddressInformation, options)
+    |> deserialize(:userSettings, :struct, DocuSign.Model.UserSettingsInformation, options)
+    |> deserialize(:workAddress, :struct, DocuSign.Model.AddressInformation, options)
   end
 end

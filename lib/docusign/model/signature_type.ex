@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.SignatureType do
   @moduledoc """
-
+  This object contains information about the type of signature.
   """
 
   @derive [Poison.Encoder]

@@ -4,61 +4,95 @@
 
 defmodule DocuSign.Model.ConnectConfigurations do
   @moduledoc """
-  Connect configurations
+  Contains information about a DocuSign Connect configuration.
   """
 
   @derive [Poison.Encoder]
   defstruct [
     :allowEnvelopePublish,
+    :allowSalesforcePublish,
     :allUsers,
     :configurationType,
     :connectId,
     :enableLog,
     :envelopeEvents,
+    :eventData,
+    :externalFolderId,
+    :externalFolderLabel,
     :includeCertificateOfCompletion,
     :includeCertSoapHeader,
     :includeDocumentFields,
     :includeDocuments,
     :includeEnvelopeVoidReason,
+    :includeHMAC,
     :includeSenderAccountasCustomField,
     :includeTimeZoneInformation,
     :name,
+    :password,
     :recipientEvents,
+    :requireMutualTls,
     :requiresAcknowledgement,
+    :salesforceApiVersion,
+    :salesforceAuthcode,
+    :salesforceCallBackUrl,
+    :salesforceDocumentsAsContentFiles,
+    :senderOverride,
+    :senderSelectableItems,
+    :sfObjects,
     :signMessageWithX509Certificate,
     :soapNamespace,
     :urlToPublishTo,
     :userIds,
+    :userName,
     :useSoapInterface
   ]
 
   @type t :: %__MODULE__{
           :allowEnvelopePublish => String.t(),
+          :allowSalesforcePublish => String.t(),
           :allUsers => String.t(),
           :configurationType => String.t(),
           :connectId => String.t(),
           :enableLog => String.t(),
-          :envelopeEvents => String.t(),
+          :envelopeEvents => [String.t()],
+          :eventData => ConnectEventData,
+          :externalFolderId => String.t(),
+          :externalFolderLabel => String.t(),
           :includeCertificateOfCompletion => String.t(),
           :includeCertSoapHeader => String.t(),
           :includeDocumentFields => String.t(),
           :includeDocuments => String.t(),
           :includeEnvelopeVoidReason => String.t(),
+          :includeHMAC => String.t(),
           :includeSenderAccountasCustomField => String.t(),
           :includeTimeZoneInformation => String.t(),
           :name => String.t(),
-          :recipientEvents => String.t(),
+          :password => String.t(),
+          :recipientEvents => [String.t()],
+          :requireMutualTls => String.t(),
           :requiresAcknowledgement => String.t(),
+          :salesforceApiVersion => String.t(),
+          :salesforceAuthcode => String.t(),
+          :salesforceCallBackUrl => String.t(),
+          :salesforceDocumentsAsContentFiles => String.t(),
+          :senderOverride => String.t(),
+          :senderSelectableItems => [String.t()],
+          :sfObjects => [ConnectSalesforceObject],
           :signMessageWithX509Certificate => String.t(),
           :soapNamespace => String.t(),
           :urlToPublishTo => String.t(),
-          :userIds => String.t(),
+          :userIds => [String.t()],
+          :userName => String.t(),
           :useSoapInterface => String.t()
         }
 end
 
 defimpl Poison.Decoder, for: DocuSign.Model.ConnectConfigurations do
-  def decode(value, _options) do
+  import DocuSign.Deserializer
+
+  def decode(value, options) do
     value
+    |> deserialize(:eventData, :struct, DocuSign.Model.ConnectEventData, options)
+    |> deserialize(:sfObjects, :list, DocuSign.Model.ConnectSalesforceObject, options)
   end
 end

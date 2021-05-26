@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.CustomField do
   @moduledoc """
-
+  This object provides details about a custom field.
   """
 
   @derive [Poison.Encoder]

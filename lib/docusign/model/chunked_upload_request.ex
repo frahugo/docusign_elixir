@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.ChunkedUploadRequest do
   @moduledoc """
-
+  This is the request object for uploading a chunked upload.
   """
 
   @derive [Poison.Encoder]

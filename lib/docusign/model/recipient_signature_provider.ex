@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.RecipientSignatureProvider do
   @moduledoc """
-  An Electronic or Standards Based Signature (digital signature) provider for the signer to use. [More information.](../../../../guide/appendix/standards_based_signatures.html)
+  An Electronic or Standards Based Signature (digital signature) provider for the signer to use. [More information](https://developers.docusign.com/esign-rest-api/guides/standards-based-signatures).
   """
 
   @derive [Poison.Encoder]
@@ -12,6 +12,7 @@ defmodule DocuSign.Model.RecipientSignatureProvider do
     :sealDocumentsWithTabsOnly,
     :sealName,
     :signatureProviderName,
+    :signatureProviderNameMetadata,
     :signatureProviderOptions
   ]
 
@@ -19,6 +20,7 @@ defmodule DocuSign.Model.RecipientSignatureProvider do
           :sealDocumentsWithTabsOnly => String.t(),
           :sealName => String.t(),
           :signatureProviderName => String.t(),
+          :signatureProviderNameMetadata => PropertyMetadata,
           :signatureProviderOptions => RecipientSignatureProviderOptions
         }
 end
@@ -28,6 +30,12 @@ defimpl Poison.Decoder, for: DocuSign.Model.RecipientSignatureProvider do
 
   def decode(value, options) do
     value
+    |> deserialize(
+      :signatureProviderNameMetadata,
+      :struct,
+      DocuSign.Model.PropertyMetadata,
+      options
+    )
     |> deserialize(
       :signatureProviderOptions,
       :struct,

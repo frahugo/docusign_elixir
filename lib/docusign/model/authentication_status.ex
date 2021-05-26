@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.AuthenticationStatus do
   @moduledoc """
-  Contains information about the authentication status.
+  A complex element that contains information about a user&#39;s authentication status.
   """
 
   @derive [Poison.Encoder]
@@ -14,6 +14,7 @@ defmodule DocuSign.Model.AuthenticationStatus do
     :anySocialIDResult,
     :facebookResult,
     :googleResult,
+    :identityVerificationResult,
     :idLookupResult,
     :idQuestionsResult,
     :linkedinResult,
@@ -35,6 +36,7 @@ defmodule DocuSign.Model.AuthenticationStatus do
           :anySocialIDResult => EventResult,
           :facebookResult => EventResult,
           :googleResult => EventResult,
+          :identityVerificationResult => EventResult,
           :idLookupResult => EventResult,
           :idQuestionsResult => EventResult,
           :linkedinResult => EventResult,
@@ -61,6 +63,12 @@ defimpl Poison.Decoder, for: DocuSign.Model.AuthenticationStatus do
     |> deserialize(:anySocialIDResult, :struct, DocuSign.Model.EventResult, options)
     |> deserialize(:facebookResult, :struct, DocuSign.Model.EventResult, options)
     |> deserialize(:googleResult, :struct, DocuSign.Model.EventResult, options)
+    |> deserialize(
+      :identityVerificationResult,
+      :struct,
+      DocuSign.Model.EventResult,
+      options
+    )
     |> deserialize(:idLookupResult, :struct, DocuSign.Model.EventResult, options)
     |> deserialize(:idQuestionsResult, :struct, DocuSign.Model.EventResult, options)
     |> deserialize(:linkedinResult, :struct, DocuSign.Model.EventResult, options)

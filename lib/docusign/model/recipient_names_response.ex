@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.RecipientNamesResponse do
   @moduledoc """
-
+  This response object contains a list of recipients.
   """
 
   @derive [Poison.Encoder]

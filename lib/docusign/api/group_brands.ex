@@ -11,16 +11,16 @@ defmodule DocuSign.Api.GroupBrands do
   import DocuSign.RequestBuilder
 
   @doc """
-  Deletes brand information from the requested group.
-  Deletes brand information from the requested group.
+  Deletes brand information from a group.
+  This method deletes one or more brands from a group.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - group_id (String.t): The ID of the group being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - group_id (String.t): The id of the group.
   - opts (KeywordList): [optional] Optional parameters
-    - :brands_request (BrandsRequest): 
+    - :brands_request (BrandsRequest):
 
   ## Returns
 
@@ -31,12 +31,12 @@ defmodule DocuSign.Api.GroupBrands do
           {:ok, DocuSign.Model.GroupBrands.t()} | {:error, Tesla.Env.t()}
   def brands_delete_group_brands(connection, account_id, group_id, opts \\ []) do
     optional_params = %{
-      brandsRequest: :body
+      :brandsRequest => :body
     }
 
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/groups/#{group_id}/brands")
+    |> url("/v2.1/accounts/#{account_id}/groups/#{group_id}/brands")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -44,14 +44,14 @@ defmodule DocuSign.Api.GroupBrands do
   end
 
   @doc """
-  Gets group brand ID Information. 
-  Retrieves information about the brands associated with the requested group.
+  Gets the brand information for a group.
+  This method returns information about the brands associated with a group.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - group_id (String.t): The ID of the group being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - group_id (String.t): The id of the group.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -64,23 +64,23 @@ defmodule DocuSign.Api.GroupBrands do
   def brands_get_group_brands(connection, account_id, group_id, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/groups/#{group_id}/brands")
+    |> url("/v2.1/accounts/#{account_id}/groups/#{group_id}/brands")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.GroupBrands{})
   end
 
   @doc """
-  Adds group brand ID information to a group.
-  Adds group brand ID information to a group.
+  Adds an existing brand to a group.
+  This method adds one or more existing brands to a group based on the &#x60;groupId&#x60;.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - group_id (String.t): The ID of the group being accessed.
   - opts (KeywordList): [optional] Optional parameters
-    - :brands_request (BrandsRequest): 
+    - :brands_request (BrandsRequest):
 
   ## Returns
 
@@ -91,12 +91,12 @@ defmodule DocuSign.Api.GroupBrands do
           {:ok, DocuSign.Model.GroupBrands.t()} | {:error, Tesla.Env.t()}
   def brands_put_group_brands(connection, account_id, group_id, opts \\ []) do
     optional_params = %{
-      brandsRequest: :body
+      :brandsRequest => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/groups/#{group_id}/brands")
+    |> url("/v2.1/accounts/#{account_id}/groups/#{group_id}/brands")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()

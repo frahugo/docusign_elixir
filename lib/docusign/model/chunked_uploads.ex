@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.ChunkedUploads do
   @moduledoc """
-  Chunked Uploads resource 
+  The ChunkedUploads resource provides methods to complete integrity checks, and to add, commit, retrieve, initiate and delete chunked uploads.
   """
 
   @derive [Poison.Encoder]

@@ -4,16 +4,18 @@
 
 defmodule DocuSign.Model.Workspaces do
   @moduledoc """
-
+  A DocuSign workspace is a collaboration area for sharing files and data.
   """
 
   @derive [Poison.Encoder]
   defstruct [
     :billableAccountId,
+    :callerInformation,
     :created,
     :createdByInformation,
     :lastModified,
     :lastModifiedByInformation,
+    :settings,
     :status,
     :workspaceBaseUrl,
     :workspaceDescription,
@@ -24,10 +26,12 @@ defmodule DocuSign.Model.Workspaces do
 
   @type t :: %__MODULE__{
           :billableAccountId => String.t(),
+          :callerInformation => WorkspaceUser,
           :created => String.t(),
           :createdByInformation => WorkspaceUser,
           :lastModified => String.t(),
           :lastModifiedByInformation => WorkspaceUser,
+          :settings => WorkspaceSettings,
           :status => String.t(),
           :workspaceBaseUrl => String.t(),
           :workspaceDescription => String.t(),
@@ -42,7 +46,14 @@ defimpl Poison.Decoder, for: DocuSign.Model.Workspaces do
 
   def decode(value, options) do
     value
+    |> deserialize(:callerInformation, :struct, DocuSign.Model.WorkspaceUser, options)
     |> deserialize(:createdByInformation, :struct, DocuSign.Model.WorkspaceUser, options)
-    |> deserialize(:lastModifiedByInformation, :struct, DocuSign.Model.WorkspaceUser, options)
+    |> deserialize(
+      :lastModifiedByInformation,
+      :struct,
+      DocuSign.Model.WorkspaceUser,
+      options
+    )
+    |> deserialize(:settings, :struct, DocuSign.Model.WorkspaceSettings, options)
   end
 end

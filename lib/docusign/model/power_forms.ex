@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.PowerForms do
   @moduledoc """
-
+  The PowerForms resource enables you to create fillable forms that you can email or make available for self service on the web.
   """
 
   @derive [Poison.Encoder]
@@ -41,7 +41,7 @@ defmodule DocuSign.Model.PowerForms do
           :createdDateTime => String.t(),
           :emailBody => String.t(),
           :emailSubject => String.t(),
-          :envelopes => [Envelopes],
+          :envelopes => [Envelope],
           :errorDetails => ErrorDetails,
           :instructions => String.t(),
           :isActive => String.t(),
@@ -70,7 +70,7 @@ defimpl Poison.Decoder, for: DocuSign.Model.PowerForms do
 
   def decode(value, options) do
     value
-    |> deserialize(:envelopes, :list, DocuSign.Model.Envelopes, options)
+    |> deserialize(:envelopes, :list, DocuSign.Model.Envelope, options)
     |> deserialize(:errorDetails, :struct, DocuSign.Model.ErrorDetails, options)
     |> deserialize(:recipients, :list, DocuSign.Model.PowerFormRecipient, options)
   end

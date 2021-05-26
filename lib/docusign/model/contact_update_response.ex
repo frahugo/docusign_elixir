@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.ContactUpdateResponse do
   @moduledoc """
-
+  This response objects shows the updated details for the contacts.
   """
 
   @derive [Poison.Encoder]
@@ -13,7 +13,7 @@ defmodule DocuSign.Model.ContactUpdateResponse do
   ]
 
   @type t :: %__MODULE__{
-          :contacts => [Contacts]
+          :contacts => [Contact]
         }
 end
 
@@ -22,6 +22,6 @@ defimpl Poison.Decoder, for: DocuSign.Model.ContactUpdateResponse do
 
   def decode(value, options) do
     value
-    |> deserialize(:contacts, :list, DocuSign.Model.Contacts, options)
+    |> deserialize(:contacts, :list, DocuSign.Model.Contact, options)
   end
 end

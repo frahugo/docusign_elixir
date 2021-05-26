@@ -12,55 +12,57 @@ defmodule DocuSign.Api.EnvelopeDocuments do
 
   @doc """
   Deletes documents from a draft envelope.
-  Deletes one or more documents from an existing draft envelope. &lt;p&gt;**Note**: Only relevant parts of an object are needed to delete a document.
+  Deletes one or more documents from an existing envelope that has not yet been completed.  To delete a document, use only the relevant parts of the [&#x60;envelopeDefinition&#x60;](#envelopeDefinition). For example, this request body specifies that you want to delete the document whose &#x60;documentId&#x60; is \&quot;1\&quot;.   &#x60;&#x60;&#x60;text {   \&quot;documents\&quot;: [     {       \&quot;documentId\&quot;: \&quot;1\&quot;     }   ] } &#x60;&#x60;&#x60;  The envelope status must be one of:  - &#x60;created&#x60; - &#x60;sent&#x60; - &#x60;delivered&#x60;
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :envelope_definition (EnvelopeDefinition): 
+    - :envelope_definition (EnvelopeDefinition):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.EnvelopeDocuments{}} on success
+  {:ok, %DocuSign.Model.EnvelopeDocumentsResult{}} on success
   {:error, info} on failure
   """
   @spec documents_delete_documents(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.EnvelopeDocuments.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.EnvelopeDocumentsResult.t()} | {:error, Tesla.Env.t()}
   def documents_delete_documents(connection, account_id, envelope_id, opts \\ []) do
     optional_params = %{
-      envelopeDefinition: :body
+      :envelopeDefinition => :body
     }
 
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/documents")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/documents")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.EnvelopeDocuments{})
+    |> decode(%DocuSign.Model.EnvelopeDocumentsResult{})
   end
 
   @doc """
   Gets a document from an envelope.
-  Retrieves the specified document from the envelope. If the account has the Highlight Data Changes feature enabled, there is an option to request that any changes in the envelope be highlighted.  The &#x60;{documentID}&#x60; parameter takes two special values:  | Value      | Description | | :---       | :--- | | &#x60;combined&#x60; | Retrieve a PDF that contains the combined content of all documents and the certificate. | | &#x60;archive&#x60;  | Retrieve a ZIP archive that contains all of the PDF documents, the certificate, and any .WAV files used for voice authentication. | 
+  Retrieves the specified document from the envelope. If the account has the Highlight Data Changes feature enabled, there is an option to request that any changes in the envelope be highlighted.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): This parameter takes the following special keywords:  - &#x60;combined&#x60;: Retrieves a PDF file that contains the combined content of all of the documents. If the account option **Attach certification of completion to envelope** is on, then the Certificate of Completion is also included in the PDF file. You set this account option in the Admin tool on the **Signing Settings** screen, or by setting the &#x60;attachCompletedEnvelope&#x60; property in the &#x60;accountSettings&#x60; object to **true**. - &#x60;archive&#x60;: Retrieves a ZIP archive that contains all of the PDF documents and the Certificate of Completion.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
     - :certificate (String.t): When set to **false**, the envelope signing certificate is removed from the download.
-    - :encoding (String.t): 
-    - :encrypt (String.t): When set to **true**, the PDF bytes returned in the response are encrypted for all the key managers configured on your DocuSign account. The documents can be decrypted with the KeyManager Decrypt Document API.
-    - :language (String.t): Specifies the language for the Certificate of Completion in the response. The supported languages, with the language value shown in parenthesis, are: Chinese Simplified (zh_CN), , Chinese Traditional (zh_TW), Dutch (nl), English US (en), French (fr), German (de), Italian (it), Japanese (ja), Korean (ko), Portuguese (pt), Portuguese (Brazil) (pt_BR), Russian (ru), Spanish (es). 
-    - :recipient_id (String.t): 
-    - :show_changes (String.t): When set to **true**, any changed fields for the returned PDF are highlighted in yellow and optional signatures or initials outlined in red. 
-    - :watermark (String.t): When set to **true**, the account has the watermark feature enabled, and the envelope is not complete, the watermark for the account is added to the PDF documents. This option can remove the watermark. 
+    - :documents_by_userid (String.t): When set to **true**, allows recipients to get documents by their user id. For example, if a user is included in two different routing orders with different visibilities, using this parameter returns all of the documents from both routing orders.
+    - :encoding (String.t): Reserved for DocuSign.
+    - :encrypt (String.t): When set to **true**, the PDF bytes returned in the response are encrypted for all the key managers configured on your DocuSign account. You can decrypt the documents by using the Key Manager DecryptDocument API method. For more information about Key Manager, see the DocuSign Security Appliance Installation Guide that your organization received from DocuSign.
+    - :language (String.t): Specifies the language for the Certificate of Completion in the response. The supported languages are: Chinese Simplified (zh_CN), Chinese Traditional (zh_TW), Dutch (nl), English US (en), French (fr), German (de), Italian (it), Japanese (ja), Korean (ko), Portuguese (pt), Portuguese (Brazil) (pt_BR), Russian (ru), Spanish (es).
+    - :recipient_id (String.t): Allows the sender to retrieve the documents as one of the recipients that they control. The &#x60;documents_by_userid&#x60; parameter must be set to **false** for this functionality to work.
+    - :shared_user_id (String.t): The ID of a shared user that you want to impersonate in order to retrieve their view of the list of documents. This parameter is used in the context of a shared inbox (i.e., when you share envelopes from one user to another through the RADmin console).
+    - :show_changes (String.t): When set to **true**, any changed fields for the returned PDF are highlighted in yellow and optional signatures or initials outlined in red.
+    - :watermark (String.t): When set to **true**, the account has the watermark feature enabled, and the envelope is not complete, then the watermark for the account is added to the PDF documents. This option can remove the watermark.
 
   ## Returns
 
@@ -71,18 +73,20 @@ defmodule DocuSign.Api.EnvelopeDocuments do
           {:ok, String.t()} | {:error, Tesla.Env.t()}
   def documents_get_document(connection, account_id, document_id, envelope_id, opts \\ []) do
     optional_params = %{
-      certificate: :query,
-      encoding: :query,
-      encrypt: :query,
-      language: :query,
-      recipient_id: :query,
-      show_changes: :query,
-      watermark: :query
+      :certificate => :query,
+      :documents_by_userid => :query,
+      :encoding => :query,
+      :encrypt => :query,
+      :language => :query,
+      :recipient_id => :query,
+      :shared_user_id => :query,
+      :show_changes => :query,
+      :watermark => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -96,94 +100,100 @@ defmodule DocuSign.Api.EnvelopeDocuments do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
+    - :documents_by_userid (String.t): When set to **true**, allows recipients to get documents by their user id. For example, if a user is included in two different routing orders with different visibilities, using this parameter returns all of the documents from both routing orders.
+    - :include_document_size (String.t):
+    - :include_metadata (String.t): When set to **true**, the response includes metadata that indicates which properties the sender can edit.
+    - :include_tabs (String.t): When set to **true**, information about the tabs associated with the documents are included in the response.
+    - :recipient_id (String.t): Allows the sender to retrieve the documents as one of the recipients that they control. The &#x60;documents_by_userid&#x60; parameter must be set to **false** for this to work.
+    - :shared_user_id (String.t): The ID of a shared user that you want to impersonate in order to retrieve their view of the list of documents. This parameter is used in the context of a shared inbox (i.e., when you share envelopes from one user to another through the RADmin console).
 
   ## Returns
 
-  {:ok, %DocuSign.Model.EnvelopeDocuments{}} on success
+  {:ok, %DocuSign.Model.EnvelopeDocumentsResult{}} on success
   {:error, info} on failure
   """
   @spec documents_get_documents(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.EnvelopeDocuments.t()} | {:error, Tesla.Env.t()}
-  def documents_get_documents(connection, account_id, envelope_id, _opts \\ []) do
+          {:ok, DocuSign.Model.EnvelopeDocumentsResult.t()} | {:error, Tesla.Env.t()}
+  def documents_get_documents(connection, account_id, envelope_id, opts \\ []) do
+    optional_params = %{
+      :documents_by_userid => :query,
+      :include_document_size => :query,
+      :include_metadata => :query,
+      :include_tabs => :query,
+      :recipient_id => :query,
+      :shared_user_id => :query
+    }
+
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/documents")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/documents")
+    |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.EnvelopeDocuments{})
+    |> decode(%DocuSign.Model.EnvelopeDocumentsResult{})
   end
 
   @doc """
   Adds a document to an existing draft envelope.
-  Adds a document to an existing draft envelope. &lt;p&gt;**Note**: When adding or modifying documents for an in-process envelope, DocuSign recommends locking the envelope prior to making any changes.
+  Adds a document to an existing draft envelope. The bytes of the document make up the body of the request.     **Note**: When adding or modifying documents for an in-process envelope, DocuSign recommends locking the envelope prior to making any changes.     If the file name of the document contains unicode characters, you need to include a &#x60;Content-Disposition&#x60; header. Example:   **Header**: &#x60;Content-Disposition&#x60;   **Value**: &#x60;file; filename&#x3D;\\\&quot;name\\\&quot;;fileExtension&#x3D;ext;documentId&#x3D;1&#x60;
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - document_id (String.t): The ID of the document being accessed.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - document_id (String.t): The &#x60;documentId&#x60; is set by the API client. It is an integer that falls between &#x60;1&#x60; and 2,147,483,647. The value is encoded as a string without commas. The values &#x60;1&#x60;, &#x60;2&#x60;, &#x60;3&#x60;, and so on are typically used to identify the first few documents in an envelope. Tab definitions include a &#x60;documentId&#x60; property that specifies the document on which to place the tab.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :apply_document_fields (String.t): When **true**, document fields can be added or modified while adding or modifying envelope documents. 
 
   ## Returns
 
-  {:ok, %{}} on success
+  {:ok, %DocuSign.Model.EnvelopeDocument{}} on success
   {:error, info} on failure
   """
   @spec documents_put_document(Tesla.Env.client(), String.t(), String.t(), String.t(), keyword()) ::
-          {:ok, nil} | {:error, Tesla.Env.t()}
-  def documents_put_document(connection, account_id, document_id, envelope_id, opts \\ []) do
-    optional_params = %{
-      apply_document_fields: :query
-    }
-
+          {:ok, DocuSign.Model.EnvelopeDocument.t()} | {:error, Tesla.Env.t()}
+  def documents_put_document(connection, account_id, document_id, envelope_id, _opts \\ []) do
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}")
-    |> add_optional_params(optional_params, opts)
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/documents/#{document_id}")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(false)
+    |> decode(%DocuSign.Model.EnvelopeDocument{})
   end
 
   @doc """
   Adds one or more documents to an existing envelope document.
-  Adds one or more documents to an existing envelope document. &lt;p&gt;**Note**: When adding or modifying documents for an in-process envelope, DocuSign recommends locking the envelope prior to making any changes.
+  Adds one or more documents to an existing envelope document. &lt;p&gt;**Note**: When adding or modifying documents for an in-process envelope, DocuSign recommends locking the envelope prior to making any changes.  If the file name of a document contains unicode characters, you need to include a &#x60;Content-Disposition&#x60; header. Example:   **Header**: &#x60;Content-Disposition&#x60;   **Value**: &#x60;file; filename&#x3D;\\\&quot;name\\\&quot;;fileExtension&#x3D;ext;documentId&#x3D;1&#x60;
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - envelope_id (String.t): The envelope&#39;s GUID. Eg 93be49ab-afa0-4adf-933c-f752070d71ec 
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - envelope_id (String.t): The envelope&#39;s GUID.   Example: &#x60;93be49ab-xxxx-xxxx-xxxx-f752070d71ec&#x60;
   - opts (KeywordList): [optional] Optional parameters
-    - :apply_document_fields (String.t): When **true**, document fields can be added or modified while adding or modifying envelope documents. 
-    - :persist_tabs (String.t): 
-    - :envelope_definition (EnvelopeDefinition): 
+    - :envelope_definition (EnvelopeDefinition):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.EnvelopeDocuments{}} on success
+  {:ok, %DocuSign.Model.EnvelopeDocumentsResult{}} on success
   {:error, info} on failure
   """
   @spec documents_put_documents(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.EnvelopeDocuments.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.EnvelopeDocumentsResult.t()} | {:error, Tesla.Env.t()}
   def documents_put_documents(connection, account_id, envelope_id, opts \\ []) do
     optional_params = %{
-      apply_document_fields: :query,
-      persist_tabs: :query,
-      envelopeDefinition: :body
+      :envelopeDefinition => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/envelopes/#{envelope_id}/documents")
+    |> url("/v2.1/accounts/#{account_id}/envelopes/#{envelope_id}/documents")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.EnvelopeDocuments{})
+    |> decode(%DocuSign.Model.EnvelopeDocumentsResult{})
   end
 end

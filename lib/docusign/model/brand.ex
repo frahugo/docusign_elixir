@@ -4,15 +4,17 @@
 
 defmodule DocuSign.Model.Brand do
   @moduledoc """
-
+  Information about a brand that is associated with an account. A brand applies custom styles and text to an envelope.
   """
 
   @derive [Poison.Encoder]
   defstruct [
     :brandCompany,
     :brandId,
+    :brandLanguages,
     :brandName,
     :colors,
+    :defaultBrandLanguage,
     :emailContent,
     :errorDetails,
     :isOverridingCompanyName,
@@ -27,13 +29,15 @@ defmodule DocuSign.Model.Brand do
   @type t :: %__MODULE__{
           :brandCompany => String.t(),
           :brandId => String.t(),
+          :brandLanguages => [String.t()],
           :brandName => String.t(),
           :colors => [NameValue],
+          :defaultBrandLanguage => String.t(),
           :emailContent => [BrandEmailContent],
           :errorDetails => ErrorDetails,
-          :isOverridingCompanyName => String.t(),
-          :isSendingDefault => String.t(),
-          :isSigningDefault => String.t(),
+          :isOverridingCompanyName => boolean(),
+          :isSendingDefault => boolean(),
+          :isSigningDefault => boolean(),
           :landingPages => [NameValue],
           :links => [BrandLink],
           :logos => BrandLogos,

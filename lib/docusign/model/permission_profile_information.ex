@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.PermissionProfileInformation do
   @moduledoc """
-
+  Contains details about the permission profiles associated with an account.
   """
 
   @derive [Poison.Encoder]
@@ -13,7 +13,7 @@ defmodule DocuSign.Model.PermissionProfileInformation do
   ]
 
   @type t :: %__MODULE__{
-          :permissionProfiles => [AccountPermissionProfiles]
+          :permissionProfiles => [PermissionProfile]
         }
 end
 
@@ -22,6 +22,6 @@ defimpl Poison.Decoder, for: DocuSign.Model.PermissionProfileInformation do
 
   def decode(value, options) do
     value
-    |> deserialize(:permissionProfiles, :list, DocuSign.Model.AccountPermissionProfiles, options)
+    |> deserialize(:permissionProfiles, :list, DocuSign.Model.PermissionProfile, options)
   end
 end

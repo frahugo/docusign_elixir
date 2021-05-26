@@ -17,32 +17,32 @@ defmodule DocuSign.Api.Users do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - user_id (String.t): The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - user_id (String.t): The ID of the user to access. Generally this is the ID of the current authenticated user, but if the authenticated user is an Administrator on the account, &#x60;userId&#x60; can represent another user whom the Administrator is accessing.
   - opts (KeywordList): [optional] Optional parameters
-    - :additional_info (String.t): When set to **true**, the full list of user information is returned for each user in the account.
-    - :email (String.t): 
+    - :additional_info (String.t): Setting this parameter has no effect in this operation.
+    - :email (String.t): Setting this parameter has no effect in this operation.
 
   ## Returns
 
-  {:ok, %DocuSign.Model.Users{}} on success
+  {:ok, %DocuSign.Model.UserInformation{}} on success
   {:error, info} on failure
   """
   @spec user_get_user(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.Users.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.UserInformation.t()} | {:error, Tesla.Env.t()}
   def user_get_user(connection, account_id, user_id, opts \\ []) do
     optional_params = %{
-      additional_info: :query,
-      email: :query
+      :additional_info => :query,
+      :email => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/users/#{user_id}")
+    |> url("/v2.1/accounts/#{account_id}/users/#{user_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.Users{})
+    |> decode(%DocuSign.Model.UserInformation{})
   end
 
   @doc """
@@ -52,8 +52,8 @@ defmodule DocuSign.Api.Users do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - user_id (String.t): The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - user_id (String.t): The ID of the user to access. Generally this is the ID of the current authenticated user, but if the authenticated user is an Administrator on the account, &#x60;userId&#x60; can represent another user whom the Administrator is accessing.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -70,7 +70,7 @@ defmodule DocuSign.Api.Users do
   def user_profile_image_delete_user_profile_image(connection, account_id, user_id, _opts \\ []) do
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/users/#{user_id}/profile/image")
+    |> url("/v2.1/accounts/#{account_id}/users/#{user_id}/profile/image")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(false)
@@ -83,10 +83,10 @@ defmodule DocuSign.Api.Users do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - user_id (String.t): The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - user_id (String.t): The ID of the user to access. Generally this is the ID of the current authenticated user, but if the authenticated user is an Administrator on the account, &#x60;userId&#x60; can represent another user whom the Administrator is accessing.
   - opts (KeywordList): [optional] Optional parameters
-    - :encoding (String.t): 
+    - :encoding (String.t): Reserved for DocuSign.
 
   ## Returns
 
@@ -101,12 +101,12 @@ defmodule DocuSign.Api.Users do
         ) :: {:ok, String.t()} | {:error, Tesla.Env.t()}
   def user_profile_image_get_user_profile_image(connection, account_id, user_id, opts \\ []) do
     optional_params = %{
-      encoding: :query
+      :encoding => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/users/#{user_id}/profile/image")
+    |> url("/v2.1/accounts/#{account_id}/users/#{user_id}/profile/image")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -120,8 +120,8 @@ defmodule DocuSign.Api.Users do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - user_id (String.t): The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - user_id (String.t): The ID of the user to access. Generally this is the ID of the current authenticated user, but if the authenticated user is an Administrator on the account, &#x60;userId&#x60; can represent another user whom the Administrator is accessing.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -138,54 +138,54 @@ defmodule DocuSign.Api.Users do
   def user_profile_image_put_user_profile_image(connection, account_id, user_id, _opts \\ []) do
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/users/#{user_id}/profile/image")
+    |> url("/v2.1/accounts/#{account_id}/users/#{user_id}/profile/image")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(false)
   end
 
   @doc """
-  Updates the specified user information.
-
+  Updates user information for the specified user.
+  To update user information for a specific user, submit a [Users](#Users) object with updated field values in the request body of this operation.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - user_id (String.t): The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - user_id (String.t): The ID of the user to access. Generally this is the ID of the current authenticated user, but if the authenticated user is an Administrator on the account, &#x60;userId&#x60; can represent another user whom the Administrator is accessing.
   - opts (KeywordList): [optional] Optional parameters
-    - :users (Users): 
+    - :user_information (UserInformation):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.Users{}} on success
+  {:ok, %DocuSign.Model.UserInformation{}} on success
   {:error, info} on failure
   """
   @spec user_put_user(Tesla.Env.client(), String.t(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.Users.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.UserInformation.t()} | {:error, Tesla.Env.t()}
   def user_put_user(connection, account_id, user_id, opts \\ []) do
     optional_params = %{
-      Users: :body
+      :userInformation => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/users/#{user_id}")
+    |> url("/v2.1/accounts/#{account_id}/users/#{user_id}")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.Users{})
+    |> decode(%DocuSign.Model.UserInformation{})
   end
 
   @doc """
   Gets the user account settings for a specified user.
-  Retrieves a list of the account settings and email notification information for the specified user.  The response returns the account setting name/value information and the email notification settings for the specified user. For more information about the different user settings, see the [ML:userSettings list].
+  Retrieves a list of the account settings and email notification information for the specified user.  The response returns the account setting name/value information and the email notification settings for the specified user. For more information, see [Users:create](https://developers.docusign.com/docs/esign-rest-api/reference/Users/Users/create/).
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - user_id (String.t): The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - user_id (String.t): The ID of the user to access. Generally this is the ID of the current authenticated user, but if the authenticated user is an Administrator on the account, &#x60;userId&#x60; can represent another user whom the Administrator is accessing.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
@@ -198,7 +198,7 @@ defmodule DocuSign.Api.Users do
   def user_settings_get_user_settings(connection, account_id, user_id, _opts \\ []) do
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/users/#{user_id}/settings")
+    |> url("/v2.1/accounts/#{account_id}/users/#{user_id}/settings")
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
     |> decode(%DocuSign.Model.UserSettingsInformation{})
@@ -211,10 +211,10 @@ defmodule DocuSign.Api.Users do
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - user_id (String.t): The user ID of the user being accessed. Generally this is the user ID of the authenticated user, but if the authenticated user is an Admin on the account, this may be another user the Admin user is accessing.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - user_id (String.t): The ID of the user to access. Generally this is the ID of the current authenticated user, but if the authenticated user is an Administrator on the account, &#x60;userId&#x60; can represent another user whom the Administrator is accessing.
   - opts (KeywordList): [optional] Optional parameters
-    - :user_settings_information (UserSettingsInformation): 
+    - :user_settings_information (UserSettingsInformation):
 
   ## Returns
 
@@ -225,12 +225,12 @@ defmodule DocuSign.Api.Users do
           {:ok, nil} | {:error, Tesla.Env.t()}
   def user_settings_put_user_settings(connection, account_id, user_id, opts \\ []) do
     optional_params = %{
-      userSettingsInformation: :body
+      :userSettingsInformation => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/users/#{user_id}/settings")
+    |> url("/v2.1/accounts/#{account_id}/users/#{user_id}/settings")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -239,57 +239,58 @@ defmodule DocuSign.Api.Users do
 
   @doc """
   Removes users account privileges.
-  This closes one or more user records in the account. Users are never deleted from an account, but closing a user prevents them from using account functions.  The response returns whether the API execution was successful (200 - OK) or  if it failed. The response contains a user structure similar to the request and includes the user changes. If an error occurred during the DELETE operation for any of the users, the response for that user contains an &#x60;errorDetails&#x60; node with &#x60;errorCode&#x60; and &#x60;message&#x60; properties.
+  Closes one or more user records in the account. Users are never deleted from an account, but closing a user prevents them from using account functions.  The response specifies whether the API execution succeeded (200 - OK) or failed (400 - Error). The response contains a user structure similar to the request and includes the user changes. If an error occurred during the DELETE operation for any of the users, the response for that user contains an &#x60;errorDetails&#x60; property with &#x60;errorCode&#x60; and &#x60;message&#x60; properties.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :delete (String.t): 
-    - :user_info_list (UserInfoList): 
+    - :delete (String.t): ID of the user to delete. This parameter takes a comma-separated list of values in the format: &#x60;Groups,PermissionSet,SigningGroupsEmail&#x60;.
+    - :user_info_list (UserInfoList):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.GroupUsers{}} on success
+  {:ok, %DocuSign.Model.UsersResponse{}} on success
   {:error, info} on failure
   """
   @spec users_delete_users(Tesla.Env.client(), String.t(), keyword()) ::
-          {:ok, DocuSign.Model.GroupUsers.t()} | {:error, Tesla.Env.t()}
+          {:ok, DocuSign.Model.UsersResponse.t()} | {:error, Tesla.Env.t()}
   def users_delete_users(connection, account_id, opts \\ []) do
     optional_params = %{
-      delete: :query,
-      userInfoList: :body
+      :delete => :query,
+      :userInfoList => :body
     }
 
     %{}
     |> method(:delete)
-    |> url("/v2/accounts/#{account_id}/users")
+    |> url("/v2.1/accounts/#{account_id}/users")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.GroupUsers{})
+    |> decode(%DocuSign.Model.UsersResponse{})
   end
 
   @doc """
   Retrieves the list of users for the specified account.
-  Retrieves the list of users for the specified account.  The response returns the list of users for the account along with the information about the result set. If the &#x60;additional_info&#x60; query was added to the endpoint and set to **true**, the full user information is returned for each user
+  Retrieves the list of users for the specified account.  The response returns the list of users for the account, with information about the result set. If the &#x60;additional_info&#x60; query is added to the endpoint and set to **true**, full user information is returned for each user.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): (Required) The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :additional_info (String.t): When set to **true**, the full list of user information is returned for each user in the account.
-    - :count (String.t): Number of records to return. The number must be greater than 0 and less than or equal to 100. 
-    - :email (String.t): 
-    - :email_substring (String.t): Filters the returned user records by the email address or a sub-string of email address.
-    - :group_id (String.t): Filters user records returned by one or more group Id&#39;s.
-    - :login_status (String.t): 
-    - :not_group_id (String.t): 
-    - :start_position (String.t): Starting value for the list. 
-    - :status (String.t): Indicates the envelope status. Valid values are:   * completed - The envelope has been completed and all tags have been signed. * created - The envelope is created as a draft. It can be modified and sent later. * declined - The envelope has been declined by the recipients. * delivered - The envelope has been delivered to the recipients. * sent - The envelope is sent to the recipients. * signed - The envelope has been signed by the recipients. * voided - The envelope is no longer valid and recipients cannot access or sign the envelope. 
-    - :user_name_substring (String.t): Filters the user records returned by the user name or a sub-string of user name.
+    - :additional_info (String.t): When set to **true**, the custom settings information is returned for each user in the account. If this parameter is omitted, the default behavior is **false**.
+    - :count (String.t): The number of records to return. This number must be greater than &#x60;0&#x60; and less than or equal to &#x60;100&#x60;.
+    - :email (String.t): Filters results based on the email address associated with the user that you want to return.  **Note**: You can use either this parameter or the &#x60;email_substring&#x60; parameter, but not both. For older accounts, this parameter might return multiple users who are associated with a single email address.
+    - :email_substring (String.t): Filters results based on a fragment of an email address. For example, you could enter &#x60;gmail&#x60; to return all users who have Gmail addresses.  **Note**: You do not use a wildcard character with this parameter. You can use either this parameter or the &#x60;email&#x60; parameter, but not both.
+    - :group_id (String.t): Filters results based on one or more group IDs.
+    - :include_usersettings_for_csv (String.t): When set to **true**, the response includes the &#x60;userSettings&#x60; object data in CSV format.
+    - :login_status (String.t): When set to **true**, the response includes the login status of each user.
+    - :not_group_id (String.t): Return user records excluding the specified group IDs.
+    - :start_position (String.t): The position within the total result set from which to start returning values.
+    - :status (String.t): Filters results by user account status. Possible values are:  * &#x60;ActivationRequired&#x60; * &#x60;ActivationSent&#x60; * &#x60;Active&#x60; * &#x60;Closed&#x60; * &#x60;Disabled&#x60;
+    - :user_name_substring (String.t): Filters results based on a full or partial user name.  **Note**: When you enter a partial user name, you do not use a wildcard character.
 
   ## Returns
 
@@ -300,21 +301,22 @@ defmodule DocuSign.Api.Users do
           {:ok, DocuSign.Model.UserInformationList.t()} | {:error, Tesla.Env.t()}
   def users_get_users(connection, account_id, opts \\ []) do
     optional_params = %{
-      additional_info: :query,
-      count: :query,
-      email: :query,
-      email_substring: :query,
-      group_id: :query,
-      login_status: :query,
-      not_group_id: :query,
-      start_position: :query,
-      status: :query,
-      user_name_substring: :query
+      :additional_info => :query,
+      :count => :query,
+      :email => :query,
+      :email_substring => :query,
+      :group_id => :query,
+      :include_usersettings_for_csv => :query,
+      :login_status => :query,
+      :not_group_id => :query,
+      :start_position => :query,
+      :status => :query,
+      :user_name_substring => :query
     }
 
     %{}
     |> method(:get)
-    |> url("/v2/accounts/#{account_id}/users")
+    |> url("/v2.1/accounts/#{account_id}/users")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -322,15 +324,15 @@ defmodule DocuSign.Api.Users do
   end
 
   @doc """
-  Adds news user to the specified account.
-  Adds new users to an account.  The body of this request is an array of [&#x60;Users&#x60;][usersobject] objects. For each new user, you must provide at least the &#x60;userName&#x60; and an &#x60;email&#x60;.  The [&#x60;userSettings&#x60; property](#user-settings) is a [name/value][nameValue] list that specifies the actions users can perform. In the example below, Tal Mason will be able to send envelopes, and the activation email will be in French because the &#x60;locale&#x60; is set to &#x60;fr&#x60;.   &#x60;&#x60;&#x60; POST /restapi/v2/accounts/{accountId}/users Content-Type: application/json &#x60;&#x60;&#x60; &#x60;&#x60;&#x60; {   \&quot;newUsers\&quot;: [     {       \&quot;userName\&quot;: \&quot;Claire Horace\&quot;,       \&quot;email\&quot;: \&quot;claire@example.com.com\&quot;     },     {       \&quot;userName\&quot;: \&quot;Tal Mason\&quot;,       \&quot;email\&quot;: \&quot;tal@example.com.com\&quot;,       \&quot;userSettings\&quot;: [         {           \&quot;name\&quot;: \&quot;canSendEnvelope\&quot;,           \&quot;value\&quot;: \&quot;true\&quot;         },         {           \&quot;name\&quot;: \&quot;locale\&quot;,           \&quot;value\&quot;: \&quot;fr\&quot;         }       ]     }   ] } &#x60;&#x60;&#x60;   A successful response is a &#x60;newUsers&#x60; array with information about the newly created users. If there was problem creating a user, that entry will contain an &#x60;errorDetails&#x60; property that describes what went wrong.  &#x60;&#x60;&#x60;json {   \&quot;newUsers\&quot;: [     {       \&quot;userId\&quot;: \&quot;e064a4fc-c0da-c0c0-95fa-8bac87ede98a\&quot;,       \&quot;uri\&quot;: \&quot;/users/e064a4fc-c0da-c0c0-95fa-8bac87ede98a\&quot;,       \&quot;email\&quot;: \&quot;claire@example.com\&quot;,       \&quot;userName\&quot;: \&quot;Claire Horace\&quot;,       \&quot;createdDateTime\&quot;: \&quot;0001-01-01T08:00:00.0000000Z\&quot;,       \&quot;errorDetails\&quot;: {         \&quot;errorCode\&quot;: \&quot;USER_ALREADY_EXISTS_IN_ACCOUNT\&quot;,         \&quot;message\&quot;: \&quot;Username and email combination already exists for this account.\&quot;       }     },     {       \&quot;userId\&quot;: \&quot;a0e6c64b-feed-cafe-9af0-805ff3c8cffd\&quot;,       \&quot;uri\&quot;: \&quot;/users/a0e6c64b-feed-cafe-9af0-805ff3c8cffd\&quot;,       \&quot;email\&quot;: \&quot;tal@example.com\&quot;,       \&quot;userName\&quot;: \&quot;Tal Mason\&quot;,       \&quot;userStatus\&quot;: \&quot;ActivationSent\&quot;,       \&quot;createdDateTime\&quot;: \&quot;2017-09-15T05:54:36.1265683Z\&quot;     }   ] } &#x60;&#x60;&#x60;   ### User Settings  User settings specify the capabilities a newly created user will have.   | Name                             | Value   | Authorization Requried                                         | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | | :------------------------------- | :------ | :------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | | allowBulkRecipients              | Boolean | Admin                                                          | When **true**, this user can use the bulk send functionality.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | | allowRecipientLanguageSelection  | Boolean | Admin                                                          | When **true**, this user can set the language used in the standard email format for a recipient when creating an envelope.                                                                                                                                                                                                                                                                                                                                                                                                                                                              | | allowSendOnBehalfOf              | Boolean | Admin                                                          | When **true**, this user can send envelopes &#39;on behalf of&#39; other users through the API.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | | apiAccountWideAccess             | Boolean | Admin                                                          | When **true**, this user can send and manage envelopes for the entire account using the DocuSign API.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | | canEditSharedAddressBook         | String  | Admin                                                          | Sets the address book usage and management rights for the user. Possible values: &lt;ul&gt; &lt;li&gt;&lt;code&gt;none&lt;/code&gt;&lt;/li&gt; &lt;li&gt;&lt;code&gt;use_only_shared&lt;/code&gt;&lt;/li&gt; &lt;li&gt;&lt;code&gt;use_private_and_shared&lt;/code&gt;&lt;/li&gt; &lt;li&gt;&lt;code&gt;share&lt;/code&gt;&lt;/li&gt; &lt;/ul&gt;                                                                                                                                                                                                                                                                                                                                                   | | canManageAccount                 | Boolean | Admin &amp;amp; not setting for self                               | When **true**, this user can manage account settings, manage user settings, add users, and remove users.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | | canManageTemplates               | String  | Admin &amp;amp; not setting for self                               | Sets the template usage and management rights for the user. Possible values: &lt;ul&gt; &lt;li&gt;&lt;code&gt;none&lt;/code&gt;&lt;/li&gt; &lt;li&gt;&lt;code&gt;use&lt;/code&gt;&lt;/li&gt; &lt;li&gt;&lt;code&gt;create&lt;/code&gt;&lt;/li&gt; &lt;li&gt;&lt;code&gt;share&lt;/code&gt;&lt;/li&gt; &lt;/ul&gt;                                                                                                                                                                                                                                                                                                                                                                                   | | canSendAPIRequests               | Boolean | Admin &amp;amp; [account setting][accountsettings] &#x60;usesAPI&#x60; is set| Only needed if integrator key is not used. When **true**, this user can send and manage envelopes using the DocuSign API.                                                                                                                                                                                                                                                                                                                                                                                                                                                               | | canSendEnvelope                  | Boolean | Admin &amp;amp; not setting for self                               | When **true**, this user can send envelopes though the DocuSign Console.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | | enableDSPro                      | Boolean | SysAdmin                                                       | When **true**, this user can send and manage envelopes from the DocuSign Desktop Client.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | | enableSequentialSigningAPI       | Boolean | SysAdmin                                                       | When **true**, this user can define the routing order of recipients for envelopes sent using the DocuSign API.                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | | enableSequentialSigningUI        | Boolean | SysAdmin                                                       | When **true**, this user can define the routing order of recipients while sending documents for signature.                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | | enableSignerAttachments          | Boolean | Admin                                                          | When **true**, this user can add requests for attachments from signers while sending documents.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | | enableSignOnPaperOverride        | Boolean | Admin                                                          | When **true**, this user can override the account setting that determines if signers may sign their documents on paper as an option to signing electronically.                                                                                                                                                                                                                                                                                                                                                                                                                          | | enableTransactionPoint           | Boolean | SysAdmin                                                       | When **true**, this user can select an envelope from their member console and upload the envelope documents to TransactionPoint.                                                                                                                                                                                                                                                                                                                                                                                                                                                        | | enableVaulting                   | Boolean | Admin                                                          | When **true**, this user can use electronic vaulting for documents.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | | locale                           | String  | Admin                                                          | Sets the default language for the user. The supported languages are: &lt;ul&gt; &lt;li&gt;Chinese Simplified: &lt;code&gt;zh_CN&lt;/code&gt;&lt;/li&gt; &lt;li&gt;Chinese Traditional: &lt;code&gt;zh_TW&lt;/code&gt;&lt;/li&gt; &lt;li&gt;Dutch: &lt;code&gt;nl&lt;/code&gt;&lt;/li&gt; &lt;li&gt;English US: &lt;code&gt;en&lt;/code&gt;&lt;/li&gt; &lt;li&gt;French: &lt;code&gt;fr&lt;/code&gt;&lt;/li&gt; &lt;li&gt;German: &lt;code&gt;de&lt;/code&gt;&lt;/li&gt; &lt;li&gt;Italian: &lt;code&gt;it&lt;/code&gt;&lt;/li&gt; &lt;li&gt;Japanese: &lt;code&gt;ja&lt;/code&gt;&lt;/li&gt; &lt;li&gt;Korean: &lt;code&gt;ko&lt;/code&gt;&lt;/li&gt; &lt;li&gt;Portuguese: &lt;code&gt;pt&lt;/code&gt;&lt;/li&gt; &lt;li&gt;Portuguese (Brazil): &lt;code&gt;pt_BR&lt;/code&gt;&lt;/li&gt; &lt;li&gt;Russian: &lt;code&gt;ru&lt;/code&gt;&lt;/li&gt; &lt;li&gt;Spanish: &lt;code&gt;es&lt;/code&gt;&lt;/li&gt; &lt;/ul&gt; | | powerFormAdmin                   | Boolean | Admin                                                          | When **true**, this user can create, manage and download the PowerForms documents.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | | powerFormUser                    | Boolean | Admin                                                          | When **true**, this user can view and download PowerForms documents.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | | selfSignedRecipientEmailDocument | String  | Admin                                                          | Sets how self-signed documents are presented to the email recipients. This can only be changed if the &lt;code&gt;selfSignedRecipientEmailDocumentUserOverride&lt;/code&gt; &lt;a href&#x3D;\&quot;/esign/restapi/Accounts/Accounts/create/#account-settings\&quot;&gt;account setting&lt;/a&gt; is &lt;strong&gt;true&lt;/strong&gt;. This setting overrides the account setting. Possibe values are: &lt;ul&gt; &lt;li&gt;&lt;code&gt;include_pdf&lt;/code&gt;: A PDF of the completed document is attached to the email.&lt;/li&gt; &lt;li&gt;&lt;code&gt;include_link&lt;/code&gt;: A secure link to the self-signed documents is included in the email.&lt;/li&gt; &lt;/ul&gt;                      | | vaultingMode                     | String  | Admin                                                          | Sets the electronic vaulting mode for the user. Possible values: &lt;ul&gt; &lt;li&gt;&lt;code&gt;none&lt;/code&gt;&lt;/li&gt; &lt;li&gt;&lt;code&gt;estored&lt;/code&gt;&lt;/li&gt; &lt;li&gt;&lt;code&gt;electronic_original&lt;/code&gt;&lt;/li&gt; &lt;/ul&gt;                                                                                                                                                                                                                                                                                                                                                                                                          |  [accountsettings]:  /esign/restapi/Accounts/Accounts/create/#account-settings [nameValue]:        #/definitions/nameValue [usersobject]:      #/definitions/Users 
+  Adds new users to the specified account.
+  Adds new users to an account.  The body of this request is an array of &#x60;newUsers&#x60; objects. For each new user, you must provide at least the &#x60;userName&#x60; and &#x60;email&#x60; properties.  The &#x60;userSettings&#x60; property specifies the actions users can perform. In the example below, Tal Mason will be able to send envelopes, and the activation email will be in French because the &#x60;locale&#x60; is set to &#x60;fr&#x60;.   &#x60;&#x60;&#x60; POST /restapi/v2.1/accounts/{accountId}/users Content-Type: application/json &#x60;&#x60;&#x60; &#x60;&#x60;&#x60; {   \&quot;newUsers\&quot;: [     {       \&quot;userName\&quot;: \&quot;Claire Horace\&quot;,       \&quot;email\&quot;: \&quot;claire@example.com\&quot;     },     {       \&quot;userName\&quot;: \&quot;Tal Mason\&quot;,       \&quot;email\&quot;: \&quot;talmason@example.com\&quot;,       \&quot;company\&quot;: \&quot;TeleSel\&quot;,       \&quot;userSettings\&quot;: {         \&quot;locale\&quot;: \&quot;fr\&quot;,         \&quot;canSendEnvelope\&quot;: true       }     }   ] } &#x60;&#x60;&#x60;  A successful response is a &#x60;newUsers&#x60; array with information about the newly created users. If there was a problem in creating a user, that user entry will contain an &#x60;errorDetails&#x60; property that describes what went wrong.  &#x60;&#x60;&#x60;json {   \&quot;newUsers\&quot;: [     {       \&quot;userId\&quot;: \&quot;18f3be12-xxxx-xxxx-xxxx-883d8f9b8ade\&quot;,       \&quot;uri\&quot;: \&quot;/users/18f3be12-xxxx-xxxx-xxxx-883d8f9b8ade\&quot;,       \&quot;email\&quot;: \&quot;claire@example.com\&quot;,       \&quot;userName\&quot;: \&quot;Claire Horace\&quot;,       \&quot;createdDateTime\&quot;: \&quot;0001-01-01T08:00:00.0000000Z\&quot;,       \&quot;errorDetails\&quot;: {         \&quot;errorCode\&quot;: \&quot;USER_ALREADY_EXISTS_IN_ACCOUNT\&quot;,         \&quot;message\&quot;: \&quot;Username and email combination already exists for this account.\&quot;       }     },     {       \&quot;userId\&quot;: \&quot;be9899a3-xxxx-xxxx-xxxx-2c8dd7156e33\&quot;,       \&quot;uri\&quot;: \&quot;/users/be9899a3-xxxx-xxxx-xxxx-2c8dd7156e33\&quot;,       \&quot;email\&quot;: \&quot;talmason@example.com\&quot;,       \&quot;userName\&quot;: \&quot;Tal Mason\&quot;,       \&quot;userStatus\&quot;: \&quot;ActivationSent\&quot;,       \&quot;createdDateTime\&quot;: \&quot;2020-05-26T23:25:30.7330000Z\&quot;     }   ] } &#x60;&#x60;&#x60;
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :new_users_definition (NewUsersDefinition): 
+    - :new_users_definition (NewUsersDefinition):
 
   ## Returns
 
@@ -341,12 +343,12 @@ defmodule DocuSign.Api.Users do
           {:ok, DocuSign.Model.NewUsersSummary.t()} | {:error, Tesla.Env.t()}
   def users_post_users(connection, account_id, opts \\ []) do
     optional_params = %{
-      newUsersDefinition: :body
+      :newUsersDefinition => :body
     }
 
     %{}
     |> method(:post)
-    |> url("/v2/accounts/#{account_id}/users")
+    |> url("/v2.1/accounts/#{account_id}/users")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
@@ -354,15 +356,15 @@ defmodule DocuSign.Api.Users do
   end
 
   @doc """
-  Change one or more user in the specified account.
-
+  Changes one or more users in the specified account.
+  This method updates the information about one or more account users.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
+  - account_id (String.t): The external account number (int) or account ID GUID.
   - opts (KeywordList): [optional] Optional parameters
-    - :user_information_list (UserInformationList): 
+    - :user_information_list (UserInformationList):
 
   ## Returns
 
@@ -373,12 +375,12 @@ defmodule DocuSign.Api.Users do
           {:ok, DocuSign.Model.UserInformationList.t()} | {:error, Tesla.Env.t()}
   def users_put_users(connection, account_id, opts \\ []) do
     optional_params = %{
-      userInformationList: :body
+      :userInformationList => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/users")
+    |> url("/v2.1/accounts/#{account_id}/users")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()

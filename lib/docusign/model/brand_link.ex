@@ -4,7 +4,7 @@
 
 defmodule DocuSign.Model.BrandLink do
   @moduledoc """
-
+  Information about a link that a brand uses.
   """
 
   @derive [Poison.Encoder]

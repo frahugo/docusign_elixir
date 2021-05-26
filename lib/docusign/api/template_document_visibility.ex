@@ -11,20 +11,20 @@ defmodule DocuSign.Api.TemplateDocumentVisibility do
   import DocuSign.RequestBuilder
 
   @doc """
-  Returns document visibility for the recipients
-
+  Returns document visibility for a template recipient
+  This method returns information about document visibility for a template recipient.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - recipient_id (String.t): The &#x60;recipientId&#x60; used when the envelope or template was created.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - recipient_id (String.t): A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each &#x60;recipientId&#x60; must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a &#x60;recipientId&#x60; of &#x60;1&#x60;.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
 
   ## Returns
 
-  {:ok, %DocuSign.Model.EnvelopeDocumentVisibility{}} on success
+  {:ok, %DocuSign.Model.DocumentVisibilityList{}} on success
   {:error, info} on failure
   """
   @spec recipients_get_template_recipient_document_visibility(
@@ -33,7 +33,7 @@ defmodule DocuSign.Api.TemplateDocumentVisibility do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.EnvelopeDocumentVisibility.t()} | {:error, Tesla.Env.t()}
+        ) :: {:ok, DocuSign.Model.DocumentVisibilityList.t()} | {:error, Tesla.Env.t()}
   def recipients_get_template_recipient_document_visibility(
         connection,
         account_id,
@@ -44,29 +44,29 @@ defmodule DocuSign.Api.TemplateDocumentVisibility do
     %{}
     |> method(:get)
     |> url(
-      "/v2/accounts/#{account_id}/templates/#{template_id}/recipients/#{recipient_id}/document_visibility"
+      "/v2.1/accounts/#{account_id}/templates/#{template_id}/recipients/#{recipient_id}/document_visibility"
     )
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.EnvelopeDocumentVisibility{})
+    |> decode(%DocuSign.Model.DocumentVisibilityList{})
   end
 
   @doc """
-  Updates document visibility for the recipients
-
+  Updates document visibility for a template recipient
+  This method updates the document visibility for a template recipient.  **Note**: A document cannot be hidden from a recipient if the recipient has tabs assigned to them on the document. Carbon Copy, Certified Delivery (Needs to Sign), Editor, and Agent recipients can always see all documents.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - recipient_id (String.t): The &#x60;recipientId&#x60; used when the envelope or template was created.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - recipient_id (String.t): A local reference that senders use to map recipients to other objects, such as specific document tabs. Within an envelope, each &#x60;recipientId&#x60; must be unique, but there is no uniqueness requirement across envelopes. For example, many envelopes assign the first recipient a &#x60;recipientId&#x60; of &#x60;1&#x60;.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :template_document_visibility (TemplateDocumentVisibility): 
+    - :template_document_visibility_list (TemplateDocumentVisibilityList):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.TemplateDocumentVisibility{}} on success
+  {:ok, %DocuSign.Model.TemplateDocumentVisibilityList{}} on success
   {:error, info} on failure
   """
   @spec recipients_put_template_recipient_document_visibility(
@@ -75,7 +75,9 @@ defmodule DocuSign.Api.TemplateDocumentVisibility do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.TemplateDocumentVisibility.t()} | {:error, Tesla.Env.t()}
+        ) ::
+          {:ok, DocuSign.Model.TemplateDocumentVisibilityList.t()}
+          | {:error, Tesla.Env.t()}
   def recipients_put_template_recipient_document_visibility(
         connection,
         account_id,
@@ -84,35 +86,35 @@ defmodule DocuSign.Api.TemplateDocumentVisibility do
         opts \\ []
       ) do
     optional_params = %{
-      TemplateDocumentVisibility: :body
+      :templateDocumentVisibilityList => :body
     }
 
     %{}
     |> method(:put)
     |> url(
-      "/v2/accounts/#{account_id}/templates/#{template_id}/recipients/#{recipient_id}/document_visibility"
+      "/v2.1/accounts/#{account_id}/templates/#{template_id}/recipients/#{recipient_id}/document_visibility"
     )
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.TemplateDocumentVisibility{})
+    |> decode(%DocuSign.Model.TemplateDocumentVisibilityList{})
   end
 
   @doc """
-  Updates document visibility for the recipients
-
+  Updates document visibility for template recipients
+  This method updates document visibility for one or more template recipients based on the &#x60;recipientId&#x60; and &#x60;visible&#x60; values that you include in the request body.   **Note**: A document cannot be hidden from a recipient if the recipient has tabs assigned to them on the document. Carbon Copy, Certified Delivery (Needs to Sign), Editor, and Agent recipients can always see all documents.
 
   ## Parameters
 
   - connection (DocuSign.Connection): Connection to server
-  - account_id (String.t): The external account number (int) or account ID Guid.
-  - template_id (String.t): The ID of the template being accessed.
+  - account_id (String.t): The external account number (int) or account ID GUID.
+  - template_id (String.t): The id of the template.
   - opts (KeywordList): [optional] Optional parameters
-    - :template_document_visibility (TemplateDocumentVisibility): 
+    - :template_document_visibility_list (TemplateDocumentVisibilityList):
 
   ## Returns
 
-  {:ok, %DocuSign.Model.TemplateDocumentVisibility{}} on success
+  {:ok, %DocuSign.Model.TemplateDocumentVisibilityList{}} on success
   {:error, info} on failure
   """
   @spec recipients_put_template_recipients_document_visibility(
@@ -120,7 +122,9 @@ defmodule DocuSign.Api.TemplateDocumentVisibility do
           String.t(),
           String.t(),
           keyword()
-        ) :: {:ok, DocuSign.Model.TemplateDocumentVisibility.t()} | {:error, Tesla.Env.t()}
+        ) ::
+          {:ok, DocuSign.Model.TemplateDocumentVisibilityList.t()}
+          | {:error, Tesla.Env.t()}
   def recipients_put_template_recipients_document_visibility(
         connection,
         account_id,
@@ -128,15 +132,15 @@ defmodule DocuSign.Api.TemplateDocumentVisibility do
         opts \\ []
       ) do
     optional_params = %{
-      TemplateDocumentVisibility: :body
+      :templateDocumentVisibilityList => :body
     }
 
     %{}
     |> method(:put)
-    |> url("/v2/accounts/#{account_id}/templates/#{template_id}/recipients/document_visibility")
+    |> url("/v2.1/accounts/#{account_id}/templates/#{template_id}/recipients/document_visibility")
     |> add_optional_params(optional_params, opts)
     |> Enum.into([])
     |> (&Connection.request(connection, &1)).()
-    |> decode(%DocuSign.Model.TemplateDocumentVisibility{})
+    |> decode(%DocuSign.Model.TemplateDocumentVisibilityList{})
   end
 end

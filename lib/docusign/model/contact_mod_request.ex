@@ -4,16 +4,16 @@
 
 defmodule DocuSign.Model.ContactModRequest do
   @moduledoc """
-
+  The request object containing the new information for the contacts.
   """
 
   @derive [Poison.Encoder]
   defstruct [
-    :contacts
+    :contactList
   ]
 
   @type t :: %__MODULE__{
-          :contacts => [Contacts]
+          :contactList => [Contact]
         }
 end
 
@@ -22,6 +22,6 @@ defimpl Poison.Decoder, for: DocuSign.Model.ContactModRequest do
 
   def decode(value, options) do
     value
-    |> deserialize(:contacts, :list, DocuSign.Model.Contacts, options)
+    |> deserialize(:contactList, :list, DocuSign.Model.Contact, options)
   end
 end
